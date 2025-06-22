@@ -7,7 +7,7 @@ const candidatoRoutes = require('./routes/candidato_routes');
 const empresaRoutes = require('./routes/empresa_routes');
 const vagaRoutes = require('./routes/vaga_routes');
 const curriculoRoutes = require('./routes/curriculo_routes');
-//const candidaturaRoutes = require('./routes/candidatura_routes');
+const candidaturaRoutes = require('./routes/candidatura_routes');
 //const entrevistadorRoutes = require('./routes/entrevistador_routes');
 //const entrevistaRoutes = require('./routes/entrevista_routes');
 
@@ -22,7 +22,7 @@ app.use('/api/candidato', candidatoRoutes);
 app.use('/api/empresa', empresaRoutes);
 app.use('/api/vaga', vagaRoutes);
 app.use('/api/curriculo', curriculoRoutes);
-//app.use('/api/candidatura', candidaturaRoutes);
+app.use('/api/candidatura', candidaturaRoutes);
 //app.use('/api/entrevistadore', entrevistadorRoutes);
 //app.use('/api/entrevista', entrevistaRoutes);
 

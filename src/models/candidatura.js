@@ -12,10 +12,7 @@ module.exports = (sequelize) => {
                 foreignKey: 'vaga_id',
                 as: 'vaga'
             });
-            this.belongsTo(models.Curriculo, {
-                foreignKey: 'curriculo_id',
-                as: 'curriculo'
-            });
+
             this.hasOne(models.Entrevista, {
                 foreignKey: 'candidatura_id',
                 as: 'entrevista'
@@ -37,10 +34,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        curriculo_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
+
         status: DataTypes.STRING,
         data_candidatura: {
             type: DataTypes.DATE,
