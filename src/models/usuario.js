@@ -1,25 +1,25 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-    class Empresa extends Model {
+    class Usuario extends Model {
         static associate(models) {
             // Relacionamentos
-            this.hasMany(models.Vaga, {
-                foreignKey: 'empresa_id',
-                as: 'vagas'
-            });
-            this.hasMany(models.Entrevistador, {
-                foreignKey: 'empresa_id',
-                as: 'entrevistadores'
-            });
-            this.belongsTo(models.Usuario, {
+            this.hasOne(models.Candidato, {
                 foreignKey: 'usuario_id',
-                as: 'usuario'
+                as: 'candidato'
+            });
+            this.hasOne(models.Empresa, {
+                foreignKey: 'usuario_id',
+                as: 'empresa'
+            });
+            this.hasOne(models.Entrevistador, {
+                foreignKey: 'usuario_id',
+                as: 'entrevistador'
             });
         }
     }
 
-    Empresa.init({
+    Usuario.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -37,21 +37,24 @@ module.exports = (sequelize) => {
                 isEmail: true
             }
         },
-        cnpj: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
-        telefone: DataTypes.STRING,
         senha: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        tipo_usuario: {
+            type: DataTypes.ENUM('Administrador', 'Empresa', 'Entrevistador', 'Candidato'),
+            allowNull: false
+        },
+        token: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     }, {
         sequelize,
-        modelName: 'Empresa',
-        tableName: 'empresas'
+        modelName: 'Usuario',
+        tableName: 'usuarios',
+
     });
 
-    return Empresa;
+    return Usuario;
 };

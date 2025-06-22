@@ -12,6 +12,10 @@ module.exports = (sequelize) => {
                 foreignKey: 'entrevistador_id',
                 as: 'entrevistas'
             });
+            this.belongsTo(models.Usuario, {
+                foreignKey: 'usuario_id',
+                as: 'usuario'
+            });
         }
     }
 

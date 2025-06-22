@@ -12,6 +12,10 @@ module.exports = (sequelize) => {
                 foreignKey: 'candidato_id',
                 as: 'candidaturas'
             });
+            this.belongsTo(models.Usuario, {
+                foreignKey: 'usuario_id',
+                as: 'usuario'
+            });
         }
     }
 
@@ -44,6 +48,14 @@ module.exports = (sequelize) => {
         senha: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        usuario_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'usuarios',
+                key: 'id'
+            }
         }
     }, {
         sequelize,
