@@ -1,5 +1,5 @@
 const candidatoController = require('../controllers/candidato_controller');
-const baseRouter = require('./base_router');
+const baseRouter = require('./base_routes');
 
 const router = baseRouter(candidatoController);
 

@@ -1,5 +1,5 @@
 const empresaController = require('../controllers/empresa_controller');
-const baseRouter = require('./base_router');
+const baseRouter = require('./base_routes');
 
 const router = baseRouter(empresaController);
 

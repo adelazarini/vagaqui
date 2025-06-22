@@ -1,4 +1,5 @@
 const { Entrevistador } = require('../models');
+const { Op } = require('sequelize');
 const BaseController = require('./base_controller');
 
 class EntrevistadorController extends BaseController {
@@ -6,22 +7,29 @@ class EntrevistadorController extends BaseController {
         super(Entrevistador);
     }
 
-    async buscarPorEmail(req, res) {
+    async filter(req, res) {
         try {
-            const entrevistador = await Entrevistador.findOne({
-                where: { email: req.params.email }
-            });
+            const { nome, email, cargo, empresa_id } = req.query;
 
-            if (!entrevistador) {
-                return res.status(404).json({ message: 'Entrevistador não encontrado' });
+            const conditions = {};
+
+            if (nome) {
+                conditions.nome = { [Op.iLike]: `%${nome}%` };
+            }
+            if (email) {
+                conditions.email = { [Op.iLike]: `%${email}%` };
+            }
+            if (cargo) {
+                conditions.cargo = { [Op.iLike]: `%${cargo}%` };
+            }
+            if (empresa_id) {
+                conditions.empresa_id = empresa_id;
             }
 
-            return res.status(200).json(entrevistador);
+            const entrevistadores = await Entrevistador.findAll({ where: conditions });
+            return res.status(200).json(entrevistadores);
         } catch (error) {
-            return res.status(400).json({
-                message: 'Erro ao buscar entrevistador',
-                error: error.message
-            });
+            return res.status(500).json({ message: 'Erro ao filtrar entrevistadores', error: error.message });
         }
     }
 }
