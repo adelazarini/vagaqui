@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "andre",
+    "password": "santos",
+    "database": "vagaqui",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "test": {
+    "username": "andre",
+    "password": "santos",
+    "database": "vagaqui_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "production": {
+    "username": "andre",
+    "password": "santos",
+    "database": "vagaqui_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  }
+}
