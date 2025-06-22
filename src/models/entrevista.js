@@ -32,9 +32,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        data_entrevista: DataTypes.DATE,
-        hora_entrevista: DataTypes.TIME,
-        local_ou_link: DataTypes.STRING,
+
         observacoes: DataTypes.TEXT
     }, {
         sequelize,

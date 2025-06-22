@@ -16,6 +16,7 @@ DELETE /entrevistas/:id/entrevistadores/:entId   # Remover entrevistador
 ## Dados Completos
 GET    /entrevistas/:id/completa                 # Entrevista com todos os dados
 GET    /entrevistas/candidatura/:candidaturaId   # Entrevistas por candidatura
+GET    /entrevistas/filtro?...                   # Filtro avançado (por entrevistador, data, hora, etc - dados do associativo)
 
 ## Permissões
 - Administrador: Acesso total
