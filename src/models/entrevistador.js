@@ -4,14 +4,11 @@ module.exports = (sequelize) => {
     class Entrevistador extends Model {
         static associate(models) {
             // Relacionamentos
-            this.belongsTo(models.Empresa, {
-                foreignKey: 'empresa_id',
-                as: 'empresa'
-            });
             this.hasMany(models.Entrevista, {
                 foreignKey: 'entrevistador_id',
                 as: 'entrevistas'
             });
+
             this.belongsTo(models.Usuario, {
                 foreignKey: 'usuario_id',
                 as: 'usuario'
@@ -32,17 +29,28 @@ module.exports = (sequelize) => {
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: true,
+            validate: {
+                isEmail: true
+            }
         },
-        cargo: DataTypes.STRING,
-        empresa_id: {
+        cargo: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        usuario_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'usuarios',
+                key: 'id'
+            }
         }
     }, {
         sequelize,
         modelName: 'Entrevistador',
-        tableName: 'entrevistadores'
+        tableName: 'entrevistadores',
+        timestamps: true
     });
 
     return Entrevistador;

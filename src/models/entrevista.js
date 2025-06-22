@@ -8,9 +8,12 @@ module.exports = (sequelize) => {
                 foreignKey: 'candidatura_id',
                 as: 'candidatura'
             });
-            this.belongsTo(models.Entrevistador, {
-                foreignKey: 'entrevistador_id',
-                as: 'entrevistador'
+            // Relação N:N com Entrevistador
+            this.belongsToMany(models.Entrevistador, {
+                through: 'entrevista_entrevistadores',
+                foreignKey: 'entrevista_id',
+                otherKey: 'entrevistador_id',
+                as: 'entrevistadores'
             });
         }
     }

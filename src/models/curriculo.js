@@ -8,10 +8,6 @@ module.exports = (sequelize) => {
                 foreignKey: 'candidato_id',
                 as: 'candidato'
             });
-            this.hasMany(models.Candidatura, {
-                foreignKey: 'curriculo_id',
-                as: 'candidaturas'
-            });
         }
     }
 

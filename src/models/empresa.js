@@ -8,10 +8,7 @@ module.exports = (sequelize) => {
                 foreignKey: 'empresa_id',
                 as: 'vagas'
             });
-            this.hasMany(models.Entrevistador, {
-                foreignKey: 'empresa_id',
-                as: 'entrevistadores'
-            });
+
             this.belongsTo(models.Usuario, {
                 foreignKey: 'usuario_id',
                 as: 'usuario'
@@ -46,6 +43,13 @@ module.exports = (sequelize) => {
         senha: {
             type: DataTypes.STRING,
             allowNull: false
+        }, usuario_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'usuarios',
+                key: 'id'
+            }
         }
     }, {
         sequelize,
