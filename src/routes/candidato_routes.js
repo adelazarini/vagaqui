@@ -1,12 +1,7 @@
-const express = require('express');
-const router = express.Router();
 const candidatoController = require('../controllers/candidato_controller');
+const baseRouter = require('./base_router');
 
-router.post('/', candidatoController.create.bind(candidatoController));
-router.get('/', candidatoController.findAll.bind(candidatoController));
-router.get('/:id', candidatoController.findByPk.bind(candidatoController));
-router.put('/:id', candidatoController.update.bind(candidatoController));
-router.delete('/:id', candidatoController.delete.bind(candidatoController));
+const router = baseRouter(candidatoController);
 
 // Rota específica
 router.get('/email/:email', candidatoController.buscarPorEmail.bind(candidatoController));
