@@ -1,6 +1,6 @@
 const express = require('express');
 const entrevistaController = require('../controllers/entrevista_controller');
-const baseRouter = require('./base_router');
+const baseRouter = require('./base_routes');
 
 const router = baseRouter(entrevistaController);
 
