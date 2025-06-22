@@ -10,6 +10,8 @@ module.exports = {
         port: process.env.DB_PORT || 5432,
         define: {
             timestamps: true,
+            createdAt: 'create',
+            updatedAt: 'update',
             underscored: true
         },
         logging: false

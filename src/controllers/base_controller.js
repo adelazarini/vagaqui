@@ -6,7 +6,7 @@ class BaseController {
     async create(req, res) {
         try {
             const item = await this.model.create(req.body);
-            return res.status(201).json(item);
+            return res.status(200).json(item);
         } catch (error) {
             return res.status(400).json({
                 message: 'Erro ao criar',
@@ -73,7 +73,7 @@ class BaseController {
                 return res.status(404).json({ message: 'Item não encontrado' });
             }
 
-            return res.status(204).send();
+            return res.status(200).send();
         } catch (error) {
             return res.status(400).json({
                 message: 'Erro ao deletar',

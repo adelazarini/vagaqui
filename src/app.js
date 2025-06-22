@@ -18,13 +18,17 @@ app.use(cors());
 app.use(express.json());
 
 // Rotas
-app.use('/api/candidatos', candidatoRoutes);
-//app.use('/api/empresas', empresaRoutes);
-//app.use('/api/vagas', vagaRoutes);
-//app.use('/api/curriculos', curriculoRoutes);
-//app.use('/api/candidaturas', candidaturaRoutes);
-//app.use('/api/entrevistadores', entrevistadorRoutes);
-//app.use('/api/entrevistas', entrevistaRoutes);
+app.use('/api/candidato', candidatoRoutes);
+//app.use('/api/empresa', empresaRoutes);
+//app.use('/api/vaga', vagaRoutes);
+//app.use('/api/curriculo', curriculoRoutes);
+//app.use('/api/candidatura', candidaturaRoutes);
+//app.use('/api/entrevistadore', entrevistadorRoutes);
+//app.use('/api/entrevista', entrevistaRoutes);
+
+app.use((req, res, next) => {
+    res.status(404).json({ message: 'Rota não encontrada' });
+});
 
 // Sincronizar banco de dados
 sequelize.sync({ force: false })
@@ -38,7 +42,5 @@ app.listen(PORT, () => {
 
 module.exports = app;
 
-//npm init -y
-//npm install express sequelize pg pg-hstore cors dotenv
-//npm install --save-dev nodemon
+
 

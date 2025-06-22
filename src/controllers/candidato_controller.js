@@ -6,7 +6,6 @@ class CandidatoController extends BaseController {
         super(Candidato);
     }
 
-    // Métodos específicos de Candidato podem ser adicionados aqui
     async buscarPorEmail(req, res) {
         try {
             const candidato = await Candidato.findOne({
