@@ -32,9 +32,18 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
+        data_encerramento: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
+        },
+
         empresa_id: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        ativo: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1
         }
     }, {
         sequelize,
