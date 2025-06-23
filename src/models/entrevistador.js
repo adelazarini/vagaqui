@@ -1,5 +1,35 @@
 const { Model, DataTypes } = require('sequelize');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Entrevistador:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID do entrevistador
+ *           example: 1
+ *         nome:
+ *           type: string
+ *           description: Nome do entrevistador
+ *           example: Ana Paula
+ *         cargo:
+ *           type: string
+ *           description: Cargo do entrevistador
+ *           example: Gerente de RH
+ *         usuario_id:
+ *           type: integer
+ *           description: ID do usuário associado ao entrevistador
+ *           example: 1
+ *    
+ */
+module.exports = (sequelize, DataTypes) => {
+    // ... (seu código existente) ...
+};
+
+
 module.exports = (sequelize) => {
     class Entrevistador extends Model {
         static associate(models) {
@@ -25,14 +55,6 @@ module.exports = (sequelize) => {
         nome: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                isEmail: true
-            }
         },
         cargo: {
             type: DataTypes.STRING,

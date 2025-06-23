@@ -24,6 +24,8 @@ module.exports = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+        console.log(`Token decodificado: ${JSON.stringify(decoded)}`);
+
         // Buscar usuário pelo ID e token
         const usuario = await Usuario.findOne({
             where: {

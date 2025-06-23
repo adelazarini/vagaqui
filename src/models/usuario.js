@@ -1,5 +1,42 @@
 const { Model, DataTypes } = require('sequelize');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Usuario:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID do usuário
+ *           example: 1
+ *         nome:
+ *           type: string
+ *           description: Nome do usuário
+ *           example: João da Silva
+ *         email:
+ *           type: string
+ *           description: Email do usuário
+ *           example: joao@email.com
+ *         senha:
+ *           type: string
+ *           description: Senha do usuário
+ *           example: senha123
+ *         tipo_usuario:
+ *           type: string
+ *           description: Tipo de usuário (Administrador, Empresa, Entrevistador, Candidato)
+ *           example: Candidato
+ *         token:
+ *           type: string
+ *           description: Token de autenticação
+ *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *         ultimo_login:
+ *           type: string
+ *           format: date-time
+ *           description: Data e hora do último login
+ *           example: 2025-06-23T10:00:00.000Z
+ */
 module.exports = (sequelize) => {
     class Usuario extends Model {
         static associate(models) {

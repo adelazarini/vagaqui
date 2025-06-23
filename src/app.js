@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const { sequelize } = require('./models');
+const swaggerConfig = require('./swagger');
 require('dotenv').config();
 
 // Importar rotas
@@ -18,6 +19,8 @@ const authRoutes = require('./routes/auth_routes');
 const authMiddleware = require('./middlewares/auth_middleware');
 
 const app = express();
+
+swaggerConfig(app);
 
 // Middlewares
 app.use(cors());

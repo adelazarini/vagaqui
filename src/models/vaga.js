@@ -1,5 +1,42 @@
 const { Model, DataTypes } = require('sequelize');
-
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Vaga:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID da vaga
+ *           example: 1
+ *         titulo:
+ *           type: string
+ *           description: Título da vaga
+ *           example: Desenvolvedor Full Stack
+ *         descricao:
+ *           type: string
+ *           description: Descrição da vaga
+ *           example: Vaga para desenvolvedor experiente
+ *         salario:
+ *           type: number
+ *           format: float
+ *           description: Salário da vaga
+ *           example: 5000.00
+ *         localizacao:
+ *           type: string
+ *           description: Localização da vaga
+ *           example: São Paulo, SP
+ *         data_publicacao:
+ *           type: string
+ *           format: date
+ *           description: Data de publicação da vaga
+ *           example: 2025-06-23
+ *         empresa_id:
+ *           type: integer
+ *           description: ID da empresa que publicou a vaga
+ *           example: 1
+ */
 module.exports = (sequelize) => {
     class Vaga extends Model {
         static associate(models) {
