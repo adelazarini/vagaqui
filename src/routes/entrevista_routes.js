@@ -1,5 +1,5 @@
 const EntrevistaController = require('../controllers/entrevista_controller');
-const authorize = require('../middlewares/authorize');
+const authorize = require('../middlewares/authorize_middleware');
 const baseRouter = require('./base_routes');
 
 module.exports = (app) => {

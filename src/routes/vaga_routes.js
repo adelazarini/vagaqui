@@ -1,6 +1,6 @@
 const vagaController = require('../controllers/vaga_controller');
 const baseRouter = require('./base_routes');
-const authorize = require('../middlewares/authorize');
+const authorize = require('../middlewares/authorize_middleware');
 
 //exemplo de como usar as permissoes
 const permissions = {

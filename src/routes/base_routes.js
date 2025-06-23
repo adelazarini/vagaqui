@@ -1,5 +1,5 @@
 const express = require('express');
-const authorize = require('../middlewares/authorize');
+const authorize = require('../middlewares/authorize_middleware');
 
 function baseRouter(controller, permissions = {}, options = {}) {
     const router = express.Router();

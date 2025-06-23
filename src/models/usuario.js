@@ -48,6 +48,10 @@ module.exports = (sequelize) => {
         token: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        ultimo_login: {
+            type: DataTypes.DATE,
+            allowNull: true
         }
     }, {
         sequelize,
