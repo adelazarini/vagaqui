@@ -12,22 +12,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
       cargo: {
         type: Sequelize.STRING
-      },
-      empresa_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'empresas',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
       },
       create: {
         type: Sequelize.DATE,

@@ -12,11 +12,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
       cpf: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -30,10 +25,6 @@ module.exports = {
       },
       experiencia: {
         type: Sequelize.STRING
-      },
-      senha: {
-        type: Sequelize.STRING,
-        allowNull: false
       },
       create: {
         type: Sequelize.DATE,

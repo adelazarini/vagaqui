@@ -9,7 +9,9 @@ module.exports = {
       nome: 'Administrador do Sistema',
       email: 'admin@vagaqui.com',
       senha: hashedPassword,
-      tipo_usuario: 'Administrador'
+      tipo_usuario: 'Administrador',
+      token: null,
+      ultimo_login: null
     }]);
   },
 
@@ -18,4 +20,4 @@ module.exports = {
       email: 'admin@vagaqui.com'
     }, {});
   }
-};
+}; 

@@ -26,15 +26,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL'
       },
-      curriculo_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'curriculos',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      },
       status: {
         type: Sequelize.STRING
       },

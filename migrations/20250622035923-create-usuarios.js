@@ -20,6 +20,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      token: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      ultimo_login: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
       tipo_usuario: {
         type: Sequelize.ENUM('Candidato', 'Empresa', 'Entrevistador'),
         allowNull: false
@@ -40,4 +48,4 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('usuarios');
   }
-};
+}; 

@@ -12,11 +12,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
       cnpj: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -24,10 +19,6 @@ module.exports = {
       },
       telefone: {
         type: Sequelize.STRING
-      },
-      senha: {
-        type: Sequelize.STRING,
-        allowNull: false
       },
       create: {
         type: Sequelize.DATE,
