@@ -10,6 +10,7 @@ const curriculoRoutes = require('./routes/curriculo_routes');
 const candidaturaRoutes = require('./routes/candidatura_routes');
 const entrevistadorRoutes = require('./routes/entrevistador_routes');
 const entrevistaRoutes = require('./routes/entrevista_routes');
+const authRoutes = require('./routes/auth_routes');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api/curriculo', curriculoRoutes);
 app.use('/api/candidatura', candidaturaRoutes);
 app.use('/api/entrevistador', entrevistadorRoutes);
 app.use('/api/entrevista', entrevistaRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use((req, res, next) => {
     res.status(404).json({ message: 'Rota não encontrada' });
