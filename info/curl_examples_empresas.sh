@@ -4,14 +4,14 @@
 # ========================================
 
 # Base URL (ajustar conforme necessário)
-BASE_URL="http://localhost:3000"
+BASE_URL="http://localhost:3000/api"
 
 # ========================================
 # 1. AUTENTICAÇÃO E REGISTRO
 # ========================================
 
 ## 1.1 Registrar nova empresa
-curl -X POST "${BASE_URL}/auth/register/empresa" \
+curl -X POST "${BASE_URL}/empresa" \
   -H "Content-Type: application/json" \
   -d '{
     "nome": "Tech Solutions Ltda",

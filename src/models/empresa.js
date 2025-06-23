@@ -15,7 +15,6 @@ module.exports = (sequelize) => {
             });
         }
     }
-
     Empresa.init({
         id: {
             type: DataTypes.INTEGER,
@@ -26,24 +25,13 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                isEmail: true
-            }
-        },
         cnpj: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
         telefone: DataTypes.STRING,
-        senha: {
-            type: DataTypes.STRING,
-            allowNull: false
-        }, usuario_id: {
+        usuario_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {

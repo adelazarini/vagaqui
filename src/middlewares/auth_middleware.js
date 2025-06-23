@@ -1,3 +1,4 @@
+// middlewares/authMiddleware.js
 const jwt = require('jsonwebtoken');
 const { Usuario } = require('../models');
 
@@ -23,15 +24,24 @@ module.exports = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // Verificar se o usuário existe
-        const usuario = await Usuario.findByPk(decoded.id);
+        // Buscar usuário pelo ID e token
+        const usuario = await Usuario.findOne({
+            where: {
+                id: decoded.id,
+                token: token
+            }
+        });
+
         if (!usuario) {
-            return res.status(401).json({ error: 'Usuário não encontrado' });
+            return res.status(401).json({ error: 'Usuário não encontrado ou token inválido' });
         }
 
-        // Adicionar usuário à requisição
-        req.usuarioId = decoded.id;
-        req.usuarioTipo = decoded.tipo_usuario;
+        // Definir req.user com as informações do usuário
+        req.user = {
+            id: usuario.id,
+            tipo_usuario: usuario.tipo_usuario,
+            email: usuario.email
+        };
 
         return next();
     } catch (err) {
