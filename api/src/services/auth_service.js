@@ -93,9 +93,7 @@ class AuthService {
                     break;
 
                 case 'Entrevistador':
-                    // Validações específicas para Entrevistador
                     if (!data.nome) throw new Error('Nome é obrigatório');
-                    if (!data.empresa_id) throw new Error('Empresa é obrigatória');
 
                     response = await Entrevistador.create({
                         nome: data.nome,
