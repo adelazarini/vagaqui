@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const { sequelize } = require('./models');
 const swaggerConfig = require('./swagger');
+const connectDB = require('./config/database_mongo');
 require('dotenv').config();
 
 // Importar rotas
@@ -14,6 +15,7 @@ const candidaturaRoutes = require('./routes/candidatura_routes');
 const entrevistadorRoutes = require('./routes/entrevistador_routes');
 const entrevistaRoutes = require('./routes/entrevista_routes');
 const authRoutes = require('./routes/auth_routes');
+const mensagemRoutes = require('./routes/mensagem_routes');
 
 // Importar middleware de autenticação
 const authMiddleware = require('./middlewares/auth_middleware');
@@ -21,6 +23,9 @@ const authMiddleware = require('./middlewares/auth_middleware');
 const app = express();
 
 swaggerConfig(app);
+
+// Conectar ao MongoDB
+connectDB();
 
 // Middlewares
 app.use(cors());
@@ -68,6 +73,7 @@ app.use('/api/curriculo', curriculoRoutes);
 app.use('/api/candidatura', candidaturaRoutes);
 app.use('/api/entrevistador', entrevistadorRoutes);
 app.use('/api/entrevista', entrevistaRoutes);
+app.use('/api/mensagens', mensagemRoutes); // Usar rotas de mensagens
 
 // Middleware para rotas não encontradas
 app.use((req, res, next) => {
