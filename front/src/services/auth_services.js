@@ -1,17 +1,20 @@
 import api from './api';
+import { Usuario } from '../models/usuario';
 
-export const login = async (email, senha, tipoUsuario) => {
+export const login = async (email, senha) => {
     try {
         const response = await api.post('/auth/login', {
             email,
-            senha,
-            tipoUsuario
+            senha
         });
 
-        // Salvar token no localStorage
-        localStorage.setItem('token', response.data.token);
+        const usuario = new Usuario({
+            token: response.data.token
+        });
 
-        return response.data;
+        localStorage.setItem('token', usuario.token);
+
+        return usuario;
     } catch (error) {
         console.error('Erro de login:', error);
         throw error;
@@ -20,4 +23,10 @@ export const login = async (email, senha, tipoUsuario) => {
 
 export const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+};
+
+export const getCurrentUser = () => {
+    const usuarioStr = localStorage.getItem('usuario');
+    return usuarioStr ? new Usuario(JSON.parse(usuarioStr)) : null;
 };

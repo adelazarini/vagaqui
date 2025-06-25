@@ -1,6 +1,7 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { login } from '../services/auth_services';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -77,6 +78,7 @@ const Login = () => {
 
         try {
             console.log('Login:', { email, senha });
+            login(email, senha);
         } catch (error) {
             console.error('Erro no login:', error);
         }
