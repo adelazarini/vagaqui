@@ -9,10 +9,12 @@ export const login = async (email, senha) => {
         });
 
         const usuario = new Usuario({
-            token: response.data.token
+            token: response.data.token,
+            ...response.data.usuario
         });
 
         localStorage.setItem('token', usuario.token);
+        localStorage.setItem('usuario', JSON.stringify(usuario.toJSON()));
 
         return usuario;
     } catch (error) {

@@ -6,8 +6,6 @@ export class Usuario {
     this.senha = data.senha || '';
     this.tipo_usuario = data.tipo_usuario || '';
     this.token = data.token || null;
-    this.create_date = data.create_date || new Date();
-    this.update_date = data.update_date || new Date();
   }
 
   isValidEmail() {
@@ -24,9 +22,7 @@ export class Usuario {
       id: this.id,
       nome: this.nome,
       email: this.email,
-      tipo_usuario: this.tipo_usuario,
-      create_date: this.create_date,
-      update_date: this.update_date
+      tipo_usuario: this.tipo_usuario
     };
   }
 }

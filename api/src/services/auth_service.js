@@ -30,7 +30,8 @@ class AuthService {
                 usuario: {
                     id: usuario.id,
                     email: usuario.email,
-                    tipo_usuario: usuario.tipo_usuario
+                    tipo_usuario: usuario.tipo_usuario,
+                    nome: usuario.nome
                 }
             };
         } catch (error) {

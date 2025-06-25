@@ -38,11 +38,11 @@ module.exports = async (req, res, next) => {
             return res.status(401).json({ error: 'Usuário não encontrado ou token inválido' });
         }
 
-        // Definir req.user com as informações do usuário
         req.user = {
             id: usuario.id,
             tipo_usuario: usuario.tipo_usuario,
-            email: usuario.email
+            email: usuario.email,
+            nome: usuario.nome
         };
 
         return next();
