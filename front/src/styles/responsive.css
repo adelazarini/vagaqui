@@ -1,0 +1,32 @@
+/* Mobile First */
+body {
+    font-size: 16px;
+}
+
+/* Tablets */
+@media screen and (min-width: 768px) {
+    body {
+        font-size: 18px;
+    }
+}
+
+/* Desktop */
+@media screen and (min-width: 1024px) {
+    body {
+        font-size: 20px;
+    }
+}
+
+/* Layout Responsivo */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
