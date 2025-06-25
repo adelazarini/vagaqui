@@ -64,11 +64,6 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        cpf: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
         telefone: DataTypes.STRING,
         formacao: DataTypes.STRING,
         experiencia: DataTypes.TEXT,

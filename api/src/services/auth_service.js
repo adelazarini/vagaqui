@@ -1,4 +1,3 @@
-// authService.js
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Usuario, Candidato, Empresa, Entrevistador } = require('../models');
@@ -57,6 +56,7 @@ class AuthService {
             if (!data.email) throw new Error('E-mail é obrigatório');
             if (!data.senha) throw new Error('Senha é obrigatória');
             if (!data.tipo_usuario) throw new Error('Tipo de usuário é obrigatório');
+            if (!data.nome) throw new Error('Nome é obrigatório');
 
             // Verificar se email já existe
             const existingUser = await Usuario.findOne({
@@ -67,36 +67,28 @@ class AuthService {
             // Hash da senha
             const hashedPassword = await bcrypt.hash(data.senha, 10);
 
-            // Criar usuário baseado no tipo
-            let usuarioEspecifico;
+            // Criar usuário no sistema
+            const usuario = await Usuario.create({
+                nome: data.nome,
+                email: data.email,
+                senha: hashedPassword,
+                tipo_usuario: data.tipo_usuario
+            });
+
+            var response = {};
             switch (data.tipo_usuario) {
                 case 'Candidato':
-                    // Validações específicas para Candidato
-                    if (!data.nome) throw new Error('Nome é obrigatório');
-                    if (!data.cpf) throw new Error('CPF é obrigatório');
 
-                    usuarioEspecifico = await Candidato.create({
+                    if (!data.nome) throw new Error('Nome é obrigatório');
+
+                    response = await Candidato.create({
                         nome: data.nome,
-                        email: data.email,
-                        cpf: data.cpf,
                         telefone: data.telefone || null,
                         formacao: data.formacao || null,
                         experiencia: data.experiencia || null,
-                        senha: hashedPassword
-                    });
-                    break;
+                        senha: hashedPassword,
+                        usuario_id: usuario.id
 
-                case 'Empresa':
-                    // Validações específicas para Empresa
-                    if (!data.nome) throw new Error('Nome da empresa é obrigatório');
-                    if (!data.cnpj) throw new Error('CNPJ é obrigatório');
-
-                    usuarioEspecifico = await Empresa.create({
-                        nome: data.nome,
-                        email: data.email,
-                        cnpj: data.cnpj,
-                        telefone: data.telefone || null,
-                        senha: hashedPassword
                     });
                     break;
 
@@ -105,12 +97,12 @@ class AuthService {
                     if (!data.nome) throw new Error('Nome é obrigatório');
                     if (!data.empresa_id) throw new Error('Empresa é obrigatória');
 
-                    usuarioEspecifico = await Entrevistador.create({
+                    response = await Entrevistador.create({
                         nome: data.nome,
                         email: data.email,
                         cargo: data.cargo || null,
-                        empresa_id: data.empresa_id,
-                        senha: hashedPassword
+                        senha: hashedPassword,
+                        usuario_id: usuario.id
                     });
                     break;
 
@@ -118,20 +110,22 @@ class AuthService {
                     throw new Error('Tipo de usuário inválido');
             }
 
-            // Criar usuário no sistema
-            const usuario = await Usuario.create({
-                nome: usuarioEspecifico.nome,
-                email: data.email,
-                senha: hashedPassword,
-                tipo_usuario: data.tipo_usuario,
-                [`${data.tipo_usuario.toLowerCase()}_id`]: usuarioEspecifico.id
+            const token = this.generateToken(usuario);
+
+            // Atualizar token e último login
+            await usuario.update({
+                token,
+                ultimo_login: new Date()
             });
 
             return {
-                id: usuario.id,
-                email: usuario.email,
-                tipo_usuario: usuario.tipo_usuario,
-                perfil_id: usuarioEspecifico.id
+                token,
+                usuario: {
+                    id: usuario.id,
+                    email: usuario.email,
+                    tipo_usuario: usuario.tipo_usuario,
+                    nome: usuario.nome
+                },
             };
         } catch (error) {
             throw new Error(`Erro no registro: ${error.message}`);
