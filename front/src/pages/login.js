@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { login } from '../services/auth_services';
+import { Usuario } from '../models/usuario';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -77,9 +78,14 @@ const Login = () => {
 
         try {
             console.log('Login:', { email, senha });
-            login(email, senha);
+            const usuario = await login(email, senha);
+            if (usuario) {
+                alert('Login bem-sucedido ' + usuario.nome);
+            } else {
+                alert('Login falhou: Usuário ou senha inválidos');
+            }
         } catch (error) {
-            console.error('Erro no login:', error);
+            alert('Login falhou: Usuário ou senha inválidos');
         }
     };
 
