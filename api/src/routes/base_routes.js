@@ -22,7 +22,6 @@ function baseRouter(controller, permissions = {}, options = {}) {
         return perms;
     };
 
-    // Adicionar authMiddleware ANTES de authorize em todas as rotas
     router.post('/',
         authMiddleware,
         authorize(...processPermissions(create)),

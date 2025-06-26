@@ -1,4 +1,4 @@
-import api from './api';
+import api from './api_service';
 import { Usuario } from '../models/usuario';
 
 export const login = async (email, senha) => {

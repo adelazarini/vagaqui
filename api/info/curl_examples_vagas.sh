@@ -11,18 +11,15 @@ BASE_URL="http://localhost:3000"
 # ========================================
 
 ## 1.1 Criar nova vaga (Empresa)
-curl -X POST "${BASE_URL}/vagas" \
+curl -X POST "${BASE_URL}/vaga/create" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN_EMPRESA" \
   -d '{
     "titulo": "Desenvolvedor Full Stack Senior",
-    "descricao": "Buscamos desenvolvedor com experiência em Node.js, React e PostgreSQL. Trabalho remoto com benefícios competitivos.",
+    "descricao": "Buscamos desenvolvedor com experiência em Node.js, React e PostgreSQL. Trabalho remoto com benefícios competitivos. VR, VA, Plano de Saúde, Home Office",
     "salario": 12000.00,
     "localizacao": "Remoto - Brasil",
     "empresa_id": 1,
-    "requisitos": "5+ anos de experiência, inglês fluente",
-    "beneficios": "VR, VA, Plano de Saúde, Home Office",
-    "tipo_contrato": "CLT",
     "nivel": "Senior"
   }'
 
