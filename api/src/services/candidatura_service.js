@@ -1,4 +1,4 @@
-const { Candidatura, Vaga, Candidato, Curriculo } = require('../models');
+const { Candidatura, Vaga, Candidato } = require('../models');
 const { Op } = require('sequelize');
 
 class CandidaturaService {
@@ -39,8 +39,11 @@ class CandidaturaService {
                 throw new Error('Vaga não encontrada');
             }
 
-            // Validar se o candidato existe
-            const candidato = await Candidato.findByPk(dadosCandidatura.candidato_id);
+            // Validar se o candidato existe por usuário_id
+            const candidato = await Candidato.findOne({
+                where: { usuario_id: dadosCandidatura.usuario_id }
+            });
+
             if (!candidato) {
                 throw new Error('Candidato não encontrado');
             }
@@ -49,7 +52,7 @@ class CandidaturaService {
             const candidaturaExistente = await Candidatura.findOne({
                 where: {
                     vaga_id: dadosCandidatura.vaga_id,
-                    candidato_id: dadosCandidatura.candidato_id
+                    candidato_id: candidato.id
                 }
             });
 
@@ -60,6 +63,7 @@ class CandidaturaService {
             // Criar candidatura
             return await Candidatura.create({
                 ...dadosCandidatura,
+                candidato_id: candidato.id,
                 data_candidatura: new Date(),
                 status: 'Em Análise'
             });

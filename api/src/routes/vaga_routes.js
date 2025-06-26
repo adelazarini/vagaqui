@@ -10,10 +10,10 @@ const permissions = {
     delete: ['Empresa']
 };
 
-const router = baseRouter(vagaController, permissions);
+//const router = baseRouter(vagaController, permissions);
 
 router.get('/filter', authorize(['Candidato', 'Empresa', 'Entrevistador']), vagaController.filter.bind(vagaController));
 
-router.post('/create', authorize(['Adminstrador', 'Empresa']), vagaController.create.bind(vagaController));
+router.post('/', authorize(['Adminstrador', 'Empresa']), vagaController.create.bind(vagaController));
 
 module.exports = router;

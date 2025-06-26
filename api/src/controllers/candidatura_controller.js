@@ -56,7 +56,7 @@ class CandidaturaController extends BaseController {
             // Adicionar usuário aos dados da candidatura
             const dadosCandidatura = {
                 ...req.body,
-                candidatoId: usuarioId
+                usuario_id: usuarioId
             };
 
             const novaCandidatura = await CandidaturaService.criarCandidatura(dadosCandidatura);
