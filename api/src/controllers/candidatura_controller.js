@@ -1,6 +1,6 @@
-const { Candidatura, Vaga } = require('../models');
-const { Op } = require('sequelize');
+const CandidaturaService = require('../services/candidatura_service');
 const BaseController = require('./base_controller');
+const Candidatura = require('../models/candidatura');
 
 class CandidaturaController extends BaseController {
     constructor() {
@@ -9,43 +9,62 @@ class CandidaturaController extends BaseController {
 
     async filter(req, res) {
         try {
-            const { vaga_id, candidato_id, status, data_candidatura } = req.query;
-
-            const conditions = {};
-
-            if (vaga_id) {
-                conditions.vaga_id = vaga_id;
-            }
-            if (candidato_id) {
-                conditions.candidato_id = candidato_id;
-            }
-            if (status) {
-                conditions.status = { [Op.iLike]: `%${status}%` };
-            }
-            if (data_candidatura) {
-                conditions.data_candidatura = { [Op.eq]: data_candidatura };
-            }
-
-            const candidaturas = await Candidatura.findAll({ where: conditions });
+            const candidaturas = await CandidaturaService.filtrarCandidaturas(req.query);
             return res.status(200).json(candidaturas);
         } catch (error) {
-            return res.status(500).json({ message: 'Erro ao filtrar candidaturas', error: error.message });
+            return res.status(500).json({
+                message: 'Erro ao filtrar candidaturas',
+                error: error.message
+            });
         }
     }
+
     async buscarPorVagaId(req, res) {
         try {
-            const vaga = await Vaga.findOne({
-                where: { vaga_id: req.params.vaga_id }
-            });
-
-            if (!curriculo) {
-                return res.status(404).json({ message: 'Currículo não encontrado' });
-            }
-
-            return res.status(200).json(curriculo);
+            const { vaga_id } = req.params;
+            const candidaturas = await CandidaturaService.buscarCandidaturasPorVaga(vaga_id);
+            return res.status(200).json(candidaturas);
         } catch (error) {
             return res.status(400).json({
-                message: 'Erro ao buscar currículo',
+                message: 'Erro ao buscar candidaturas por vaga',
+                error: error.message
+            });
+        }
+    }
+
+    async atualizarStatus(req, res) {
+        try {
+            const { id } = req.params;
+            const { status } = req.body;
+
+            const candidaturaAtualizada = await CandidaturaService.atualizarStatusCandidatura(id, status);
+
+            return res.status(200).json(candidaturaAtualizada);
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Erro ao atualizar status da candidatura',
+                error: error.message
+            });
+        }
+    }
+
+    async create(req, res) {
+        try {
+            // Obter ID do usuário logado
+            const usuarioId = req.user.id;
+
+            // Adicionar usuário aos dados da candidatura
+            const dadosCandidatura = {
+                ...req.body,
+                candidato_id: usuarioId
+            };
+
+            const novaCandidatura = await CandidaturaService.criarCandidatura(dadosCandidatura);
+
+            return res.status(201).json(novaCandidatura);
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Erro ao criar candidatura',
                 error: error.message
             });
         }
