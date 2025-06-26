@@ -6,10 +6,10 @@ const router = express.Router();
 
 const permissions = {
     create: ['Candidato'],
-    findAll: ['Empresa', 'Entrevistador', 'Administrador'],
-    findByPk: ['Candidato', 'Empresa', 'Entrevistador', 'Administrador'],
+    findAll: ['Empresa', 'Entrevistador', 'Administrador', 'Candidato'],
+    findByPk: ['Candidato', 'Empresa', 'Entrevistador', 'Administrador', 'Usuario'],
     update: ['Empresa', 'Entrevistador'],
-    delete: ['Empresa', 'Administrador']
+    delete: ['Empresa', 'Administrador', 'Candidato'],
 };
 
 //Busca todas as candidaturas do candidato logado

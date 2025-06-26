@@ -103,7 +103,6 @@ class CandidaturaService {
     }
 
     async buscarCandidaturasDoCandidato(usuarioId) {
-
         // Validar se o candidato existe por usuário_id
         const candidato = await Candidato.findOne({
             where: { usuario_id: usuarioId }
@@ -111,21 +110,13 @@ class CandidaturaService {
         if (!candidato) {
             throw new Error('Candidato não encontrado');
         }
-
         try {
             return await Candidatura.findAll({
-                where: { candidato_id: candidato.id },
-                include: [
-                    { model: Candidatura }
-                ]
+                where: { candidato_id: candidato.id }
             });
         } catch (error) {
             throw new Error(`Erro ao buscar candidaturas do candidato: ${error.message}`);
         }
     }
-
 }
-
-
-
 module.exports = new CandidaturaService();

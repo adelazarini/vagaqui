@@ -18,13 +18,13 @@ curl -X POST "${BASE_URL}/candidatura" \
     "vaga_id": 1
   }'
 
-## 1.2 Listar todas as candidaturas (Admin/Empresa)
+## 1.2 Listar todas as candidaturas (Candidato)
 curl -X GET "${BASE_URL}/candidatura" \
-  -H "Authorization: Bearer SEU_TOKEN_ADMIN"
+  -H "Authorization: Bearer SEU_TOKEN_CANDIDATO"
 
 ## 1.3 Buscar candidatura por ID
 curl -X GET "${BASE_URL}/candidatura/1" \
-  -H "Authorization: Bearer SEU_TOKEN_AQUI"
+  -H "Authorization: Bearer SEU_TOKEN_CANDIDATO"
 
 ## 1.4 Atualizar status da candidatura
 curl -X PUT "${BASE_URL}/candidatura/1" \
@@ -36,7 +36,7 @@ curl -X PUT "${BASE_URL}/candidatura/1" \
 
 ## 1.5 Deletar candidatura
 curl -X DELETE "${BASE_URL}/candidatura/1" \
-  -H "Authorization: Bearer SEU_TOKEN_ADMIN"
+  -H "Authorization: Bearer SEU_TOKEN_CANDIDATO"
 
 # ========================================
 # 2. ROTAS ESPECÍFICAS DE CANDIDATURA
