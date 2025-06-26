@@ -4,33 +4,30 @@
 # ========================================
 
 # Base URL (ajustar conforme necessário)
-BASE_URL="http://localhost:3000"
+BASE_URL="http://localhost:3000/api"
 
 # ========================================
 # 1. CRUD BÁSICO DE CANDIDATURAS
 # ========================================
 
 ## 1.1 Criar nova candidatura
-curl -X POST "${BASE_URL}/candidaturas" \
+curl -X POST "${BASE_URL}/candidatura" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN_CANDIDATO" \
   -d '{
-    "vaga_id": 1,
-    "candidato_id": 1,
-    "status": "Em análise",
-    "curriculo_id": 1
+    "vaga_id": 1
   }'
 
 ## 1.2 Listar todas as candidaturas (Admin/Empresa)
-curl -X GET "${BASE_URL}/candidaturas" \
+curl -X GET "${BASE_URL}/candidatura" \
   -H "Authorization: Bearer SEU_TOKEN_ADMIN"
 
 ## 1.3 Buscar candidatura por ID
-curl -X GET "${BASE_URL}/candidaturas/1" \
+curl -X GET "${BASE_URL}/candidatura/1" \
   -H "Authorization: Bearer SEU_TOKEN_AQUI"
 
 ## 1.4 Atualizar status da candidatura
-curl -X PUT "${BASE_URL}/candidaturas/1" \
+curl -X PUT "${BASE_URL}/candidatura/1" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN_EMPRESA" \
   -d '{
@@ -38,7 +35,7 @@ curl -X PUT "${BASE_URL}/candidaturas/1" \
   }'
 
 ## 1.5 Deletar candidatura
-curl -X DELETE "${BASE_URL}/candidaturas/1" \
+curl -X DELETE "${BASE_URL}/candidatura/1" \
   -H "Authorization: Bearer SEU_TOKEN_ADMIN"
 
 # ========================================
@@ -70,15 +67,15 @@ curl -X PATCH "${BASE_URL}/candidaturas/1/status" \
 # ========================================
 
 ## 3.1 Filtrar candidaturas por status
-curl -X GET "${BASE_URL}/candidaturas?status=Em análise" \
+curl -X GET "${BASE_URL}/candidatura?status=Em análise" \
   -H "Authorization: Bearer SEU_TOKEN_EMPRESA"
 
 ## 3.2 Filtrar candidaturas por data
-curl -X GET "${BASE_URL}/candidaturas?data_inicio=2024-06-01&data_fim=2024-06-30" \
+curl -X GET "${BASE_URL}/candidatura?data_inicio=2024-06-01&data_fim=2024-06-30" \
   -H "Authorization: Bearer SEU_TOKEN_EMPRESA"
 
 ## 3.3 Buscar candidaturas com filtros múltiplos
-curl -X GET "${BASE_URL}/candidaturas?vaga_id=1&status=Aprovado" \
+curl -X GET "${BASE_URL}/candidatura?vaga_id=1&status=Aprovado" \
   -H "Authorization: Bearer SEU_TOKEN_EMPRESA"
 
 # ========================================
@@ -86,11 +83,11 @@ curl -X GET "${BASE_URL}/candidaturas?vaga_id=1&status=Aprovado" \
 # ========================================
 
 ## 4.1 Obter estatísticas de candidaturas por vaga
-curl -X GET "${BASE_URL}/candidaturas/estatisticas/vaga/1" \
+curl -X GET "${BASE_URL}/candidatura/estatisticas/vaga/1" \
   -H "Authorization: Bearer SEU_TOKEN_EMPRESA"
 
 ## 4.2 Obter resumo de candidaturas do candidato
-curl -X GET "${BASE_URL}/candidaturas/resumo/candidato/1" \
+curl -X GET "${BASE_URL}/candidatura/resumo/candidato/1" \
   -H "Authorization: Bearer SEU_TOKEN_CANDIDATO"
 
 # ========================================
@@ -153,17 +150,17 @@ curl -X GET "${BASE_URL}/candidaturas/resumo/candidato/1" \
 # ========================================
 
 ## Candidato tentando ver candidaturas de outros candidatos (deve falhar)
-curl -X GET "${BASE_URL}/candidaturas/candidato/2" \
+curl -X GET "${BASE_URL}/candidatura/candidato/2" \
   -H "Authorization: Bearer TOKEN_CANDIDATO_1"
 # Resposta esperada: 403 Forbidden
 
 ## Empresa tentando ver candidaturas de vagas de outra empresa (deve falhar)
-curl -X GET "${BASE_URL}/candidaturas/vaga/5" \
+curl -X GET "${BASE_URL}/candidatura/vaga/5" \
   -H "Authorization: Bearer TOKEN_EMPRESA_1"
 # Resposta esperada: 403 Forbidden
 
 ## Candidato criando candidatura para vaga já candidatada (deve falhar)
-curl -X POST "${BASE_URL}/candidaturas" \
+curl -X POST "${BASE_URL}/candidatura" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer TOKEN_CANDIDATO" \
   -d '{
@@ -177,7 +174,7 @@ curl -X POST "${BASE_URL}/candidaturas" \
 # ========================================
 
 ## Criar candidatura sem vaga_id
-curl -X POST "${BASE_URL}/candidaturas" \
+curl -X POST "${BASE_URL}/candidatura" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN_CANDIDATO" \
   -d '{
@@ -186,7 +183,7 @@ curl -X POST "${BASE_URL}/candidaturas" \
 # Resposta esperada: 400 Bad Request
 
 ## Atualizar status inválido
-curl -X PUT "${BASE_URL}/candidaturas/1" \
+curl -X PUT "${BASE_URL}/candidatura/1" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN_EMPRESA" \
   -d '{

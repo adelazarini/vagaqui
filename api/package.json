@@ -5,8 +5,9 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "create-db": "node src/config/database.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "debug": "nodemon --inspect src/app.js",
+    "debug:break": "nodemon --inspect-brk src/app.js"
   },
   "engines": {
     "node": ">=14.0.0"
