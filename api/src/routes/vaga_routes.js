@@ -1,19 +1,51 @@
+const express = require('express');
 const vagaController = require('../controllers/vaga_controller');
-const baseRouter = require('./base_routes');
 const authorize = require('../middlewares/authorize_middleware');
 
+const authMiddleware = require('../middlewares/auth_middleware');
+
+const router = express.Router();
+
+router.use(authMiddleware);
+
 const permissions = {
-    create: ['Empresa', 'Adminstrador'],
-    findAll: ['Candidato', 'Empresa', 'Entrevistador'],
-    findByPk: ['Candidato', 'Empresa', 'Entrevistador'],
-    update: ['Empresa'],
-    delete: ['Empresa']
+    create: ['Empresa', 'Administrador'],
+    findAll: ['Candidato', 'Empresa', 'Entrevistador', 'Administrador'],
+    findByPk: ['Candidato', 'Empresa', 'Entrevistador', 'Administrador'],
+    update: ['Empresa', 'Administrador'],
+    delete: ['Empresa', 'Administrador'],
+    filterfilter: ['Candidato', 'Empresa', 'Entrevistador', 'Administrador']
 };
 
-//const router = baseRouter(vagaController, permissions);
+//CRUD
+router.post('/',
+    authorize(permissions.create),
+    vagaController.create.bind(vagaController)
+);
 
-router.get('/filter', authorize(['Candidato', 'Empresa', 'Entrevistador']), vagaController.filter.bind(vagaController));
+router.get('/',
+    authorize(permissions.findAll),
+    vagaController.findAll.bind(vagaController)
+);
 
-router.post('/', authorize(['Adminstrador', 'Empresa']), vagaController.create.bind(vagaController));
+router.get('/filter',
+    authorize(permissions.filter),
+    vagaController.filter.bind(vagaController)
+);
+
+router.get('/:id',
+    authorize(permissions.findByPk),
+    vagaController.findByPk.bind(vagaController)
+);
+
+router.put('/:id',
+    authorize(permissions.update),
+    vagaController.update.bind(vagaController)
+);
+
+router.delete('/:id',
+    authorize(permissions.delete),
+    vagaController.delete.bind(vagaController)
+);
 
 module.exports = router;

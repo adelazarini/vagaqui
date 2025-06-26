@@ -18,7 +18,24 @@ class CandidaturaController extends BaseController {
             });
         }
     }
+    async buscarCandidaturasDoCandidato(req, res) {
+        try {
+            // Obter ID do usuário logado
+            const usuarioId = req.user.id;
 
+            // Buscar candidaturas
+            const resultado = await CandidaturaService.buscarCandidaturasDoCandidato(usuarioId);
+
+            return res.status(200).json(resultado);
+
+        } catch (error) {
+            console.error('Erro ao buscar candidaturas:', error);
+            return res.status(500).json({
+                message: 'Erro ao buscar candidaturas',
+                error: error.message
+            });
+        }
+    }
     async buscarPorVagaId(req, res) {
         try {
             const { vaga_id } = req.params;

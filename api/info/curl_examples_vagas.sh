@@ -11,7 +11,7 @@ BASE_URL="http://localhost:3000"
 # ========================================
 
 ## 1.1 Criar nova vaga (Empresa)
-curl -X POST "${BASE_URL}/vaga/create" \
+curl -X POST "${BASE_URL}/vaga" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN_EMPRESA" \
   -d '{

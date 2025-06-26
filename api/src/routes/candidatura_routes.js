@@ -12,11 +12,13 @@ const permissions = {
     delete: ['Empresa', 'Administrador']
 };
 
+//Busca todas as candidaturas do candidato logado
 router.get('/',
     authorize(permissions.findAll),
-    candidaturaController.findAll.bind(candidaturaController)
+    candidaturaController.buscarCandidaturasDoCandidato.bind(candidaturaController)
 );
 
+// Busca uma candidatura por ID
 router.get('/:id',
     authorize(permissions.findByPk),
     candidaturaController.findByPk.bind(candidaturaController)
@@ -27,16 +29,19 @@ router.get('/filter',
     candidaturaController.filter.bind(candidaturaController)
 );
 
+//criação de candidatura
 router.post('/',
     authorize(permissions.create),
     candidaturaController.create.bind(candidaturaController)
 );
 
+// Atualização de candidatura
 router.put('/:id',
     authorize(permissions.update),
     candidaturaController.update.bind(candidaturaController)
 );
 
+// Exclusão de candidatura
 router.delete('/:id',
     authorize(permissions.delete),
     candidaturaController.delete.bind(candidaturaController)
