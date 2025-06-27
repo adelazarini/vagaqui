@@ -1,46 +1,82 @@
-const EntrevistaController = require('../controllers/entrevista_controller');
+const express = require('express');
+const entrevistaController = require('../controllers/entrevista_controller');
 const authorize = require('../middlewares/authorize_middleware');
-const baseRouter = require('./base_routes');
+const authMiddleware = require('../middlewares/auth_middleware');
 
-module.exports = (app) => {
-    const controller = new EntrevistaController(app);
-    const router = baseRouter(controller, {
-        create: ['Administrador', 'Empresa'],
-        findAll: ['Administrador', 'Empresa', 'Entrevistador'],
-        findByPk: ['Administrador', 'Empresa', 'Entrevistador'],
-        update: ['Administrador', 'Empresa', 'Entrevistador'],
-        delete: ['Administrador', 'Empresa']
-    });
+const router = express.Router();
 
-    router.get('/:id/entrevistadores',
-        authorize(['Administrador', 'Empresa', 'Entrevistador']),
-        controller.listarEntrevistadores.bind(controller)
-    );
+router.use(authMiddleware);
 
-    router.post('/:id/entrevistadores',
-        authorize(['Administrador', 'Empresa']),
-        controller.adicionarEntrevistadores.bind(controller)
-    );
-
-    router.delete('/:id/entrevistadores/:entrevistadorId',
-        authorize(['Administrador', 'Empresa']),
-        controller.removerEntrevistador.bind(controller)
-    );
-
-    router.get('/:id/completa',
-        authorize(['Administrador', 'Empresa', 'Entrevistador']),
-        controller.buscarEntrevistaCompleta.bind(controller)
-    );
-
-    router.get('/candidatura/:candidaturaId',
-        authorize(['Administrador', 'Empresa', 'Entrevistador', 'Candidato']),
-        controller.buscarPorCandidatura.bind(controller)
-    );
-
-    router.get('/filtro',
-        authorize(['Administrador', 'Empresa', 'Entrevistador']),
-        controller.filter.bind(controller)
-    );
-
-    return router;
+const permissions = {
+    create: ['Administrador', 'Empresa'],
+    findAll: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato'],
+    findByPk: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato'],
+    update: ['Administrador', 'Empresa'],
+    delete: ['Administrador', 'Empresa'],
+    filter: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato']
 };
+
+// CRUD Básico
+router.post('/',
+    authorize(permissions.create),
+    entrevistaController.create.bind(entrevistaController)
+);
+
+router.get('/',
+    authorize(permissions.findAll),
+    entrevistaController.findAll.bind(entrevistaController)
+);
+
+router.get('/filtro',
+    authorize(permissions.filter),
+    entrevistaController.filter.bind(entrevistaController)
+);
+
+router.get('/:id',
+    authorize(permissions.findByPk),
+    entrevistaController.findByPk.bind(entrevistaController)
+);
+
+router.put('/:id',
+    authorize(permissions.update),
+    entrevistaController.update.bind(entrevistaController)
+);
+
+router.delete('/:id',
+    authorize(permissions.delete),
+    entrevistaController.delete.bind(entrevistaController)
+);
+
+// Rotas específicas de Entrevista
+router.get('/:id/entrevistadores',
+    authorize(['Administrador', 'Empresa', 'Entrevistador']),
+    entrevistaController.listarEntrevistadores.bind(entrevistaController)
+);
+
+router.post('/:id/entrevistadores',
+    authorize(['Administrador', 'Empresa']),
+    entrevistaController.adicionarEntrevistadores.bind(entrevistaController)
+);
+
+router.delete('/:id/entrevistadores/:entrevistadorId',
+    authorize(['Administrador', 'Empresa', 'Entrevistador']),
+    entrevistaController.removerEntrevistador.bind(entrevistaController)
+);
+
+router.get('/:id/completa',
+    authorize(permissions.findByPk),
+    entrevistaController.buscarEntrevistaCompleta.bind(entrevistaController)
+);
+
+router.get('/candidatura/:candidaturaId',
+    authorize(permissions.findAll),
+    entrevistaController.buscarPorCandidatura.bind(entrevistaController)
+);
+
+// Atualizar status da entrevista
+router.patch('/:id/status',
+    authorize(permissions.update),
+    entrevistaController.updateStatus.bind(entrevistaController)
+);
+
+module.exports = router;

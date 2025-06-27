@@ -46,11 +46,6 @@ module.exports = (sequelize) => {
                 foreignKey: 'vaga_id',
                 as: 'vaga'
             });
-
-            this.hasOne(models.Entrevista, {
-                foreignKey: 'candidatura_id',
-                as: 'entrevista'
-            });
         }
     }
 

@@ -26,16 +26,15 @@ module.exports = async (req, res, next) => {
 
         console.log(`Token decodificado: ${JSON.stringify(decoded)}`);
 
-        // Buscar usuário pelo ID e token
+        // Buscar usuário pelo ID
         const usuario = await Usuario.findOne({
             where: {
-                id: decoded.id,
-                token: token
+                id: decoded.id
             }
         });
 
         if (!usuario) {
-            return res.status(401).json({ error: 'Usuário não encontrado ou token inválido' });
+            return res.status(401).json({ error: 'Usuário não encontrado' });
         }
 
         req.user = {
