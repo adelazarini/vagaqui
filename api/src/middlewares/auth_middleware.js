@@ -45,7 +45,31 @@ module.exports = async (req, res, next) => {
         };
 
         return next();
-    } catch (err) {
-        return res.status(401).json({ error: 'Token inválido' });
+    } catch (error) {
+        switch (error.name) {
+            case 'TokenExpiredError':
+                return res.status(401).json({
+                    error: 'EXPIRED',
+                    message: 'Sessão expirada. Faça login novamente.'
+                });
+
+            case 'JsonWebTokenError':
+                return res.status(403).json({
+                    error: 'INVALID',
+                    message: 'Token inválido. Faça login novamente.'
+                });
+
+            case 'NotBeforeError':
+                return res.status(403).json({
+                    error: 'NOT_ACTIVE',
+                    message: 'Token ainda não está ativo.'
+                });
+
+            default:
+                return res.status(500).json({
+                    error: 'UNKNOWN',
+                    message: 'Erro de autenticação. Tente novamente.'
+                });
+        }
     }
 };
