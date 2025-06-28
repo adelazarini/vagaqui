@@ -2,26 +2,46 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "name": "Debug Frontend React",
+            "type": "chrome",
             "request": "launch",
-            "name": "Debug API",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/api/src/app.js",
-            "console": "integratedTerminal",
-            "env": {
-                "NODE_ENV": "development"
+            "url": "http://localhost:3001",
+            "webRoot": "${workspaceFolder}/front",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack:///./src/*": "${webRoot}/api/src/*"
             }
         },
         {
+            "name": "Debug Backend Node.js",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/api/src/app.js",
+            "console": "integratedTerminal",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "sourceMaps": true
+        },
+        {
+            "name": "Attach to Backend",
             "type": "node",
             "request": "attach",
-            "name": "Attach to Process",
             "port": 9229,
             "restart": true,
             "skipFiles": [
                 "<node_internals>/**"
+            ]
+        },
+        {
+            "name": "Full Stack Debug",
+            "type": "compound",
+            "configurations": [
+                "Debug Frontend React",
+                "Debug Backend Node.js"
             ]
         }
     ]

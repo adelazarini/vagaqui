@@ -1,8 +1,8 @@
 export const TIPOS_USUARIO = {
-  CANDIDATO: 'candidato',
-  EMPRESA: 'empresa',
-  ENTREVISTADOR: 'entrevistador',
-  ADMINISTRADOR: 'administrador'
+  CANDIDATO: 'Candidato',
+  EMPRESA: 'Empresa',
+  ENTREVISTADOR: 'Entrevistador',
+  ADMINISTRADOR: 'Administrador'
 } as const;
 
 export type TipoUsuario = typeof TIPOS_USUARIO[keyof typeof TIPOS_USUARIO];
