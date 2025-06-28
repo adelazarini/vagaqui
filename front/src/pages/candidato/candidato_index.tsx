@@ -1,4 +1,3 @@
-// src/pages/Candidato/Dashboard/index.tsx
 import React from 'react';
 import { getCurrentUser } from '../../services/auth_service';
 import { useDashboardController } from './candidato_controller';

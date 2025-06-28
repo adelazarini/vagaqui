@@ -18,10 +18,17 @@ router.get('/',
     candidatoController.findAll.bind(candidatoController)
 );
 
-router.get('/:id',
-    authorize(permissions.findByPk),
-    candidatoController.findByPk.bind(candidatoController)
+router.get('/dashboard',
+    authorize(['Candidato']),
+    candidatoController.getDashboard.bind(candidatoController)
 );
+
+router.get('/usuario',
+    authorize(permissions.findByPk),
+    candidatoController.findByUsuario.bind(candidatoController)
+);
+
+
 
 router.get('/email/:email',
     authorize(permissions.findByPk),
@@ -38,6 +45,11 @@ router.post('/',
     candidatoController.create.bind(candidatoController)
 );
 
+router.get('/:id',
+    authorize(permissions.findByPk),
+    candidatoController.findByPk.bind(candidatoController)
+);
+
 router.put('/:id',
     authorize(permissions.update),
     candidatoController.update.bind(candidatoController)
@@ -48,11 +60,6 @@ router.delete('/:id',
     candidatoController.delete.bind(candidatoController)
 );
 
-// Rotas específicas de candidato
-router.get('/dashboard',
-    authorize(['Candidato']),
-    candidatoController.getDashboard.bind(candidatoController)
-);
 
 router.post('/curriculo',
     authorize(['Candidato']),

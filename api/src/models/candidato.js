@@ -39,9 +39,9 @@ module.exports = (sequelize) => {
     class Candidato extends Model {
         static associate(models) {
             // Relacionamentos
-            this.hasMany(models.Curriculo, {
+            this.hasOne(models.Curriculo, {
                 foreignKey: 'candidato_id',
-                as: 'curriculos'
+                as: 'curriculo'
             });
             this.hasMany(models.Candidatura, {
                 foreignKey: 'candidato_id',
