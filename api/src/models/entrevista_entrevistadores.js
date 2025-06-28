@@ -1,5 +1,20 @@
-module.exports = (sequelize, DataTypes) => {
-    const Entrevista_Entrevistadores = sequelize.define('Entrevista_Entrevistadores', {
+const { Model, DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+    class EntrevistaEntrevistadores extends Model {
+        static associate(models) {
+            this.belongsTo(models.Entrevista, {
+                foreignKey: 'entrevista_id',
+                as: 'entrevista'
+            });
+            this.belongsTo(models.Entrevistador, {
+                foreignKey: 'entrevistador_id',
+                as: 'entrevistador'
+            });
+        }
+    }
+
+    EntrevistaEntrevistadores.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -8,26 +23,20 @@ module.exports = (sequelize, DataTypes) => {
         entrevista_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            references: {
-                model: 'entrevistas',
-                key: 'id'
-            }
+            references: { model: 'entrevistas', key: 'id' }
         },
         entrevistador_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            references: {
-                model: 'entrevistadores',
-                key: 'id'
-            }
+            references: { model: 'entrevistadores', key: 'id' }
         },
         data_entrevista: {
             type: DataTypes.DATE,
-            allowNull: false
+            allowNull: true
         },
         hora_entrevista: {
             type: DataTypes.TIME,
-            allowNull: false
+            allowNull: true
         },
         local_link: {
             type: DataTypes.STRING,
@@ -38,18 +47,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         }
     }, {
+        sequelize,
+        modelName: 'EntrevistaEntrevistadores',
         tableName: 'entrevista_entrevistadores',
-        underscored: true
+        underscored: true,
+        timestamps: true
     });
 
-    Entrevista_Entrevistadores.associate = (models) => {
-        Entrevista_Entrevistadores.belongsTo(models.Entrevista, {
-            foreignKey: 'entrevista_id'
-        });
-        Entrevista_Entrevistadores.belongsTo(models.Entrevistador, {
-            foreignKey: 'entrevistador_id'
-        });
-    };
-
-    return Entrevista_Entrevistadores;
+    return EntrevistaEntrevistadores;
 };

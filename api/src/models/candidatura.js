@@ -29,10 +29,6 @@ const { Model, DataTypes } = require('sequelize');
  *           description: Data da candidatura
  *           example: 2025-06-23
  */
-module.exports = (sequelize, DataTypes) => {
-    // ... (seu código existente) ...
-};
-
 
 module.exports = (sequelize) => {
     class Candidatura extends Model {

@@ -25,20 +25,11 @@ const { Model, DataTypes } = require('sequelize');
  *           example: 1
  *    
  */
-module.exports = (sequelize, DataTypes) => {
-    // ... (seu código existente) ...
-};
-
 
 module.exports = (sequelize) => {
     class Entrevistador extends Model {
         static associate(models) {
             // Relacionamentos
-            this.hasMany(models.Entrevista, {
-                foreignKey: 'entrevistador_id',
-                as: 'entrevistas'
-            });
-
             this.belongsTo(models.Usuario, {
                 foreignKey: 'usuario_id',
                 as: 'usuario'

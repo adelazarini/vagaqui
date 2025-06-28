@@ -1,48 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     Entrevista:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *           description: ID da entrevista
- *           example: 1
- *         candidatura_id:
- *           type: integer
- *           description: ID da candidatura
- *           example: 1
- *         entrevistador_id:
- *           type: integer
- *           description: ID do entrevistador
- *           example: 1
- *         data_entrevista:
- *           type: string
- *           format: date
- *           description: Data da entrevista
- *           example: 2025-06-25
- *         hora_entrevista:
- *           type: string
- *           format: time
- *           description: Hora da entrevista
- *           example: 10:00
- *         local_link:
- *           type: string
- *           description: Local ou link da entrevista
- *           example: http://meet.google.com/xyz
- *         observacoes:
- *           type: string
- *           description: Observações sobre a entrevista
- *           example: Levar currículo impresso
- */
-module.exports = (sequelize, DataTypes) => {
-    // ... (seu código existente) ...
-};
-
-
 module.exports = (sequelize) => {
     class Entrevista extends Model {
         static associate(models) {
@@ -69,14 +26,20 @@ module.exports = (sequelize) => {
         },
         candidatura_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'candidaturas',
+                key: 'id'
+            }
         },
 
         observacoes: DataTypes.TEXT
     }, {
         sequelize,
         modelName: 'Entrevista',
-        tableName: 'entrevistas'
+        tableName: 'entrevistas',
+        underscored: true
+
     });
 
     return Entrevista;

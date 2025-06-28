@@ -47,7 +47,6 @@ router.delete('/:id',
     entrevistaController.delete.bind(entrevistaController)
 );
 
-// Rotas específicas de Entrevista
 router.get('/:id/entrevistadores',
     authorize(['Administrador', 'Empresa', 'Entrevistador']),
     entrevistaController.listarEntrevistadores.bind(entrevistaController)

@@ -1,9 +1,12 @@
 const {
+    Entrevistador,
+    Usuario,
     Entrevista,
     Candidatura,
     Candidato,
     Vaga,
     Empresa,
+    EntrevistaEntrevistadores,
     sequelize
 } = require('../models');
 const { Op } = require('sequelize');
@@ -91,7 +94,7 @@ class EntrevistaService {
 
             const conditions = {};
 
-            // Filtros específicos por tipo de usuário
+            // Filtros especificos por tipo de usuario
             if (tipoUsuario === 'Candidato') {
                 const candidato = await Candidato.findOne({
                     where: { usuario_id: usuarioId }
@@ -114,7 +117,6 @@ class EntrevistaService {
             if (data_entrevista) conditions.data_entrevista = data_entrevista;
             if (status) conditions.status = status;
 
-            // Query com joins complexos
             const entrevistas = await Entrevista.findAll({
                 where: conditions,
                 include: [
@@ -238,78 +240,149 @@ class EntrevistaService {
         const transaction = await sequelize.transaction();
 
         try {
-            // Validar entrevista
-            const entrevista = await Entrevista.findByPk(entrevistaId);
+            // busca entrevista com candidatura e vaga
+            const entrevista = await Entrevista.findByPk(entrevistaId, {
+                include: [{
+                    model: Candidatura,
+                    as: 'candidatura',
+                    include: [{
+                        model: Vaga,
+                        as: 'vaga'
+                    }]
+                }]
+            });
+
             if (!entrevista) {
                 throw new Error('Entrevista não encontrada');
             }
 
-            // Validar permissão do usuário
+            // validar permissao do usuario
             const usuario = await Usuario.findByPk(usuarioId, {
-                include: [{ model: Empresa }]
+                include: [{
+                    model: Empresa,
+                    as: 'empresa'
+                }]
             });
 
-            if (!usuario || !usuario.Empresa) {
-                throw new Error('Usuário não autorizado');
+            if (!usuario || !usuario.empresa) {
+                throw new Error('Usuário não autorizado - não é uma empresa');
             }
 
-            // Processar vinculação de entrevistadores
-            const novasAssociacoes = await Promise.all(
-                entrevistadores.map(async (entrevistadorData) => {
-                    // Validar entrevistador
-                    const entrevistador = await Entrevistador.findByPk(entrevistadorData.entrevistador_id);
-                    if (!entrevistador) {
-                        throw new Error(`Entrevistador ${entrevistadorData.entrevistador_id} não encontrado`);
-                    }
+            // verificar se a vaga pertence empresa
+            if (entrevista.candidatura.vaga.empresa_id !== usuario.empresa.id) {
+                throw new Error('Não autorizado - a entrevista não pertence a uma vaga da sua empresa');
+            }
 
-                    // Criar ou atualizar associação
-                    const [associacao] = await sequelize.models.Entrevista_Entrevistadores.findOrCreate({
+            // processar vinculação de entrevistadores
+            const novas = await Promise.all(
+                entrevistadores.map(async data => {
+                    // validar entrevistador
+                    const ent = await Entrevistador.findByPk(data.entrevistador_id);
+                    if (!ent) throw new Error(`Entrevistador ${data.entrevistador_id} não encontrado`);
+                    console.log('EntrevistaEntrevistadores:', EntrevistaEntrevistadores);
+                    const [assoc, created] = await EntrevistaEntrevistadores.findOrCreate({
                         where: {
                             entrevista_id: entrevistaId,
-                            entrevistador_id: entrevistadorData.entrevistador_id
+                            entrevistador_id: data.entrevistador_id
                         },
                         defaults: {
-                            data_entrevista: entrevistadorData.data_entrevista,
-                            hora_entrevista: entrevistadorData.hora_entrevista,
-                            local_link: entrevistadorData.local_link,
-                            observacoes: entrevistadorData.observacoes_individuais
+                            data_entrevista: data.data_entrevista,
+                            hora_entrevista: data.hora_entrevista,
+                            local_link: data.local_link,
+                            observacoes: data.observacoes
                         },
                         transaction
                     });
 
-                    return associacao;
+                    if (!created) {
+                        await assoc.update({
+                            data_entrevista: data.data_entrevista,
+                            hora_entrevista: data.hora_entrevista,
+                            local_link: data.local_link,
+                            observacoes: data.observacoes
+                        }, { transaction });
+                    }
+
+                    return assoc;
                 })
             );
 
             await transaction.commit();
-            return novasAssociacoes;
-        } catch (error) {
+            return novas;
+        }
+        catch (err) {
             await transaction.rollback();
-            throw new Error(`Erro ao vincular entrevistadores: ${error.message}`);
+            throw new Error(`Erro ao vincular entrevistadores: ${err.message}`);
         }
     }
+
 
     async removerEntrevistadorDaEntrevista(entrevistaId, entrevistadorId, usuarioId) {
         const transaction = await sequelize.transaction();
 
         try {
-            // Validar entrevista
-            const entrevista = await Entrevista.findByPk(entrevistaId);
+            // Buscar entrevista com candidatura e vaga
+            const entrevista = await Entrevista.findByPk(entrevistaId, {
+                include: [{
+                    model: Candidatura,
+                    as: 'candidatura',
+                    include: [{
+                        model: Vaga,
+                        as: 'vaga'
+                    }]
+                }],
+                transaction
+            });
+
             if (!entrevista) {
                 throw new Error('Entrevista não encontrada');
             }
 
-            // Validar permissão do usuário
+            // Buscar usuário com suas relações
             const usuario = await Usuario.findByPk(usuarioId, {
-                include: [{ model: Empresa }]
+                include: [
+                    {
+                        model: Empresa,
+                        as: 'empresa'
+                    },
+                    {
+                        model: Entrevistador,
+                        as: 'entrevistador'
+                    }
+                ],
+                transaction
             });
 
-            if (!usuario || !usuario.Empresa) {
-                throw new Error('Usuário não autorizado');
+            if (!usuario) {
+                throw new Error('Usuário não encontrado');
             }
 
-            // Remover associação
-            const removido = await sequelize.models.Entrevista_Entrevistadores.destroy({
+            // Validar permissões baseadas no tipo de usuário
+            if (usuario.tipo_usuario === 'Empresa') {
+                // Empresa pode remover qualquer entrevistador de suas entrevistas
+                if (!usuario.empresa) {
+                    throw new Error('Usuário não tem empresa associada');
+                }
+
+                // Verificar se a vaga pertence à empresa
+                if (entrevista.candidatura.vaga.empresa_id !== usuario.empresa.id) {
+                    throw new Error('Não autorizado - a entrevista não pertence a uma vaga da sua empresa');
+                }
+            } else if (usuario.tipo_usuario === 'Entrevistador') {
+
+                // Verificar se está tentando remover a si mesmo
+                if (usuario.entrevistador.id !== parseInt(entrevistadorId)) {
+                    throw new Error('Entrevistador só pode remover a si mesmo da entrevista');
+                }
+
+            } else if (usuario.tipo_usuario === 'Administrador') {
+                // Administrador pode remover qualquer entrevistador
+            } else {
+                throw new Error('Tipo de usuário não autorizado para esta operação');
+            }
+
+            // Verificar se o entrevistador está vinculado à entrevista
+            const vinculo = await EntrevistaEntrevistadores.findOne({
                 where: {
                     entrevista_id: entrevistaId,
                     entrevistador_id: entrevistadorId
@@ -317,12 +390,33 @@ class EntrevistaService {
                 transaction
             });
 
-            if (removido === 0) {
-                throw new Error('Entrevistador não encontrado nesta entrevista');
+            if (!vinculo) {
+                throw new Error('Entrevistador não está vinculado a esta entrevista');
             }
 
+            // Remover associação
+            await sequelize.models.EntrevistaEntrevistadores.destroy({
+                where: {
+                    entrevista_id: entrevistaId,
+                    entrevistador_id: entrevistadorId
+                },
+                transaction
+            });
+
             await transaction.commit();
-            return true;
+
+            return {
+                success: true,
+                message: usuario.tipo_usuario === 'Entrevistador'
+                    ? 'Você foi removido da entrevista com sucesso'
+                    : 'Entrevistador removido com sucesso',
+                entrevista_id: entrevistaId,
+                entrevistador_id: entrevistadorId,
+                removido_por: {
+                    id: usuario.id,
+                    tipo: usuario.tipo_usuario
+                }
+            };
         } catch (error) {
             await transaction.rollback();
             throw new Error(`Erro ao remover entrevistador: ${error.message}`);

@@ -11,7 +11,8 @@ const models = {
     Candidatura: require('./candidatura')(sequelize),
     Entrevistador: require('./entrevistador')(sequelize),
     Entrevista: require('./entrevista')(sequelize),
-    Usuario: require('./usuario')(sequelize)
+    Usuario: require('./usuario')(sequelize),
+    EntrevistaEntrevistadores: require('./entrevista_entrevistadores')(sequelize)
 };
 
 // Configurar associações
