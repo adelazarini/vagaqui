@@ -42,6 +42,27 @@ class BaseController {
         }
     }
 
+
+    async findByUsuario(req, res) {
+        try {
+            const item = await this.model.findOne({
+                where: {
+                    usuario_id: req.params.usuarioId
+                }
+            });
+
+            if (!item) {
+                return res.status(404).json({ message: 'Perfil não encontrado para este usuário' });
+            }
+            return res.status(200).json(item);
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Erro ao buscar por usuário',
+                error: error.message
+            });
+        }
+    }
+
     async update(req, res) {
         try {
             const [updated] = await this.model.update(

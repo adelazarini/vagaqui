@@ -11,7 +11,7 @@ interface EstatisticasCandidato {
 
 class CandidatoService {
     async getDadosCandidato(usuarioId: number): Promise<Candidato> {
-        const response = await api.get<Candidato>(`/candidato/usuario/${usuarioId}`);
+        const response = await api.get<Candidato>(`/candidato/usuario`);
         return response.data;
     }
 
