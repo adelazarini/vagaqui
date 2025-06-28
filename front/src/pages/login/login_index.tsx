@@ -8,8 +8,8 @@ import {
     Input,
     Button,
     ErrorMessage
-} from './styles';
-import { useLoginController } from './controller';
+} from './login_styles';
+import { useLoginController } from './login_controller';
 import { TIPOS_USUARIO, TipoUsuario } from '../../models/usuario';
 
 const Login: React.FC = () => {
