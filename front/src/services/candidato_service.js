@@ -1,31 +1,23 @@
-import api from './api_service';
+import api from './api';
 
-export const getCandidatoInfo = async () => {
-    try {
-        const response = await api.get('/candidato/dashboard');
+class CandidatoService {
+    async getDadosCandidato(usuarioId) {
+        const response = await api.get(`/candidatos/usuario/${usuarioId}`);
         return response.data;
-    } catch (error) {
-        console.error('Erro ao buscar informações do candidato:', error);
-        throw error;
     }
-};
 
-export const getVagasDisponiveis = async () => {
-    try {
-        const response = await api.get('/vagas');
-        return response.data;
-    } catch (error) {
-        console.error('Erro ao buscar vagas disponíveis:', error);
-        throw error;
-    }
-};
+    async getEstatisticas(candidatoId) {
+        const [candidaturas, entrevistas] = await Promise.all([
+            api.get(`/candidaturas/candidato/${candidatoId}`),
+            api.get(`/entrevistas/candidato/${candidatoId}`)
+        ]);
 
-export const getMinhsCandidaturas = async () => {
-    try {
-        const response = await api.get('/candidato/candidaturas');
-        return response.data;
-    } catch (error) {
-        console.error('Erro ao buscar candidaturas:', error);
-        throw error;
+        return {
+            totalCandidaturas: candidaturas.data.length,
+            totalEntrevistas: entrevistas.data.length,
+            totalAprovacoes: candidaturas.data.filter(c => c.status === 'Aprovado').length
+        };
     }
-};
+}
+
+export default new CandidatoService();
