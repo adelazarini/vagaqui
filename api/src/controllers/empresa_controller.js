@@ -2,7 +2,26 @@ const { Empresa } = require('../models');
 const empresa = require('../models/empresa');
 const AdminService = require('../services/admin_service');
 
+const EmpresaService = require('../services/empresa_service');
+
 class EmpresaController {
+
+    async obterDadosDashboard(req, res) {
+        try {
+            const usuarioId = req.user.id;
+
+            const dados = await EmpresaService.obterDadosDashboard(usuarioId);
+
+            res.status(200).json(dados);
+        } catch (error) {
+            console.error('Erro ao obter dados do dashboard da empresa:', error);
+
+            res.status(500).json({
+                message: 'Erro ao obter dados do dashboard da empresa',
+                error: error.message
+            });
+        }
+    }
     async create(req, res) {
         try {
             const { empresa, usuario } = await AdminService.criarEmpresa(req.body);

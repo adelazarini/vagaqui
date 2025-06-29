@@ -13,9 +13,9 @@ class EntrevistadorController extends BaseController {
         try {
             const usuarioId = req.user.id;
 
-            const dadosDashboard = await EntrevistadorService.obterDadosDashboard(usuarioId);
+            const dados = await EntrevistadorService.obterDadosDashboard(usuarioId);
 
-            return res.status(200).json(dadosDashboard);
+            return res.status(200).json(dados);
         } catch (error) {
             console.error('Erro no controller de dashboard do entrevistador:', error);
 
