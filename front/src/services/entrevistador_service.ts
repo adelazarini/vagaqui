@@ -2,7 +2,7 @@ import api from './api_service';
 
 class EntrevistadorService {
     async obterDadosDashboard() {
-        const response = await api.get('/entrevistadores/dashboard');
+        const response = await api.get('/entrevistador/dashboard');
         return response.data;
     }
 }

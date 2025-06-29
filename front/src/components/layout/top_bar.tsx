@@ -1,4 +1,3 @@
-// src/components/layout/TopBar.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -69,7 +68,7 @@ const TopBar: React.FC<TopBarProps> = ({
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('usuario');
-        navigate('/login');
+        navigate('/');
     };
 
     return (
