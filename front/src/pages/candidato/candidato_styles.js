@@ -199,10 +199,6 @@ export const UpdateProfileButton = styled.button`
     cursor: pointer;
     margin-top: 1rem;
     transition: background-color 0.3s ease;
-    
-    &:hover {
-        background-color: #555;
-    }
 `;
 
 export const ProfileInfo = styled.div`
