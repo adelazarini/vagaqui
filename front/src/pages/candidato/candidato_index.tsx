@@ -1,112 +1,38 @@
 import React from 'react';
-import { getCurrentUser } from '../../services/auth_service';
-import { useDashboardController } from './candidato_controller';
 import {
     DashboardContainer,
-    SidebarContainer,
-    MainContent
-} from './candidato_styles';
-import {
-    ProfileSection,
+    SidebarProfile,
+    MainContent,
     StatCard,
     StatsContainer,
-    ProfileAvatar,
-    VagasContainer,
     VagaItem,
     CandidaturaButton,
-    UpdateProfileButton
+    ProfileSection,
+    ProximasEntrevistasContainer,
+    ProfileAvatar,
+    VagasContainer
 } from './candidato_styles';
-import { Candidato } from '../../models/candidato';
-import { Vaga } from '../../models/vaga';
-import { Candidatura } from '../../models/candidatura';
-
-// Definir interfaces para os componentes
-interface ProfileStatsProps {
-    estatisticas: {
-        totalCandidaturas: number;
-        totalEntrevistas: number;
-        totalAprovacoes: number;
-    };
-}
-
-interface VagasDisponiveisProps {
-    vagas: Vaga[];
-    onCandidatar: (vagaId: number) => void;
-}
-
-interface MinhasCandidaturasProps {
-    candidaturas: Candidatura[];
-}
-
-const ProfileStats: React.FC<ProfileStatsProps> = ({ estatisticas }) => (
-    <StatsContainer>
-        <StatCard>
-            <h3>Candidaturas</h3>
-            <p>{estatisticas.totalCandidaturas}</p>
-        </StatCard>
-        <StatCard>
-            <h3>Entrevistas</h3>
-            <p>{estatisticas.totalEntrevistas}</p>
-        </StatCard>
-        <StatCard>
-            <h3>Aprovações</h3>
-            <p>{estatisticas.totalAprovacoes}</p>
-        </StatCard>
-    </StatsContainer>
-);
-
-const VagasDisponiveis: React.FC<VagasDisponiveisProps> = ({ vagas, onCandidatar }) => (
-    <VagasContainer>
-        <h2>Vagas Disponíveis</h2>
-        {vagas.map(vaga => (
-            <VagaItem key={vaga.id}>
-                <div>
-                    <h3>{vaga.titulo}</h3>
-                    <p>{vaga.descricao}</p>
-                    <p>R$ {vaga.salario}</p>
-                </div>
-                <CandidaturaButton onClick={() => onCandidatar(vaga.id)}>
-                    Candidatar-se
-                </CandidaturaButton>
-            </VagaItem>
-        ))}
-    </VagasContainer>
-);
-
-const MinhasCandidaturas: React.FC<MinhasCandidaturasProps> = ({ candidaturas }) => (
-    <VagasContainer>
-        <h2>Minhas Candidaturas</h2>
-        {candidaturas.map(candidatura => (
-            <VagaItem key={candidatura.id}>
-                <div>
-                    <h3>{candidatura.vaga.titulo}</h3>
-                    <p>Status: {candidatura.status}</p>
-                    <p>Data: {new Date(candidatura.data_candidatura).toLocaleDateString()}</p>
-                </div>
-            </VagaItem>
-        ))}
-    </VagasContainer>
-);
+import { useDashboardController } from './candidato_controller';
 
 const DashboardCandidato: React.FC = () => {
-    const usuario = getCurrentUser();
     const {
         candidato,
-        vagas,
         candidaturas,
+        processosSeletivos,
+        vagasDisponiveis,
         estatisticas,
-        handleCandidatar,
         loading,
-        error
-    } = useDashboardController(usuario?.id);
+        error,
+        handleCandidatar
+    } = useDashboardController();
 
     if (loading) return <div>Carregando...</div>;
     if (error) return <div>Erro: {error}</div>;
-    if (!candidato) return <div>Usuário não encontrado</div>;
+    if (!candidato) return <div>Candidato não encontrado</div>;
 
     return (
         <DashboardContainer>
-            <SidebarContainer>
+            <SidebarProfile>
                 <ProfileSection>
                     <ProfileAvatar>
                         {candidato.nome.charAt(0).toUpperCase()}
@@ -115,22 +41,92 @@ const DashboardCandidato: React.FC = () => {
                     <p>{candidato.email}</p>
                 </ProfileSection>
 
-                <ProfileStats estatisticas={estatisticas} />
+                <StatsContainer>
+                    <StatCard>
+                        <h3>Candidaturas</h3>
+                        <span>{estatisticas.totalCandidaturas}</span>
+                    </StatCard>
+                    <StatCard>
+                        <h3>Entrevistas</h3>
+                        <span>{estatisticas.totalEntrevistasAgendadas}</span>
+                    </StatCard>
+                    <StatCard>
+                        <h3>Aprovações</h3>
+                        <span>{estatisticas.totalAprovacoes}</span>
+                    </StatCard>
+                </StatsContainer>
 
-                <div>
+                <div className="profile-info">
                     <h3>Perfil</h3>
-                    <p>Telefone: {candidato.telefone}</p>
-                    <p>Formação: {candidato.formacao}</p>
-                    <UpdateProfileButton>Atualizar Perfil</UpdateProfileButton>
+                    <p>Telefone: {candidato.telefone || 'Não informado'}</p>
+                    <p>Formação: {candidato.formacao || 'Não informado'}</p>
+                    <button className="update-button">Atualizar Perfil</button>
                 </div>
-            </SidebarContainer>
+
+                <ProximasEntrevistasContainer>
+                    <h3>Próximas Entrevistas</h3>
+                    {processosSeletivos
+                        .filter(p => p.temEntrevistadorAgendado)
+                        .map(processo => (
+                            <div key={processo.id} className="entrevista-item">
+                                {processo.entrevistadores.map((ent, index) => (
+                                    <div key={index}>
+                                        <p>
+                                            <strong>{ent.entrevistador?.nome || 'Entrevistador'}</strong>
+                                        </p>
+                                        <p>{ent.local_link}</p>
+                                        <p>
+                                            {new Date(ent.data_entrevista).toLocaleDateString('pt-BR')}
+                                            {' às '}
+                                            {ent.hora_entrevista}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                </ProximasEntrevistasContainer>
+            </SidebarProfile>
 
             <MainContent>
-                <VagasDisponiveis
-                    vagas={vagas}
-                    onCandidatar={handleCandidatar}
-                />
-                <MinhasCandidaturas candidaturas={candidaturas} />
+                <VagasContainer>
+                    <h2>Vagas Disponíveis</h2>
+                    {vagasDisponiveis.map(vaga => (
+                        <VagaItem key={vaga.id}>
+                            <div className="vaga-info">
+                                <h3>{vaga.titulo}</h3>
+                                <p>{vaga.descricao}</p>
+                                <p className="salario">R$ {vaga.salario.toLocaleString('pt-BR')}</p>
+                                <p className="localizacao">{vaga.localizacao}</p>
+                            </div>
+                            <CandidaturaButton
+                                onClick={() => handleCandidatar(vaga.id)}
+                                disabled={candidaturas.some(c => c.vaga_id === vaga.id)}
+                            >
+                                {candidaturas.some(c => c.vaga_id === vaga.id)
+                                    ? 'Candidatado'
+                                    : 'Candidatar-se'}
+                            </CandidaturaButton>
+                        </VagaItem>
+                    ))}
+                </VagasContainer>
+
+                <VagasContainer>
+                    <h2>Minhas Candidaturas</h2>
+                    {candidaturas.map(candidatura => (
+                        <VagaItem key={candidatura.id}>
+                            <div className="vaga-info">
+                                <h3>{candidatura.vaga.titulo}</h3>
+                                <p>
+                                    <strong>Status:</strong> {candidatura.status}
+                                </p>
+                                <p>
+                                    <strong>Data:</strong> {' '}
+                                    {new Date(candidatura.data_candidatura).toLocaleDateString('pt-BR')}
+                                </p>
+                            </div>
+                        </VagaItem>
+                    ))}
+                </VagasContainer>
             </MainContent>
         </DashboardContainer>
     );

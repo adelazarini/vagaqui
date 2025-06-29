@@ -1,164 +1,225 @@
 import styled from 'styled-components';
 
 export const DashboardContainer = styled.div`
-  display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f4f6f9;
-  min-height: 100vh;
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f5f5;
 `;
 
-export const SidebarContainer = styled.div`
-  width: 300px;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-right: 20px;
+export const SidebarContainer = styled.aside`
+    width: 300px;
+    background-color: #ffffff;
+    padding: 2rem;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
 `;
 
-export const MainContent = styled.div`
-  flex-grow: 1;
+export const SidebarProfile = styled.aside`
+    width: 300px;
+    background-color: #ffffff;
+    padding: 2rem;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
 `;
 
 export const ProfileSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    
+    h2 {
+        margin: 1rem 0 0.5rem;
+        font-size: 1.5rem;
+        color: #333;
+    }
+    
+    p {
+        color: #666;
+        font-size: 0.875rem;
+    }
 `;
 
 export const ProfileAvatar = styled.div`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #3498db;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 24px;
-  margin-bottom: 10px;
-  font-weight: bold;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #4a90e2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
 `;
 
 export const StatsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
 `;
 
 export const StatCard = styled.div`
-  background-color: #f0f4f8;
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
-  flex-grow: 1;
-  margin: 0 10px;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  h3 {
-    margin-bottom: 10px;
-    color: #2c3e50;
-    font-size: 14px;
-  }
-
-  p {
-    font-size: 18px;
-    font-weight: bold;
-    color: #3498db;
-  }
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    
+    h3 {
+        font-size: 0.875rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+    
+    span {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #4a90e2;
+    }
 `;
 
-export const VagasContainer = styled.div`
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  padding: 15px;
+export const MainContent = styled.main`
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+`;
+
+export const VagasContainer = styled.section`
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
 `;
 
 export const VagaItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid #e9ecef;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  h3 {
-    margin-bottom: 5px;
-    color: #2c3e50;
-  }
-
-  p {
-    color: #7f8c8d;
-    margin-bottom: 5px;
-  }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .vaga-info {
+        flex: 1;
+        
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .salario {
+            font-weight: bold;
+            color: #4a90e2;
+            font-size: 1rem;
+        }
+        
+        .localizacao {
+            color: #999;
+            font-size: 0.875rem;
+        }
+    }
 `;
 
 export const CandidaturaButton = styled.button`
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #2980b9;
-  }
-`;
-
-export const ProfileInfo = styled.div`
-  margin-top: 20px;
-  
-  p {
-    margin-bottom: 10px;
-    color: #2c3e50;
-  }
-`;
-
-export const UpdateProfileButton = styled.button`
-  width: 100%;
-  padding: 10px;
-  background-color: #2ecc71;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #27ae60;
-  }
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+    &:hover {
+        background-color: #357abd;
+    }
+    
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
 `;
 
 export const ProximasEntrevistasContainer = styled.div`
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+    
+    h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    
+    .entrevista-item {
+        padding: 0.75rem;
+        background-color: white;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        
+        p {
+            margin: 0.25rem 0;
+            font-size: 0.875rem;
+            color: #666;
+            
+            strong {
+                color: #333;
+            }
+        }
+    }
 `;
 
-export const EntrevistaItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #e9ecef;
+export const UpdateProfileButton = styled.button`
+    width: 100%;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+    
+    &:hover {
+        background-color: #555;
+    }
+`;
 
-  &:last-child {
-    border-bottom: none;
-  }
+export const ProfileInfo = styled.div`
+    margin-top: 2rem;
+    
+    h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    
+    p {
+        font-size: 0.875rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
 `;

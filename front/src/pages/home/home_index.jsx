@@ -10,7 +10,7 @@ import {
     CadastroButton,
     FeaturesList,
     FeatureItem
-} from './homr_styles';
+} from './home_styles';
 import { FaCheckCircle, FaBriefcase, FaUsers } from 'react-icons/fa';
 
 const Home = () => {

@@ -4,7 +4,12 @@ import { Candidatura } from '../models/candidatura';
 
 class CandidatoService {
     async getDadosCandidato(usuarioId: number): Promise<Candidato> {
-        const response = await api.get<Candidato>(`/candidatos/usuario`);
+        const response = await api.get<Candidato>(`/candidato/usuario`);
+        return response.data;
+    }
+
+    async obterDadosDashboard() {
+        const response = await api.get(`/candidato/dashboard`);
         return response.data;
     }
 
@@ -17,7 +22,7 @@ class CandidatoService {
         return {
             totalCandidaturas: candidaturas.data.length,
             totalEntrevistas: entrevistas.data.length,
-            totalAprovacoes: candidaturas.data.filter(c => c.status === 'Aprovado').length
+            totalAprovacoes: candidaturas.data.filter((c: Candidatura) => c.status === 'Aprovado').length
         };
     }
 

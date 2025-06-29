@@ -25,18 +25,11 @@ class VagaService {
         }
     }
 
-    // Candidatar-se para uma vaga
-    async candidatar(candidatoId: number, vagaId: number): Promise<Candidatura> {
-        try {
-            const response = await api.post<Candidatura>('/candidaturas', {
-                candidato_id: candidatoId,
-                vaga_id: vagaId
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Erro ao se candidatar:', error);
-            throw error;
-        }
+    async candidatar(vagaId: number) {
+        const response = await api.post('/candidatura', {
+            vaga_id: vagaId
+        });
+        return response.data;
     }
 
     // Detalhes de uma vaga específica
