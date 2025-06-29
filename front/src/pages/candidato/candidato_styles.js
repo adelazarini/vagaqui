@@ -1,3 +1,4 @@
+// src/pages/candidato/candidato_styles.js
 import styled from 'styled-components';
 
 export const DashboardContainer = styled.div`
@@ -14,6 +15,7 @@ export const SidebarContainer = styled.aside`
     overflow-y: auto;
 `;
 
+// Adicionar SidebarProfile como alias de SidebarContainer
 export const SidebarProfile = styled.aside`
     width: 300px;
     background-color: #ffffff;
@@ -166,13 +168,9 @@ export const ProximasEntrevistasContainer = styled.div`
     padding: 1rem;
     border-radius: 8px;
     margin-top: 2rem;
+    font-size: 0.875rem;
     
-    h3 {
-        font-size: 1rem;
-        margin-bottom: 1rem;
-        color: #333;
-    }
-    
+   
     .entrevista-item {
         padding: 0.75rem;
         background-color: white;
@@ -193,11 +191,10 @@ export const ProximasEntrevistasContainer = styled.div`
 
 export const UpdateProfileButton = styled.button`
     width: 100%;
-    background-color: #333;
-    color: white;
+    background-color: #f8f9fa;
     border: none;
     padding: 0.75rem;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 0.875rem;
     cursor: pointer;
     margin-top: 1rem;
