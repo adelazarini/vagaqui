@@ -1,4 +1,3 @@
-// src/pages/candidato/candidato_styles.js
 import styled from 'styled-components';
 
 export const DashboardContainer = styled.div`
@@ -15,13 +14,54 @@ export const SidebarContainer = styled.aside`
     overflow-y: auto;
 `;
 
-// Adicionar SidebarProfile como alias de SidebarContainer
 export const SidebarProfile = styled.aside`
     width: 300px;
     background-color: #ffffff;
     padding: 2rem;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
+     .profile-info {
+        margin-top: 2rem;
+        
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        p {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .update-button {
+            width: 100%;
+            background-color: #1a2432;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                background-color: #2c3e50;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            }
+
+            &:active {
+                transform: translateY(1px);
+                background-color: #131c26;
+            }
+        }
+    }
 `;
 
 export const ProfileSection = styled.div`

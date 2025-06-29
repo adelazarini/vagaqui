@@ -1,4 +1,3 @@
-// src/pages/entrevistador/entrevistador_styles.js
 import styled from 'styled-components';
 
 export const DashboardContainer = styled.div`
@@ -80,7 +79,7 @@ export const ProfileAvatar = styled.div`
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: #4a90e2;
+    background-color: #3498db;
     color: white;
     display: flex;
     align-items: center;
@@ -111,7 +110,7 @@ export const StatCard = styled.div`
     span {
         font-size: 1.5rem;
         font-weight: bold;
-        color: #4a90e2;
+        color: #3498db;
     }
 `;
 

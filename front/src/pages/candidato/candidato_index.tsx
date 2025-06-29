@@ -60,14 +60,14 @@ const DashboardCandidato: React.FC = () => {
                         </StatCard>
                     </StatsContainer>
 
-                    <UpdateProfileButton>
-                        <div className="profile-info">
-                            <h3>Perfil</h3>
-                            <p>Telefone: {candidato.telefone || 'Não informado'}</p>
-                            <p>Formação: {candidato.formacao || 'Não informado'}</p>
-                            <button className="update-button">Atualizar Perfil</button>
-                        </div>
-                    </UpdateProfileButton>
+
+                    <div className="profile-info">
+                        <h3>Perfil</h3>
+                        <p>Telefone: {candidato.telefone || 'Não informado'}</p>
+                        <p>Formação: {candidato.formacao || 'Não informado'}</p>
+                        <button className="update-button">Atualizar Perfil</button>
+                    </div>
+
                     <ProximasEntrevistasContainer>
                         <h3>Próximas Entrevistas</h3>
                         {processosSeletivos
