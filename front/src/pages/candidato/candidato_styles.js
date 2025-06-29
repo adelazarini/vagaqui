@@ -46,7 +46,7 @@ export const ProfileAvatar = styled.div`
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: #4a90e2;
+    background-color: #3498db;
     color: white;
     display: flex;
     align-items: center;
@@ -144,7 +144,7 @@ export const VagaItem = styled.div`
 `;
 
 export const CandidaturaButton = styled.button`
-    background-color: #4a90e2;
+    background-color: #3498db;
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -154,7 +154,7 @@ export const CandidaturaButton = styled.button`
     transition: background-color 0.3s ease;
     
     &:hover {
-        background-color: #357abd;
+        background-color: #3498db;
     }
     
     &:disabled {
