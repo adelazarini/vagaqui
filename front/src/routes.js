@@ -4,6 +4,7 @@ import Login from './pages/login/login_index';
 import Home from './pages/home/home_index';
 import DashboardCandidato from './pages/candidato/candidato_index';
 import DashboardEntrevistador from './pages/entrevistador/entrevistador_index';
+import Register from './pages/register/register_index';
 
 const AppRoutes = () => (
     <Router>
@@ -12,7 +13,7 @@ const AppRoutes = () => (
             <Route path="/" element={<Home />} />
             <Route path="/candidato/dashboard" element={<DashboardCandidato />} />
             <Route path="/entrevistador/dashboard" element={<DashboardEntrevistador />} />
-            {/* Adicionar rotas para cada tipo de usuário */}
+            <Route path="/register" element={<Register />} />
         </Routes>
     </Router>
 );

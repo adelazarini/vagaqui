@@ -50,7 +50,7 @@ const Home = () => {
 
                 <ButtonContainer>
                     <LoginButton to="/login">Fazer Login</LoginButton>
-                    <CadastroButton to="/cadastro">Cadastrar-se</CadastroButton>
+                    <CadastroButton to="/register">Cadastrar-se</CadastroButton>
                 </ButtonContainer>
             </RightSide>
             <Footer />

@@ -5,7 +5,7 @@ export const TIPOS_USUARIO = {
   ADMINISTRADOR: 'Administrador'
 } as const;
 
-export type TipoUsuario = typeof TIPOS_USUARIO[keyof typeof TIPOS_USUARIO];
+export type TipoUsuario = typeof TIPOS_USUARIO[keyof typeof TIPOS_USUARIO] | '';
 
 export class Usuario {
   id: number | null;
