@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 
-const { Candidato, Vaga, Candidatura, Entrevista, Entrevistador, EntrevistaEntrevistadores } = require('../models');
+const { Candidato, Vaga, Candidatura, Entrevista, Entrevistador, EntrevistaEntrevistadores, Empresa } = require('../models');
+const empresa = require('../models/empresa');
 
 class EntrevistadorService {
     async obterDadosDashboard(usuarioId) {
@@ -28,7 +29,15 @@ class EntrevistadorService {
                                 include: [
                                     {
                                         model: Vaga,
-                                        as: 'vaga'
+                                        as: 'vaga',
+                                        include: [{
+                                            model: Empresa,
+                                            as: 'empresa'
+                                        }
+                                        ]
+                                    }, {
+                                        model: Candidato,
+                                        as: 'candidato',
                                     }
                                 ]
                             }
@@ -59,11 +68,11 @@ class EntrevistadorService {
                 },
                 entrevistas: entrevistasEntrevistador.map(entrevistaEntrevistador => ({
                     id: entrevistaEntrevistador.entrevista.id,
-                    data_entrevista: entrevistaEntrevistador.entrevista.data_entrevista,
-                    hora_entrevista: entrevistaEntrevistador.entrevista.hora_entrevista,
-                    local_link: entrevistaEntrevistador.entrevista.local_link,
+                    data_entrevista: entrevistaEntrevistador.data_entrevista,
+                    hora_entrevista: entrevistaEntrevistador.hora_entrevista,
+                    local_link: entrevistaEntrevistador.local_link,
                     candidatura: entrevistaEntrevistador.entrevista.candidatura,
-                    vaga: entrevistaEntrevistador.entrevista.candidatura?.vaga
+                    empresa: entrevistaEntrevistador.entrevista.empresa
                 })),
                 estatisticas: {
                     totalEntrevistasAgendadas: estatisticas.totalEntrevistasAgendadas,

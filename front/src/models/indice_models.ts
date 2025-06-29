@@ -7,4 +7,5 @@ export type { default as Entrevistador } from './entrevistador';
 export type { default as Usuario } from './usuario';
 export type { default as Vaga } from './vaga';
 export type { default as ProcessoSeletivo } from './processo_seletivo';
-export type { default as Estatisticas } from './estatisticas';
+export type { default as EstatisticasCandidato } from './estatisticas_candidato';
+export type { default as EstatisticasEntrevistador } from './estatisticas_entrevistador';

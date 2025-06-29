@@ -3,14 +3,14 @@ import { getCurrentUser } from '../../services/auth_service';
 import CandidatoService from '../../services/candidato_service';
 import VagaService from '../../services/vaga_service';
 
-import { Candidato, Candidatura, ProcessoSeletivo, Vaga, Estatisticas } from '../../models/indice_models';
+import { Candidato, Candidatura, ProcessoSeletivo, Vaga, EstatisticasCandidato } from '../../models/indice_models';
 
 export const useDashboardController = () => {
     const [candidato, setCandidato] = useState<Candidato | null>(null);
     const [candidaturas, setCandidaturas] = useState<Candidatura[]>([]);
     const [processosSeletivos, setProcessosSeletivos] = useState<ProcessoSeletivo[]>([]);
     const [vagasDisponiveis, setVagasDisponiveis] = useState<Vaga[]>([]);
-    const [estatisticas, setEstatisticas] = useState<Estatisticas>({
+    const [estatisticas, setEstatisticas] = useState<EstatisticasCandidato>({
         totalCandidaturas: 0,
         totalProcessoSeletivo: 0,
         totalEntrevistasAgendadas: 0,

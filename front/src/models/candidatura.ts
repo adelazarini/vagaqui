@@ -1,3 +1,4 @@
+import Candidato from './candidato';
 import { Vaga } from './vaga';
 
 export interface Candidatura {
@@ -7,5 +8,6 @@ export interface Candidatura {
     status: string;
     data_candidatura: Date;
     vaga: Vaga;
+    candidato: Candidato
 }
 export default Candidatura;

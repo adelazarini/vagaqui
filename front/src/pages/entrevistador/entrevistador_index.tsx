@@ -1,5 +1,6 @@
 import React from 'react';
 import DashboardLayout from '../../components/layout/dashboard_layout';
+import { useDashboardController } from './entrevistador_controller';
 import {
     DashboardContainer,
     SidebarProfile,
@@ -9,10 +10,11 @@ import {
     VagaItem,
     ProfileSection,
     ProfileAvatar,
-    VagasContainer
-} from '../candidato/candidato_styles';
-import { useDashboardController } from './entrevistador_controller';
-
+    VagasContainer,
+    ButtonContainer,
+    EditButton,
+    DeleteButton
+} from './entrevistador_styles';
 
 const DashboardEntrevistador: React.FC = () => {
     const {
@@ -20,7 +22,9 @@ const DashboardEntrevistador: React.FC = () => {
         entrevistas,
         estatisticas,
         loading,
-        error
+        error,
+        handleEditarEntrevista,
+        handleExcluirEntrevista
     } = useDashboardController();
 
     if (loading) return <div>Carregando...</div>;
@@ -36,7 +40,7 @@ const DashboardEntrevistador: React.FC = () => {
                             {entrevistador.nome.charAt(0).toUpperCase()}
                         </ProfileAvatar>
                         <h2>{entrevistador.nome}</h2>
-                        <p>{entrevistador.email}</p>
+                        <p>{entrevistador.cargo || 'Entrevistador'}</p>
                     </ProfileSection>
 
                     <StatsContainer>
@@ -45,8 +49,8 @@ const DashboardEntrevistador: React.FC = () => {
                             <span>{estatisticas.totalEntrevistasAgendadas}</span>
                         </StatCard>
                         <StatCard>
-                            <h3>Processos Seletivos</h3>
-                            <span>{estatisticas.totalProcessoSeletivo}</span>
+                            <h3>Candidatos Entrevistados</h3>
+                            <span>{estatisticas.totalCandidatosEntrevistados}</span>
                         </StatCard>
                         <StatCard>
                             <h3>Aprovações</h3>
@@ -54,7 +58,12 @@ const DashboardEntrevistador: React.FC = () => {
                         </StatCard>
                     </StatsContainer>
 
-
+                    <div className="profile-info">
+                        <h3>Perfil</h3>
+                        <p>Nome: {entrevistador.nome}</p>
+                        <p>Cargo: {entrevistador.cargo || 'Não informado'}</p>
+                        <button className="update-button">Atualizar Perfil</button>
+                    </div>
                 </SidebarProfile>
 
                 <MainContent>
@@ -63,18 +72,39 @@ const DashboardEntrevistador: React.FC = () => {
                         {entrevistas.map(entrevista => (
                             <VagaItem key={entrevista.id}>
                                 <div className="vaga-info">
-                                    <h3>{entrevista.candidatura?.vaga?.titulo}</h3>
+                                    <h3>{entrevista.candidatura?.vaga?.titulo || 'Título não disponível'}</h3>
                                     <p>
-                                        <strong>Data:</strong> {' '}
-                                        {new Date(entrevista.data_entrevista).toLocaleDateString('pt-BR')}
+                                        <strong>Data da Entrevista:</strong>{' '}
+                                        {entrevista.data_entrevista
+                                            ? new Date(entrevista.data_entrevista).toLocaleDateString('pt-BR')
+                                            : 'Data não disponível'
+                                        }
                                     </p>
                                     <p>
-                                        <strong>Hora:</strong> {entrevista.hora_entrevista}
+                                        <strong>Nome do Entrevistado:</strong> {entrevista.candidatura.candidato.nome || 'Hora não disponível'}
                                     </p>
                                     <p>
-                                        <strong>Local/Link:</strong> {entrevista.local_link}
+                                        <strong>Hora da Entrevista:</strong> {entrevista.hora_entrevista || 'Hora não disponível'}
+                                    </p>
+                                    <p>
+                                        <strong>Local/Link:</strong> {entrevista.local_link || 'Link não disponível'}
+                                    </p>
+                                    <p>
+                                        <strong>Empresa:</strong> {entrevista.candidatura.vaga.empresa.nome || 'Empresa não disponível'}
                                     </p>
                                 </div>
+                                <ButtonContainer>
+                                    <EditButton
+                                        onClick={() => handleEditarEntrevista(entrevista.id)}
+                                    >
+                                        Editar
+                                    </EditButton>
+                                    <DeleteButton
+                                        onClick={() => handleExcluirEntrevista(entrevista.id)}
+                                    >
+                                        Excluir
+                                    </DeleteButton>
+                                </ButtonContainer>
                             </VagaItem>
                         ))}
                     </VagasContainer>

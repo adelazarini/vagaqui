@@ -1,3 +1,5 @@
+import { Empresa } from "./empresa";
+
 export interface Vaga {
     id: number;
     titulo: string;
@@ -6,6 +8,7 @@ export interface Vaga {
     localizacao: string;
     data_publicacao: string;
     empresa_id: number;
+    empresa: Empresa;
 }
 
 export default Vaga;
