@@ -25,21 +25,6 @@ class EntrevistaController extends BaseController {
         return super.findAll(req, res);
     }
 
-    async filter(req, res) {
-        try {
-            const usuarioId = req.user.id;
-            const tipoUsuario = req.user.tipo_usuario;
-            const entrevistas = await EntrevistaService.filtrarEntrevistas(req.query, usuarioId, tipoUsuario);
-            return res.status(200).json(entrevistas);
-        } catch (error) {
-            console.error('Erro ao filtrar entrevistas:', error);
-            return res.status(500).json({
-                message: 'Erro ao filtrar entrevistas',
-                error: error.message
-            });
-        }
-    }
-
     async findByPk(req, res) {
         try {
             const usuarioId = req.user.id;

@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardLayout from '../../components/layout/dashboard_layout';
 import { useDashboardController } from './entrevistador_controller';
+import { status_entrevista } from '../../models/entrevista';
 import {
     DashboardContainer,
     SidebarProfile,
@@ -31,6 +32,20 @@ const DashboardEntrevistador: React.FC = () => {
     if (error) return <div>Erro: {error}</div>;
     if (!entrevistador) return <div>Entrevistador não encontrado</div>;
 
+    const getStatusDescription = (status: string | undefined): string => {
+        if (!status) return 'Status não disponível';
+
+        const statusMap = {
+            [status_entrevista.combinar]: 'A combinar',
+            [status_entrevista.Agendada]: 'Agendada',
+            [status_entrevista.Aprovado]: 'Aprovado',
+            [status_entrevista.Reprovado]: 'Reprovado',
+            [status_entrevista.Cancelada]: 'Cancelada',
+        };
+
+        return statusMap[status as keyof typeof statusMap] || 'Status desconhecido';
+    };
+
     return (
         <DashboardLayout tipoUsuario="Entrevistador">
             <DashboardContainer>
@@ -48,13 +63,24 @@ const DashboardEntrevistador: React.FC = () => {
                             <h3>Entrevistas Agendadas</h3>
                             <span>{estatisticas.totalEntrevistasAgendadas}</span>
                         </StatCard>
+
                         <StatCard>
-                            <h3>Candidatos Entrevistados</h3>
-                            <span>{estatisticas.totalCandidatosEntrevistados}</span>
+                            <h3>Entrevistas para Agendar</h3>
+                            <span>{estatisticas.totalEntrevistasCombinar}</span>
                         </StatCard>
+                        <StatCard>
+                            <h3>Reprovações</h3>
+                            <span>{estatisticas.totalReprovacoes}</span>
+                        </StatCard>
+
                         <StatCard>
                             <h3>Aprovações</h3>
                             <span>{estatisticas.totalAprovacoes}</span>
+                        </StatCard>
+
+                        <StatCard>
+                            <h3>Candidatos Entrevistados</h3>
+                            <span>{estatisticas.totalCandidatosEntrevistados}</span>
                         </StatCard>
                     </StatsContainer>
 
@@ -91,6 +117,9 @@ const DashboardEntrevistador: React.FC = () => {
                                     </p>
                                     <p>
                                         <strong>Empresa:</strong> {entrevista.candidatura.vaga.empresa.nome || 'Empresa não disponível'}
+                                    </p>
+                                    <p>
+                                        <strong>Status:</strong> {getStatusDescription(entrevista.status_entrevista)}
                                     </p>
                                 </div>
                                 <ButtonContainer>

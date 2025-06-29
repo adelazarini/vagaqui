@@ -20,24 +20,10 @@ class CandidatoController extends BaseController {
         }
     }
 
-    async filter(req, res) {
-        try {
-            const candidatos = await CandidatoService.filtrarCandidatos(req.query);
-            return res.status(200).json(candidatos);
-        } catch (error) {
-            return res.status(500).json({
-                message: 'Erro ao filtrar candidatos',
-                error: error.message
-            });
-        }
-    }
-
     async getDashboard(req, res) {
         try {
-            // Obter ID do usuário logado
             const usuarioId = req.user.id;
 
-            // Buscar dados do dashboard
             const dashboardData = await CandidatoService.obterDadosDashboard(usuarioId);
 
             return res.status(200).json(dashboardData);
@@ -51,10 +37,9 @@ class CandidatoController extends BaseController {
 
     async uploadCurriculo(req, res) {
         try {
-            // Obter ID do usuário logado
+
             const usuarioId = req.user.id;
 
-            // Fazer upload do currículo
             const curriculo = await CandidatoService.uploadCurriculo(
                 usuarioId,
                 req.file

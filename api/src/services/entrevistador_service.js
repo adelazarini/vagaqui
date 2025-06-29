@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 
-const { Candidato, Vaga, Candidatura, Entrevista, Entrevistador, EntrevistaEntrevistadores, Empresa } = require('../models');
+const { Candidato, Vaga, Candidatura, Entrevista, Entrevistador, EntrevistaEntrevistadores, Empresa, sequelize } = require('../models');
 const empresa = require('../models/empresa');
 
 class EntrevistadorService {
@@ -47,18 +47,22 @@ class EntrevistadorService {
             });
 
             // Calcular estatísticas
-            const estatisticas = {
-                totalEntrevistasAgendadas: entrevistasEntrevistador.length,
-                totalCandidatosEntrevistados: await EntrevistaEntrevistadores.count({
-                    where: { entrevistador_id: entrevistador.id }
-                }),
-                totalAprovacoes: await EntrevistaEntrevistadores.count({
-                    where: {
-                        observacoes: 'Aprovado',
-                        entrevistador_id: entrevistador.id
-                    }
-                })
-            };
+            const estatisticas = await EntrevistaEntrevistadores.findAll({
+                attributes: [
+                    'status_entrevista',
+                    [sequelize.fn('COUNT', sequelize.col('status_entrevista')), 'count'],
+                ],
+                where: {
+                    entrevistador_id: entrevistador.id
+                },
+                group: ['status_entrevista'],
+                raw: true,
+            });
+
+            const estatisticasObj = estatisticas.reduce((acc, curr) => {
+                acc[curr.status_entrevista] = parseInt(curr.count, 10) || 0;
+                return acc;
+            }, { 'Combinar': 0, 'Agendada': 0, 'Aprovado': 0, 'Reprovado': 0, 'Cancelada': 0 });
 
             return {
                 entrevistador: {
@@ -72,12 +76,15 @@ class EntrevistadorService {
                     hora_entrevista: entrevistaEntrevistador.hora_entrevista,
                     local_link: entrevistaEntrevistador.local_link,
                     candidatura: entrevistaEntrevistador.entrevista.candidatura,
-                    empresa: entrevistaEntrevistador.entrevista.empresa
+                    empresa: entrevistaEntrevistador.entrevista.empresa,
+                    status_entrevista: entrevistaEntrevistador.status_entrevista
                 })),
                 estatisticas: {
-                    totalEntrevistasAgendadas: estatisticas.totalEntrevistasAgendadas,
-                    totalCandidatosEntrevistados: estatisticas.totalCandidatosEntrevistados,
-                    totalAprovacoes: estatisticas.totalAprovacoes
+                    totalEntrevistasAgendadas: estatisticasObj['Agendada'],
+                    totalEntrevistasCombinar: estatisticasObj['Combinar'],
+                    totalCandidatosEntrevistados: estatisticasObj['Aprovado'] + estatisticasObj['Reprovado'],
+                    totalAprovacoes: estatisticasObj['Aprovado'],
+                    totalReprovacoes: estatisticasObj['Reprovado']
                 }
             };
         } catch (error) {

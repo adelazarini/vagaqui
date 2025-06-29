@@ -3,21 +3,6 @@ const { Op } = require('sequelize');
 const entrevista = require('../models/entrevista');
 
 class CandidatoService {
-    async buscarPorEmail(email) {
-        return await Candidato.findOne({ where: { email } });
-    }
-
-    async filtrarCandidatos(filtros) {
-        const conditions = {};
-
-        if (filtros.nome) {
-            conditions.nome = { [Op.iLike]: `%${filtros.nome}%` };
-        }
-        // Adicionar mais filtros conforme necessário
-
-        return await Candidato.findAll({ where: conditions });
-    }
-
     async obterDadosDashboard(usuarioId) {
         try {
             const candidato = await Candidato.findOne({
@@ -114,6 +99,21 @@ class CandidatoService {
         }
     }
 
+    async buscarPorEmail(email) {
+        return await Candidato.findOne({ where: { email } });
+    }
+
+    async filtrarCandidatos(filtros) {
+        const conditions = {};
+
+        if (filtros.nome) {
+            conditions.nome = { [Op.iLike]: `%${filtros.nome}%` };
+        }
+        // Adicionar mais filtros conforme necessário
+
+        return await Candidato.findAll({ where: conditions });
+    }
+
     async uploadCurriculo(usuarioId, arquivoCurriculo) {
         const candidato = await Candidato.findOne({
             where: { usuario_id: usuarioId }
@@ -123,7 +123,6 @@ class CandidatoService {
             throw new Error('Candidato não encontrado');
         }
 
-        // Lógica de upload do currículo
         const curriculo = await Curriculo.create({
             candidato_id: candidato.id,
             url_documento: arquivoCurriculo.path,

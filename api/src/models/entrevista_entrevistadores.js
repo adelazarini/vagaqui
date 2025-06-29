@@ -45,7 +45,12 @@ module.exports = (sequelize) => {
         observacoes: {
             type: DataTypes.TEXT,
             allowNull: true
-        }
+        },
+        status_entrevista: {
+            type: DataTypes.ENUM('Combinar', 'Agendada', 'Aprovado', 'Reprovado', 'Cancelada'),
+            allowNull: false,
+            defaultValue: 'Combinar'
+        },
     }, {
         sequelize,
         modelName: 'EntrevistaEntrevistadores',

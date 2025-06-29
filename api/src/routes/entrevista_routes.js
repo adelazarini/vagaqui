@@ -27,10 +27,6 @@ router.get('/',
     entrevistaController.findAll.bind(entrevistaController)
 );
 
-router.get('/filtro',
-    authorize(permissions.filter),
-    entrevistaController.filter.bind(entrevistaController)
-);
 
 router.get('/:id',
     authorize(permissions.findByPk),

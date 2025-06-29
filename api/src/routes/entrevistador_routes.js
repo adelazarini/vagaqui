@@ -27,13 +27,6 @@ router.get('/usuario',
     entrevistadorController.findByUsuario.bind(entrevistadorController)
 );
 
-
-
-router.get('/filter',
-    authorize(permissions.findAll),
-    entrevistadorController.filter.bind(entrevistadorController)
-);
-
 router.post('/',
     authorize(permissions.create),
     entrevistadorController.create.bind(entrevistadorController)

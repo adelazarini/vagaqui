@@ -6,17 +6,6 @@ class VagaController extends BaseController {
     constructor() {
         super(Vaga);
     }
-    async filter(req, res) {
-        try {
-            const vagas = await VagaService.filtrarVagas(req.query);
-            return res.status(200).json(vagas);
-        } catch (error) {
-            return res.status(500).json({
-                message: 'Erro ao filtrar vagas',
-                error: error.message
-            });
-        }
-    }
 
     async create(req, res) {
         try {

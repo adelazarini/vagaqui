@@ -3,7 +3,6 @@ const baseRouter = require('./base_routes');
 
 const router = baseRouter(curriculoController);
 
-// Rota específica
 router.get('/candidato/:candidato_id', curriculoController.buscarPorCandidatoId.bind(curriculoController));
 
 module.exports = router;

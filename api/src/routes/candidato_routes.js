@@ -35,11 +35,6 @@ router.get('/email/:email',
     candidatoController.buscarPorEmail.bind(candidatoController)
 );
 
-router.get('/filter',
-    authorize(permissions.findAll),
-    candidatoController.filter.bind(candidatoController)
-);
-
 router.post('/',
     authorize(permissions.create),
     candidatoController.create.bind(candidatoController)

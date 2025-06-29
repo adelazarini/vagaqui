@@ -28,11 +28,6 @@ router.get('/',
     vagaController.findAll.bind(vagaController)
 );
 
-router.get('/filter',
-    authorize(permissions.filter),
-    vagaController.filter.bind(vagaController)
-);
-
 router.get('/:id',
     authorize(permissions.findByPk),
     vagaController.findByPk.bind(vagaController)

@@ -7,23 +7,11 @@ class CandidaturaController extends BaseController {
         super(Candidatura);
     }
 
-    async filter(req, res) {
-        try {
-            const candidaturas = await CandidaturaService.filtrarCandidaturas(req.query);
-            return res.status(200).json(candidaturas);
-        } catch (error) {
-            return res.status(500).json({
-                message: 'Erro ao filtrar candidaturas',
-                error: error.message
-            });
-        }
-    }
     async buscarCandidaturasDoCandidato(req, res) {
         try {
-            // Obter ID do usuário logado
+
             const usuarioId = req.user.id;
 
-            // Buscar candidaturas
             const resultado = await CandidaturaService.buscarCandidaturasDoCandidato(usuarioId);
 
             return res.status(200).json(resultado);
@@ -67,16 +55,9 @@ class CandidaturaController extends BaseController {
 
     async create(req, res) {
         try {
-            // Obter ID do usuário logado
             const usuarioId = req.user.id;
 
-            // Adicionar usuário aos dados da candidatura
-            const dadosCandidatura = {
-                ...req.body,
-                usuario_id: usuarioId
-            };
-
-            const novaCandidatura = await CandidaturaService.criarCandidatura(dadosCandidatura);
+            const novaCandidatura = await CandidaturaService.criarCandidatura(dadosCandidatura, usuarioId);
 
             return res.status(201).json(novaCandidatura);
         } catch (error) {

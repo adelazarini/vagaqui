@@ -9,7 +9,9 @@ export const useDashboardController = () => {
         totalEntrevistasAgendadas: 0,
         totalCandidatosEntrevistados: 0,
         totalAprovacoes: 0,
-        totalProcessoSeletivo: 0
+        totalProcessoSeletivo: 0,
+        totalEntrevistasCombinar: 0,
+        totalReprovacoes: 0
 
     });
     const [loading, setLoading] = useState(true);
