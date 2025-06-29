@@ -12,25 +12,6 @@ class CandidatoService {
         const response = await api.get(`/candidato/dashboard`);
         return response.data;
     }
-
-    async getEstatisticas(candidatoId: number) {
-        const [candidaturas, entrevistas] = await Promise.all([
-            api.get(`/candidaturas/candidato/${candidatoId}`),
-            api.get(`/entrevistas/candidato/${candidatoId}`)
-        ]);
-
-        return {
-            totalCandidaturas: candidaturas.data.length,
-            totalEntrevistas: entrevistas.data.length,
-            totalAprovacoes: candidaturas.data.filter((c: Candidatura) => c.status === 'Aprovado').length
-        };
-    }
-
-
-    async getCandidaturasComVagas(candidatoId: number): Promise<Candidatura[]> {
-        const response = await api.get<Candidatura[]>(`/candidaturas/candidato/${candidatoId}?includeVaga=true`);
-        return response.data;
-    }
 }
 
 export default new CandidatoService();
