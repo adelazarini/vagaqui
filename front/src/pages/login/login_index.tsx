@@ -18,8 +18,6 @@ const Login: React.FC = () => {
         setEmail,
         senha,
         setSenha,
-        tipoUsuario,
-        setTipoUsuario,
         error,
         loading,
         handleLogin
@@ -30,17 +28,6 @@ const Login: React.FC = () => {
             <LoginBox>
                 <Title>Login VagaQui</Title>
                 <Form onSubmit={handleLogin}>
-                    <Select
-                        value={tipoUsuario}
-                        onChange={(e) => setTipoUsuario(e.target.value as TipoUsuario)}
-                        required
-                    >
-                        <option value="">Selecione o Tipo de Usuário</option>
-                        <option value={TIPOS_USUARIO.CANDIDATO}>Candidato</option>
-                        <option value={TIPOS_USUARIO.EMPRESA}>Empresa</option>
-                        <option value={TIPOS_USUARIO.ENTREVISTADOR}>Entrevistador</option>
-                    </Select>
-
                     <Input
                         type="email"
                         placeholder="Email"
