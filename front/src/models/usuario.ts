@@ -42,3 +42,5 @@ export class Usuario {
     };
   }
 }
+
+export default Usuario;

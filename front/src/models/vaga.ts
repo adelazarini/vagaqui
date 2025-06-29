@@ -1,9 +1,11 @@
 export interface Vaga {
-    id?: number;
+    id: number;
     titulo: string;
     descricao: string;
     salario: number;
     localizacao: string;
-    data_publicacao: Date;
+    data_publicacao: string;
     empresa_id: number;
 }
+
+export default Vaga;

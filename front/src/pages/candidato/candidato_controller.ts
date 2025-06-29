@@ -1,51 +1,9 @@
-// src/pages/candidato/candidato_controller.ts
 import { useState, useEffect } from 'react';
 import { getCurrentUser } from '../../services/auth_service';
 import CandidatoService from '../../services/candidato_service';
 import VagaService from '../../services/vaga_service';
 
-interface Candidato {
-    id: number;
-    nome: string;
-    email: string;
-    telefone: string | null;
-    formacao: string | null;
-    experiencia: string | null;
-}
-
-interface Vaga {
-    id: number;
-    titulo: string;
-    descricao: string;
-    salario: number;
-    localizacao: string;
-    data_publicacao: string;
-    empresa_id: number;
-}
-
-interface Candidatura {
-    id: number;
-    vaga_id: number;
-    candidato_id: number;
-    status: string;
-    data_candidatura: string;
-    vaga: Vaga;
-}
-
-interface ProcessoSeletivo {
-    id: number;
-    candidatura_id: number;
-    observacoes: string;
-    entrevistadores: any[];
-    temEntrevistadorAgendado: boolean;
-}
-
-interface Estatisticas {
-    totalCandidaturas: number;
-    totalProcessoSeletivo: number;
-    totalEntrevistasAgendadas: number;
-    totalAprovacoes: number;
-}
+import { Candidato, Candidatura, ProcessoSeletivo, Vaga, Estatisticas } from '../../models/indice_models';
 
 export const useDashboardController = () => {
     const [candidato, setCandidato] = useState<Candidato | null>(null);
@@ -101,7 +59,7 @@ export const useDashboardController = () => {
             }
 
             await VagaService.candidatar(candidato.id);
-            // Recarregar dados após candidatura
+
             await fetchDados();
         } catch (err) {
             console.error('Erro ao se candidatar:', err);

@@ -1,0 +1,10 @@
+export type { default as Candidato } from './candidato';
+export type { default as Candidatura } from './candidatura';
+//export type { default as Empresa } from './empresa';
+//export type { default as Entrevista } from './entrevista';
+//export type { default as Entrevistador } from './entrevistador';
+//export type { default as Curriculo } from './curriculo';
+export type { default as Usuario } from './usuario';
+export type { default as Vaga } from './vaga';
+export type { default as ProcessoSeletivo } from './processo_seletivo';
+export type { default as Estatisticas } from './estatisticas';

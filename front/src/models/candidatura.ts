@@ -1,11 +1,11 @@
 import { Vaga } from './vaga';
 
 export interface Candidatura {
-    id?: number;
+    id: number;
     vaga_id: number;
     candidato_id: number;
-    curriculo_id?: number;
     status: string;
     data_candidatura: Date;
-    vaga?: Vaga;
+    vaga: Vaga;
 }
+export default Candidatura;
