@@ -1,16 +1,27 @@
 import React from 'react';
 import {
-    LoginContainer,
     LoginBox,
     Title,
     Form,
-    Select,
     Input,
     Button,
     ErrorMessage
 } from './login_styles';
+
+import Footer from '../../components/layout/footer';
+
+import {
+    LeftSide,
+    Logo,
+    Slogan,
+    FeaturesList,
+    FeatureItem,
+    RightSide,
+    ContainerMaior
+} from '../../components/layout/inicio_layout';
+
 import { useLoginController } from './login_controller';
-import { TIPOS_USUARIO, TipoUsuario } from '../../models/usuario';
+import { FaCheckCircle, FaBriefcase, FaUsers } from 'react-icons/fa';
 
 const Login: React.FC = () => {
     const {
@@ -24,37 +35,61 @@ const Login: React.FC = () => {
     } = useLoginController();
 
     return (
-        <LoginContainer>
-            <LoginBox>
-                <Title>Login VagaQui</Title>
-                <Form onSubmit={handleLogin}>
-                    <Input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+        <ContainerMaior>
+            <LeftSide>
+                <Logo>VagaQui</Logo>
+                <Slogan>
+                    Conectando talentos com as melhores oportunidades
+                </Slogan>
 
-                    <Input
-                        type="password"
-                        placeholder="Senha"
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
-                        required
-                    />
+                <FeaturesList>
+                    <FeatureItem>
+                        <FaCheckCircle />
+                        Vagas em tempo real
+                    </FeatureItem>
+                    <FeatureItem>
+                        <FaBriefcase />
+                        Processos seletivos simplificados
+                    </FeatureItem>
+                    <FeatureItem>
+                        <FaUsers />
+                        Comunidade de profissionais
+                    </FeatureItem>
+                </FeaturesList>
+            </LeftSide>
+            <RightSide>
+                <LoginBox>
+                    <Title>Login VagaQui</Title>
+                    <Form onSubmit={handleLogin}>
+                        <Input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
 
-                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                        <Input
+                            type="password"
+                            placeholder="Senha"
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                            required
+                        />
 
-                    <Button
-                        type="submit"
-                        disabled={loading}
-                    >
-                        {loading ? 'Carregando...' : 'Entrar'}
-                    </Button>
-                </Form>
-            </LoginBox>
-        </LoginContainer>
+                        {error && <ErrorMessage>{error}</ErrorMessage>}
+
+                        <Button
+                            type="submit"
+                            disabled={loading}
+                        >
+                            {loading ? 'Carregando...' : 'Entrar'}
+                        </Button>
+                    </Form>
+                </LoginBox>
+            </RightSide>
+            <Footer />
+        </ContainerMaior>
     );
 };
 

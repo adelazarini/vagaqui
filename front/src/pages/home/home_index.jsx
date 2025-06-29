@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    HomeContainer,
+    ContainerMaior,
     LeftSide,
     RightSide,
     Logo,
@@ -10,12 +10,15 @@ import {
     CadastroButton,
     FeaturesList,
     FeatureItem
-} from './home_styles';
+} from '../../components/layout/inicio_layout';
+import Footer from '../../components/layout/footer';
+
+
 import { FaCheckCircle, FaBriefcase, FaUsers } from 'react-icons/fa';
 
 const Home = () => {
     return (
-        <HomeContainer>
+        <ContainerMaior>
             <LeftSide>
                 <Logo>VagaQui</Logo>
                 <Slogan>
@@ -50,7 +53,9 @@ const Home = () => {
                     <CadastroButton to="/cadastro">Cadastrar-se</CadastroButton>
                 </ButtonContainer>
             </RightSide>
-        </HomeContainer>
+            <Footer />
+        </ContainerMaior>
+
     );
 };
 

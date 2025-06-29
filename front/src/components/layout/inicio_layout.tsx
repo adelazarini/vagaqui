@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export const HomeContainer = styled.div`
+export const ContainerMaior = styled.div`
   display: flex;
   min-height: 100vh;
   background-color: #f4f6f9;

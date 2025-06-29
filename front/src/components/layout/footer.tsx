@@ -28,9 +28,7 @@ const FooterLink = styled.a`
 const Footer: React.FC = () => {
     return (
         <FooterContainer>
-            © 2025 VagaQui
-            <FooterLink href="/termos">Termos</FooterLink>
-            <FooterLink href="/privacidade">Privacidade</FooterLink>
+            © 2025 VagaQui - Todos direitos reservados
         </FooterContainer>
     );
 };
