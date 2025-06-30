@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react';
 import { getCurrentUser } from '../../services/auth_service';
 import CandidatoService from '../../services/candidato_service';
 import VagaService from '../../services/vaga_service';
-import { useNavigate } from 'react-router-dom';
 
 import { Candidato, Candidatura, ProcessoSeletivo, Vaga, EstatisticasCandidato } from '../../models/indice_models';
 
 export const useDashboardController = () => {
-    const navigate = useNavigate();
     const [candidato, setCandidato] = useState<Candidato | null>(null);
     const [candidaturas, setCandidaturas] = useState<Candidatura[]>([]);
     const [processosSeletivos, setProcessosSeletivos] = useState<ProcessoSeletivo[]>([]);
@@ -32,7 +30,6 @@ export const useDashboardController = () => {
             if (!usuario || !usuario.id) {
                 setError('Usuário não autenticado');
                 setLoading(false);
-                navigate('/');
                 return;
             }
 
