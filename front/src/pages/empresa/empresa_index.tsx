@@ -10,12 +10,13 @@ import {
     VagasContainer,
     UpdateProfileButton,
     ProximasEntrevistasContainer,
-    MainContent
+    MainContent,
+
 } from '../candidato/candidato_styles';
 
-import { FloatingButton } from './empresa_styles';
+import { FloatingButton, InlineActionButton, EntrevistadorModal } from './empresa_styles';
 
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaUserPlus, FaTrash } from 'react-icons/fa';
 import DashboardLayout from '../../components/layout/dashboard_layout';
 import { useDashboardEmpresaController } from './empresa_controller';
 
@@ -28,7 +29,13 @@ const DashboardEmpresa: React.FC = () => {
         estatisticas,
         loading,
         error,
-        handleNovaVaga
+        entrevistadores,
+        modalAdicionarEntrevistador,
+        handleNovaVaga,
+        handleAbrirModalEntrevistador,
+        handleFecharModal,
+        handleAdicionarEntrevistador,
+        handleRemoverEntrevistador
     } = useDashboardEmpresaController();
 
     if (loading) return <div>Carregando...</div>;
@@ -37,6 +44,7 @@ const DashboardEmpresa: React.FC = () => {
 
     return (
         <DashboardLayout tipoUsuario="Empresa">
+
             <DashboardContainer>
                 <SidebarProfile>
                     <ProfileSection>
@@ -77,9 +85,13 @@ const DashboardEmpresa: React.FC = () => {
                         <h3>Próximas Entrevistas</h3>
                         {entrevistas.map(entrevista => (
                             <div key={entrevista.id} className="entrevista-item">
-                                <p>
-                                    <strong>Entrevistador:</strong> {entrevista.entrevistador.nome}
-                                </p>
+                                <div className="entrevista-header">
+
+                                    <p>
+                                        <strong>Entrevistador:</strong> {entrevista.entrevistador.nome}
+                                    </p>
+
+                                </div>
                                 <p>
                                     <strong>Data:</strong> {new Date(entrevista.data_entrevista).toLocaleDateString('pt-BR')}
                                 </p>
@@ -89,6 +101,13 @@ const DashboardEmpresa: React.FC = () => {
                                 <p>
                                     <strong>Local/Link:</strong> {entrevista.local_link}
                                 </p>
+                                <p></p>
+                                <button
+                                    onClick={() => handleRemoverEntrevistador(entrevista.id, entrevista.entrevistador_id)}
+                                    className="remover-btn"
+                                >
+                                    <FaTrash />
+                                </button>
                             </div>
                         ))}
                     </ProximasEntrevistasContainer>
@@ -109,7 +128,6 @@ const DashboardEmpresa: React.FC = () => {
                             </VagaItem>
                         ))}
                     </VagasContainer>
-
                     <VagasContainer>
                         <h2>Candidaturas Recebidas</h2>
                         {candidaturas.map(candidatura => (
@@ -125,16 +143,37 @@ const DashboardEmpresa: React.FC = () => {
                                     <p>
                                         <strong>Data:</strong> {new Date(candidatura.data_candidatura).toLocaleDateString('pt-BR')}
                                     </p>
+                                    <div>
+                                        <InlineActionButton
+                                            onClick={() => handleAbrirModalEntrevistador(candidatura.id)}
+                                        >
+                                            <FaUserPlus /> Adicionar Entrevistador
+                                        </InlineActionButton>
+                                    </div>
                                 </div>
                             </VagaItem>
                         ))}
                     </VagasContainer>
                 </MainContent>
 
-                { }
                 <FloatingButton onClick={handleNovaVaga}>
                     <FaPlus size={24} />
                 </FloatingButton>
+
+                {modalAdicionarEntrevistador && (
+                    <EntrevistadorModal>
+                        <div className="modal-content">
+                            <h3>Adicionar Entrevistador</h3>
+                            <select
+                                onChange={(e) => handleAdicionarEntrevistador(Number(e.target.value))}
+                            >
+                                <option value="">Selecione um entrevistador</option>
+                                { }
+                            </select>
+                            <button onClick={handleFecharModal}>Cancelar</button>
+                        </div>
+                    </EntrevistadorModal>
+                )}
             </DashboardContainer>
         </DashboardLayout>
     );

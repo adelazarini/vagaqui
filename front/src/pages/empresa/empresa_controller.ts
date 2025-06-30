@@ -7,10 +7,16 @@ import {
     Vaga,
     Candidatura,
     Entrevista,
-    EstatisticasEmpresa
+    EstatisticasEmpresa,
+    Entrevistador
 } from '../../models/indice_models';
 
 export const useDashboardEmpresaController = () => {
+    const [modalAdicionarEntrevistador, setModalAdicionarEntrevistador] = useState<{
+        candidaturaId: number | null;
+        entrevistaId: number | null;
+    } | null>(null);
+
     const [empresa, setEmpresa] = useState<Empresa | null>(null);
     const [vagas, setVagas] = useState<Vaga[]>([]);
     const [candidaturas, setCandidaturas] = useState<Candidatura[]>([]);
@@ -88,6 +94,50 @@ export const useDashboardEmpresaController = () => {
         // nva vaga
     };
 
+    const [entrevistadores, setEntrevistadores] = useState<Entrevistador[]>([]);
+
+    const handleAbrirModalEntrevistador = (candidaturaId: number, entrevistaId?: number) => {
+        setModalAdicionarEntrevistador({
+            candidaturaId,
+            entrevistaId: entrevistaId || null
+        });
+    };
+
+    const handleFecharModal = () => {
+        setModalAdicionarEntrevistador(null);
+    };
+
+    const handleAdicionarEntrevistador = async (entrevistadorId: number) => {
+        try {
+            if (!modalAdicionarEntrevistador) return;
+
+            // Lógica para adicionar entrevistador
+            //await EntrevistadorService.adicionarEntrevistadorEntrevista({
+            //  entrevista_id: modalAdicionarEntrevistador.entrevistaId || 0,
+            // entrevistador_id: entrevistadorId
+            // });
+
+            // Recarregar dados após adicionar
+            await fetchDados();
+            handleFecharModal();
+        } catch (error) {
+            console.error('Erro ao adicionar entrevistador:', error);
+        }
+    };
+
+    const handleRemoverEntrevistador = async (entrevistaId: number, entrevistadorId: number) => {
+        try {
+            // Chamar serviço para remover entrevistador
+            // await EntrevistadorService.removerEntrevistadorEntrevista(entrevistaId, entrevistadorId);
+
+            // Recarregar dados após remoção
+            await fetchDados();
+        } catch (error) {
+            console.error('Erro ao remover entrevistador:', error);
+            // Tratar erro (mostrar mensagem ao usuário, etc.)
+        }
+    };
+
     return {
         empresa,
         vagas,
@@ -95,7 +145,12 @@ export const useDashboardEmpresaController = () => {
         entrevistas,
         estatisticas,
         loading,
-        error,
-        handleNovaVaga
+        error, entrevistadores,
+        modalAdicionarEntrevistador,
+        handleNovaVaga,
+        handleAbrirModalEntrevistador,
+        handleFecharModal,
+        handleAdicionarEntrevistador,
+        handleRemoverEntrevistador
     };
 };
