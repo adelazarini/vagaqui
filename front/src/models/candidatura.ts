@@ -1,4 +1,5 @@
 import Candidato from './candidato';
+import Entrevista from './entrevista';
 import { Vaga } from './vaga';
 
 export interface Candidatura {
@@ -8,6 +9,9 @@ export interface Candidatura {
     status: string;
     data_candidatura: Date;
     vaga: Vaga;
-    candidato: Candidato
+    candidato: Candidato;
+    entrevistas: Entrevista;
+    titulo_vaga: string;
+
 }
 export default Candidatura;

@@ -1,3 +1,4 @@
+import Candidatura from "./candidatura";
 import { Empresa } from "./empresa";
 
 export interface Vaga {
@@ -9,6 +10,8 @@ export interface Vaga {
     data_publicacao: string;
     empresa_id: number;
     empresa: Empresa;
+    candidaturas: Candidatura;
+    total_candidaturas: number;
 }
 
 export default Vaga;

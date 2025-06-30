@@ -5,6 +5,7 @@ import Home from './pages/home/home_index';
 import DashboardCandidato from './pages/candidato/candidato_index';
 import DashboardEntrevistador from './pages/entrevistador/entrevistador_index';
 import Register from './pages/register/register_index';
+import DashboardEmpresa from './pages/empresa/empresa_index';
 
 const AppRoutes = () => (
     <Router>
@@ -14,6 +15,7 @@ const AppRoutes = () => (
             <Route path="/candidato/dashboard" element={<DashboardCandidato />} />
             <Route path="/entrevistador/dashboard" element={<DashboardEntrevistador />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/empresa/dashboard" element={<DashboardEmpresa />} />
         </Routes>
     </Router>
 );
