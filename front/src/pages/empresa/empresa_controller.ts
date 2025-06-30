@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getCurrentUser } from '../../services/auth_service';
 import EmpresaService from '../../services/empresa_service';
+import { useNavigate } from 'react-router-dom';
 
 import {
     Empresa,
@@ -12,6 +13,7 @@ import {
 } from '../../models/indice_models';
 
 export const useDashboardEmpresaController = () => {
+    const navigate = useNavigate();
     const [modalAdicionarEntrevistador, setModalAdicionarEntrevistador] = useState<{
         candidaturaId: number | null;
         entrevistaId: number | null;
@@ -41,6 +43,7 @@ export const useDashboardEmpresaController = () => {
             if (!usuario || !usuario.id) {
                 setError('Usuário não autenticado');
                 setLoading(false);
+                navigate('/');
                 return;
             }
 

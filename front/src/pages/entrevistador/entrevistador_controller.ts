@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Entrevistador, Entrevista, EstatisticasEntrevistador } from '../../models/indice_models';
 import EntrevistadorService from '../../services/entrevistador_service';
+import { getCurrentUser } from '../../services/auth_service';
+import { useNavigate } from 'react-router-dom';
 
 export const useDashboardController = () => {
+    const navigate = useNavigate();
     const [entrevistador, setEntrevistador] = useState<Entrevistador | null>(null);
     const [entrevistas, setEntrevistas] = useState<Entrevista[]>([]);
     const [estatisticas, setEstatisticas] = useState<EstatisticasEntrevistador>({
@@ -20,6 +23,14 @@ export const useDashboardController = () => {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
+                const usuario = getCurrentUser();
+
+                if (!usuario || !usuario.id) {
+                    setError('Usuário não autenticado');
+                    setLoading(false);
+                    navigate('/');
+                    return;
+                }
                 setLoading(true);
                 const dados = await EntrevistadorService.obterDadosDashboard();
 
