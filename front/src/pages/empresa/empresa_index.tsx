@@ -78,6 +78,9 @@ const DashboardEmpresa: React.FC = () => {
                         {entrevistas.map(entrevista => (
                             <div key={entrevista.id} className="entrevista-item">
                                 <p>
+                                    <strong>Entrevistador:</strong> {entrevista.entrevistador.nome}
+                                </p>
+                                <p>
                                     <strong>Data:</strong> {new Date(entrevista.data_entrevista).toLocaleDateString('pt-BR')}
                                 </p>
                                 <p>

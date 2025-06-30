@@ -162,6 +162,7 @@ class EmpresaService {
                     telefone: empresa.telefone
                 },
                 vagas: vagasFormatadas,
+                entrevistas: entrevistas,
                 estatisticas: {
                     totalVagasPublicadas,
                     totalCandidaturasRecebidas,

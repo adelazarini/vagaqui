@@ -53,9 +53,22 @@ export const useDashboardEmpresaController = () => {
 
             setCandidaturas(todasCandidaturas);
 
-            const todasEntrevistas = todasCandidaturas.flatMap((candidatura: any) =>
-                candidatura.entrevistas || []
+            const todasEntrevistas = dados.entrevistas.flatMap((entrevista: any) =>
+                entrevista.entrevistadores.map((entrevistador: any) => ({
+                    id: entrevista.id,
+                    candidatura_id: entrevista.candidatura_id,
+                    data_entrevista: entrevistador.data_entrevista,
+                    hora_entrevista: entrevistador.hora_entrevista,
+                    local_link: entrevistador.local_link,
+                    observacoes: entrevistador.observacoes,
+                    status_entrevista: entrevistador.status_entrevista,
+                    entrevistador: {
+                        id: entrevistador.entrevistador.id,
+                        nome: entrevistador.entrevistador.nome
+                    }
+                })) || []
             );
+
             setEntrevistas(todasEntrevistas);
 
             setEstatisticas(dados.estatisticas || {
