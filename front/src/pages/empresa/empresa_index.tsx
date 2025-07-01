@@ -14,6 +14,8 @@ import {
 
 } from '../candidato/candidato_styles';
 
+import { EditButton, DeleteButton, ButtonContainer } from '../../components/layout/dashboard_style';
+
 import { FloatingButton, InlineActionButton, EntrevistadorModal } from './empresa_styles';
 
 import { FaPlus, FaUserPlus, FaTrash } from 'react-icons/fa';
@@ -37,7 +39,9 @@ const DashboardEmpresa: React.FC = () => {
         handleAbrirModalEntrevistador,
         handleFecharModal,
         handleAdicionarEntrevistador,
-        handleRemoverEntrevistador
+        handleRemoverEntrevistador,
+        handleEditarVaga,
+        handleExcluirVaga,
     } = useDashboardEmpresaController();
 
     const { isModalOpen, handleOpenModal, handleCloseModal, handleSaveVaga } = useNovaVagaController();
@@ -116,7 +120,6 @@ const DashboardEmpresa: React.FC = () => {
                         ))}
                     </ProximasEntrevistasContainer>
                 </SidebarProfile>
-
                 <MainContent>
                     <VagasContainer>
                         <h2>Minhas Vagas</h2>
@@ -129,6 +132,14 @@ const DashboardEmpresa: React.FC = () => {
                                     <p className="localizacao">{vaga.localizacao}</p>
                                     <p>Candidaturas: {vaga.total_candidaturas}</p>
                                 </div>
+                                <ButtonContainer>
+                                    <EditButton onClick={() => handleEditarVaga(vaga.id)}>
+                                        Editar
+                                    </EditButton>
+                                    <DeleteButton onClick={() => handleExcluirVaga(vaga.id)}>
+                                        Excluir
+                                    </DeleteButton>
+                                </ButtonContainer>
                             </VagaItem>
                         ))}
                     </VagasContainer>
@@ -160,6 +171,8 @@ const DashboardEmpresa: React.FC = () => {
                     </VagasContainer>
                 </MainContent>
 
+
+
                 <FloatingButton onClick={handleOpenModal}>
                     <FaPlus size={24} />
                 </FloatingButton>
@@ -184,6 +197,7 @@ const DashboardEmpresa: React.FC = () => {
                         </div>
                     </EntrevistadorModal>
                 )}
+
             </DashboardContainer>
         </DashboardLayout>
     );

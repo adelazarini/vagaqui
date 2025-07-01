@@ -128,6 +128,20 @@ export const useDashboardEmpresaController = () => {
         }
     };
 
+    const handleEditarVaga = (vagaId: number) => {
+        // Lógica para editar a vaga
+        console.log(`Editar vaga com ID: ${vagaId}`);
+    };
+
+    const handleExcluirVaga = async (vagaId: number) => {
+        try {
+            // Lógica para excluir a vaga
+            console.log(`Excluir vaga com ID: ${vagaId}`);
+        } catch (error) {
+            console.error('Erro ao excluir vaga:', error);
+        }
+    };
+
     return {
         empresa,
         vagas,
@@ -140,6 +154,8 @@ export const useDashboardEmpresaController = () => {
         handleAbrirModalEntrevistador,
         handleFecharModal,
         handleAdicionarEntrevistador,
-        handleRemoverEntrevistador
+        handleRemoverEntrevistador,
+        handleEditarVaga,
+        handleExcluirVaga,
     };
 };
