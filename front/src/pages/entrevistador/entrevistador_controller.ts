@@ -38,13 +38,16 @@ export const useDashboardController = () => {
 
     const handleEditarEntrevista = (entrevistaId: number) => {
         console.log('Editar entrevista:', entrevistaId);
-        // Implementar lógica de edição
+
     };
 
     const handleExcluirEntrevista = async (entrevistaId: number) => {
         if (window.confirm('Tem certeza que deseja excluir esta entrevista?')) {
             try {
-                const ret = await EntrevistadorService.deleteEntrevista(entrevistaId);
+
+                const ret = await EntrevistadorService.deleteEntrevista(entrevistaId, entrevistador.id);
+
+                window.alert('Vaga excluida com sucesso!.');
 
                 setEntrevistas(entrevistas.filter(e => e.id !== entrevistaId));
             } catch (err: any) {

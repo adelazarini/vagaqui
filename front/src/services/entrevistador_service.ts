@@ -11,9 +11,9 @@ class EntrevistadorService {
         }
     }
 
-    async deleteEntrevista(idEntrevista: number) {
+    async deleteEntrevista(idEntrevista: number, entrevistadorId: number) {
         try {
-            const response = await api.delete(`/entrevista/${idEntrevista}`);
+            const response = await api.delete(`/entrevista/${idEntrevista}/entrevistadores/${entrevistadorId}`);
             return response.data;
         } catch (error) {
             console.error('Erro ao deletar entrevista:', error);
