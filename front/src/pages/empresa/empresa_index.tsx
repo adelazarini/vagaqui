@@ -22,8 +22,8 @@ import { FaPlus, FaUserPlus, FaTrash } from 'react-icons/fa';
 import DashboardLayout from '../../components/layout/dashboard_layout';
 import { useDashboardEmpresaController } from './empresa_controller';
 
-import NovaVagaModal from './nova_vaga/nova_vaga_index';
-import { useNovaVagaController } from './nova_vaga/nova_vaga_controller';
+import NovaVagaModal from './vaga/vaga_index';
+import { useNovaVagaController } from './vaga/vaga_controller';
 
 const DashboardEmpresa: React.FC = () => {
     const {

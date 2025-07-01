@@ -29,7 +29,6 @@ const DashboardEntrevistador: React.FC = () => {
     } = useDashboardController();
 
     if (loading) return <div>Carregando...</div>;
-    if (error) return <div>Erro: {error}</div>;
     if (!entrevistador) return <div>Entrevistador não encontrado</div>;
 
     const getStatusDescription = (status: string | undefined): string => {

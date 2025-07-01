@@ -44,9 +44,16 @@ export const useDashboardController = () => {
     const handleExcluirEntrevista = async (entrevistaId: number) => {
         if (window.confirm('Tem certeza que deseja excluir esta entrevista?')) {
             try {
-                //  await EntrevistadorService.excluirEntrevista(entrevistaId);
+                const ret = await EntrevistadorService.deleteEntrevista(entrevistaId);
+
                 setEntrevistas(entrevistas.filter(e => e.id !== entrevistaId));
             } catch (err: any) {
+                console.error('Erro ao obter dados do dashboard:', error);
+                if (err.response && err.response.status === 403) {
+                    window.alert('Acesso negado. Verifique suas credenciais.');
+                } else {
+                    window.alert('Ocorreu um erro ao carregar os dados.');
+                }
                 setError(err.message || 'Erro ao excluir entrevista');
             }
         }
