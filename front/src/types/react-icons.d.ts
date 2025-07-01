@@ -7,4 +7,6 @@ declare module 'react-icons/fa' {
     export const FaCheckCircle: ComponentType<any>;
     export const FaBriefcase: ComponentType<any>;
     export const FaUsers: ComponentType<any>;
+    export const FaEye: ComponentType<any>;
+    export const FaEdit: ComponentType<any>;
 }
