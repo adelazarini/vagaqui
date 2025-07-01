@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { getCurrentUser } from '../../services/auth_service';
 import EmpresaService from '../../services/empresa_service';
 
+
+
 import {
     Empresa,
     Vaga,
@@ -90,10 +92,6 @@ export const useDashboardEmpresaController = () => {
         }
     };
 
-    const handleNovaVaga = async () => {
-        // nva vaga
-    };
-
     const [entrevistadores, setEntrevistadores] = useState<Entrevistador[]>([]);
 
     const handleAbrirModalEntrevistador = (candidaturaId: number, entrevistaId?: number) => {
@@ -110,14 +108,6 @@ export const useDashboardEmpresaController = () => {
     const handleAdicionarEntrevistador = async (entrevistadorId: number) => {
         try {
             if (!modalAdicionarEntrevistador) return;
-
-            // Lógica para adicionar entrevistador
-            //await EntrevistadorService.adicionarEntrevistadorEntrevista({
-            //  entrevista_id: modalAdicionarEntrevistador.entrevistaId || 0,
-            // entrevistador_id: entrevistadorId
-            // });
-
-            // Recarregar dados após adicionar
             await fetchDados();
             handleFecharModal();
         } catch (error) {
@@ -147,7 +137,6 @@ export const useDashboardEmpresaController = () => {
         loading,
         error, entrevistadores,
         modalAdicionarEntrevistador,
-        handleNovaVaga,
         handleAbrirModalEntrevistador,
         handleFecharModal,
         handleAdicionarEntrevistador,

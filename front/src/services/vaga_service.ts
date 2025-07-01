@@ -1,6 +1,7 @@
 import api from './api_service';
 import { Vaga } from '../models/vaga';
 import { Candidatura } from '../models/candidatura';
+import VagaInput from '../models/vaga_input';
 
 class VagaService {
     // Buscar todas as vagas disponíveis
@@ -43,27 +44,10 @@ class VagaService {
         }
     }
 
-    // Filtrar vagas
-    async filtrarVagas(filtros: {
-        titulo?: string;
-        localizacao?: string;
-        salarioMinimo?: number;
-    }): Promise<Vaga[]> {
+    // Criar nova vaga
+    async criarVaga(dadosVaga: Partial<VagaInput>): Promise<VagaInput> {
         try {
-            const response = await api.get<Vaga[]>('/vagas/filtrar', {
-                params: filtros
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Erro ao filtrar vagas:', error);
-            throw error;
-        }
-    }
-
-    // Criar nova vaga (para empresas)
-    async criarVaga(dadosVaga: Partial<Vaga>): Promise<Vaga> {
-        try {
-            const response = await api.post<Vaga>('/vagas', dadosVaga);
+            const response = await api.post<VagaInput>('/vaga', dadosVaga);
             return response.data;
         } catch (error) {
             console.error('Erro ao criar vaga:', error);

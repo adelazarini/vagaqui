@@ -20,6 +20,9 @@ import { FaPlus, FaUserPlus, FaTrash } from 'react-icons/fa';
 import DashboardLayout from '../../components/layout/dashboard_layout';
 import { useDashboardEmpresaController } from './empresa_controller';
 
+import NovaVagaModal from './nova_vaga/nova_vaga_index';
+import { useNovaVagaController } from './nova_vaga/nova_vaga_controller';
+
 const DashboardEmpresa: React.FC = () => {
     const {
         empresa,
@@ -31,12 +34,13 @@ const DashboardEmpresa: React.FC = () => {
         error,
         entrevistadores,
         modalAdicionarEntrevistador,
-        handleNovaVaga,
         handleAbrirModalEntrevistador,
         handleFecharModal,
         handleAdicionarEntrevistador,
         handleRemoverEntrevistador
     } = useDashboardEmpresaController();
+
+    const { isModalOpen, handleOpenModal, handleCloseModal, handleSaveVaga } = useNovaVagaController();
 
     if (loading) return <div>Carregando...</div>;
     if (error) return <div>Erro: {error}</div>;
@@ -156,9 +160,15 @@ const DashboardEmpresa: React.FC = () => {
                     </VagasContainer>
                 </MainContent>
 
-                <FloatingButton onClick={handleNovaVaga}>
+                <FloatingButton onClick={handleOpenModal}>
                     <FaPlus size={24} />
                 </FloatingButton>
+
+                <NovaVagaModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    onSave={(vaga) => handleSaveVaga(vaga)}
+                />
 
                 {modalAdicionarEntrevistador && (
                     <EntrevistadorModal>
