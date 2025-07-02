@@ -51,6 +51,11 @@ module.exports = (sequelize) => {
             allowNull: false,
             defaultValue: 'Combinar'
         },
+        empresa_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: { model: 'empresas', key: 'id' }
+        },
     }, {
         sequelize,
         modelName: 'EntrevistaEntrevistadores',

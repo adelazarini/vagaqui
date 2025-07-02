@@ -15,6 +15,7 @@ module.exports = (sequelize) => {
                 otherKey: 'entrevistador_id',
                 as: 'entrevistadores'
             });
+
         }
     }
 
@@ -32,14 +33,20 @@ module.exports = (sequelize) => {
                 key: 'id'
             }
         },
-
+        empresa_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'empresas',
+                key: 'id'
+            }
+        },
         observacoes: DataTypes.TEXT
     }, {
         sequelize,
         modelName: 'Entrevista',
         tableName: 'entrevistas',
         underscored: true
-
     });
 
     return Entrevista;

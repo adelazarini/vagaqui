@@ -58,10 +58,11 @@ export const useDashboardController = () => {
                 throw new Error('Candidato não encontrado');
             }
 
-            await VagaService.candidatar(candidato.id);
-
+            await VagaService.candidatar(vagaId);
+            window.alert('Candidatura com sucesso!.');
             await fetchDados();
         } catch (err) {
+            window.alert('Erro ao candidatar.');
             console.error('Erro ao se candidatar:', err);
         }
     };

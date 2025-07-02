@@ -12,6 +12,10 @@ class CandidatoService {
         const response = await api.get(`/candidato/dashboard`);
         return response.data;
     }
+    async candidatarVaga(vagaId: number) {
+        const response = await api.get(`/vaga/${vagaId}`);
+        return response.data;
+    }
 }
 
 export default new CandidatoService();

@@ -57,7 +57,9 @@ class CandidaturaController extends BaseController {
         try {
             const usuarioId = req.user.id;
 
-            const novaCandidatura = await CandidaturaService.criarCandidatura(dadosCandidatura, usuarioId);
+            const vagaId = req.params.id;
+
+            const novaCandidatura = await CandidaturaService.criarCandidatura(vagaId, usuarioId);
 
             return res.status(201).json(novaCandidatura);
         } catch (error) {

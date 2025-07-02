@@ -3,10 +3,10 @@ const { Op } = require('sequelize');
 
 class CandidaturaService {
 
-    async criarCandidatura(dadosCandidatura, usuarioId) {
+    async criarCandidatura(vagaId, usuarioId) {
         try {
             // Validar se a vaga existe
-            const vaga = await Vaga.findByPk(dadosCandidatura.vaga_id);
+            const vaga = await Vaga.findByPk(vagaId);
             if (!vaga) {
                 throw new Error('Vaga não encontrada');
             }
@@ -23,7 +23,7 @@ class CandidaturaService {
             // Verificar se já existe candidatura para essa vaga e candidato
             const candidaturaExistente = await Candidatura.findOne({
                 where: {
-                    vaga_id: dadosCandidatura.vaga_id,
+                    vaga_id: vagaId,
                     candidato_id: candidato.id
                 }
             });
@@ -34,7 +34,7 @@ class CandidaturaService {
 
             // Criar candidatura
             return await Candidatura.create({
-                ...dadosCandidatura,
+                vaga_id: vagaId,
                 candidato_id: candidato.id,
                 data_candidatura: new Date(),
                 status: 'Em Análise'

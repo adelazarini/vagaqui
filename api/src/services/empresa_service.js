@@ -80,10 +80,12 @@ class EmpresaService {
             }
 
             const entrevistasEntrevistador = await EntrevistaEntrevistadores.findAll({
+                where: { empresa_id: empresa.id },
                 include: [
                     {
                         model: Entrevistador,
-                        as: 'entrevistador'
+                        as: 'entrevistador',
+
                     },
                     {
                         model: Entrevista,
@@ -96,7 +98,6 @@ class EmpresaService {
                                     {
                                         model: Vaga,
                                         as: 'vaga',
-                                        where: { empresa_id: empresa.id }
                                     }
                                 ]
                             }

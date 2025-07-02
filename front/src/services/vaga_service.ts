@@ -27,9 +27,7 @@ class VagaService {
     }
 
     async candidatar(vagaId: number) {
-        const response = await api.post('/candidatura', {
-            vaga_id: vagaId
-        });
+        const response = await api.post('/candidatura/' + vagaId);
         return response.data;
     }
 

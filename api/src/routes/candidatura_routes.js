@@ -25,7 +25,7 @@ router.get('/:id',
 );
 
 
-router.post('/',
+router.post('/:id',
     authorize(permissions.create),
     candidaturaController.create.bind(candidaturaController)
 );
