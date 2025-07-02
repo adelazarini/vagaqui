@@ -77,9 +77,14 @@ class CandidaturaController extends BaseController {
             const usuarioId = req.user.id;
             const { entrevistadores } = req.body;
 
+            const entrevistadoresProcessados = entrevistadores.map(item => ({
+                entrevistador_id: item.entrevistador_id,
+                // Se tiver outros campos, adicione aqui
+            }));
+
             const novasAssociacoes = await EntrevistaService.vincularEntrevistadores(
                 id,
-                entrevistadores,
+                entrevistadoresProcessados,
                 usuarioId
             );
 

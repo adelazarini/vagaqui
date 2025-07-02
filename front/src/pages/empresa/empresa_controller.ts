@@ -118,9 +118,12 @@ export const useDashboardEmpresaController = () => {
                         }
                     ]
                 };
-                const ret = await EntrevistaService.adicionarEntrevistadores(1, dadosEntrevista);
+                const ret = await EntrevistaService.adicionarEntrevistadores(3, dadosEntrevista);
+                //pegar o selecionado, verificar no serviço se o selecionado já não existe pra vaga
 
                 setModalAdicionarEntrevistador(null);
+                window.alert('Entrevistador adicionado com sucesso!.');
+                await fetchDados();
 
                 console.log('Entrevistador adicionado com sucesso:', ret);
             } catch (error) {
