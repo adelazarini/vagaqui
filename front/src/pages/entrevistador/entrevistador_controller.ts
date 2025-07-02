@@ -12,7 +12,6 @@ export const useDashboardController = () => {
         totalProcessoSeletivo: 0,
         totalEntrevistasCombinar: 0,
         totalReprovacoes: 0
-
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
