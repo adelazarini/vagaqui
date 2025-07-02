@@ -48,10 +48,6 @@ router.get('/:id/entrevistadores',
     entrevistaController.listarEntrevistadores.bind(entrevistaController)
 );
 
-router.post('/:id/entrevistadores',
-    authorize(['Administrador', 'Empresa']),
-    entrevistaController.adicionarEntrevistadores.bind(entrevistaController)
-);
 
 router.delete('/:id/entrevistadores/:entrevistadorId',
     authorize(['Administrador', 'Empresa', 'Entrevistador']),

@@ -13,10 +13,19 @@ class EntrevistadorService {
 
     async deleteEntrevista(idEntrevista: number, entrevistadorId: number) {
         try {
-            const response = await api.delete(`/entrevista/${idEntrevista}/entrevistadores/${entrevistadorId}`);
+            const response = await api.delete(`/candidatura/${idEntrevista}/entrevistadores/${entrevistadorId}`);
             return response.data;
         } catch (error) {
             console.error('Erro ao deletar entrevista:', error);
+            throw error;
+        }
+    }
+    async getlistaEntrevistadores() {
+        try {
+            const response = await api.get('/entrevistador');
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao obter dados do dashboard:', error);
             throw error;
         }
     }

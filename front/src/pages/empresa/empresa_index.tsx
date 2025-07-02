@@ -42,6 +42,7 @@ const DashboardEmpresa: React.FC = () => {
         handleRemoverEntrevistador,
         handleEditarVaga,
         handleExcluirVaga,
+        setSelectedEntrevistador
     } = useDashboardEmpresaController();
 
     const { isModalOpen, handleOpenModal, handleCloseModal, handleSaveVaga } = useNovaVagaController();
@@ -188,11 +189,16 @@ const DashboardEmpresa: React.FC = () => {
                         <div className="modal-content">
                             <h3>Adicionar Entrevistador</h3>
                             <select
-                                onChange={(e) => handleAdicionarEntrevistador(Number(e.target.value))}
+                                onChange={(e) => setSelectedEntrevistador(Number(e.target.value))}
                             >
                                 <option value="">Selecione um entrevistador</option>
-                                { }
+                                {entrevistadores.map((entrevistador) => (
+                                    <option key={entrevistador.id} value={entrevistador.id}>
+                                        {entrevistador.nome} - {entrevistador.cargo}
+                                    </option>
+                                ))}
                             </select>
+                            <button onClick={handleAdicionarEntrevistador}>OK</button>
                             <button onClick={handleFecharModal}>Cancelar</button>
                         </div>
                     </EntrevistadorModal>

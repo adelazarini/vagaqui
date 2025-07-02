@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getCurrentUser } from '../../services/auth_service';
 import EmpresaService from '../../services/empresa_service';
-
+import EntrevistadorService from '../../services/entrevistador_service';
+import EntrevistaService from '../../services/entrevista_service';
 
 
 import {
@@ -12,11 +13,11 @@ import {
     EstatisticasEmpresa,
     Entrevistador
 } from '../../models/indice_models';
+import entrevista_service from '../../services/entrevista_service';
 
 export const useDashboardEmpresaController = () => {
     const [modalAdicionarEntrevistador, setModalAdicionarEntrevistador] = useState<{
         candidaturaId: number | null;
-        entrevistaId: number | null;
     } | null>(null);
 
     const [empresa, setEmpresa] = useState<Empresa | null>(null);
@@ -31,6 +32,8 @@ export const useDashboardEmpresaController = () => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const [selectedEntrevistador, setSelectedEntrevistador] = useState<number | null>(null);
 
     useEffect(() => {
         fetchDados();
@@ -50,7 +53,6 @@ export const useDashboardEmpresaController = () => {
 
             setEmpresa(dados.empresa);
             setVagas(dados.vagas || []);
-
 
             const todasCandidaturas = dados.vagas.flatMap((vaga: any) =>
                 vaga.candidaturas.map((candidatura: any) => ({
@@ -85,6 +87,9 @@ export const useDashboardEmpresaController = () => {
                 totalEntrevistasAgendadas: 0,
                 totalProcessoSeletivo: 0
             });
+
+            const dados2 = await EntrevistadorService.getlistaEntrevistadores();
+            setEntrevistadores(dados2);
         } catch (err: any) {
             setError(err.message || 'Erro ao carregar dados');
         } finally {
@@ -94,24 +99,37 @@ export const useDashboardEmpresaController = () => {
 
     const [entrevistadores, setEntrevistadores] = useState<Entrevistador[]>([]);
 
-    const handleAbrirModalEntrevistador = (candidaturaId: number, entrevistaId?: number) => {
-        setModalAdicionarEntrevistador({
-            candidaturaId,
-            entrevistaId: entrevistaId || null
-        });
+    const handleAbrirModalEntrevistador = (candidaturaId: number) => {
+        setModalAdicionarEntrevistador({ candidaturaId })
     };
 
     const handleFecharModal = () => {
         setModalAdicionarEntrevistador(null);
     };
 
-    const handleAdicionarEntrevistador = async (entrevistadorId: number) => {
-        try {
-            if (!modalAdicionarEntrevistador) return;
-            await fetchDados();
-            handleFecharModal();
-        } catch (error) {
-            console.error('Erro ao adicionar entrevistador:', error);
+    const handleAdicionarEntrevistador = async () => {
+        if (selectedEntrevistador !== null) {
+            console.log('Adicionar entrevistador com ID:', selectedEntrevistador);
+            try {
+                const dadosEntrevista = {
+                    entrevistadores: [
+                        {
+                            entrevistador_id: selectedEntrevistador,
+                        }
+                    ]
+                };
+                const ret = await EntrevistaService.adicionarEntrevistadores(1, dadosEntrevista);
+
+                setModalAdicionarEntrevistador(null);
+
+                console.log('Entrevistador adicionado com sucesso:', ret);
+            } catch (error) {
+                console.error('Erro ao adicionar entrevistador:', error);
+            }
+
+        }
+        else {
+            window.alert('Por favor, selecione um entrevistador.');
         }
     };
 
@@ -157,5 +175,6 @@ export const useDashboardEmpresaController = () => {
         handleRemoverEntrevistador,
         handleEditarVaga,
         handleExcluirVaga,
+        setSelectedEntrevistador
     };
 };

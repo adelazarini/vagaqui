@@ -10,6 +10,7 @@ const {
     sequelize
 } = require('../models');
 const { Op } = require('sequelize');
+const empresa = require('../models/empresa');
 
 class EntrevistaService {
     async criarEntrevista(dadosEntrevista, usuarioId) {
@@ -65,7 +66,8 @@ class EntrevistaService {
             // Criar entrevista
             const novaEntrevista = await Entrevista.create({
                 candidatura_id: dadosEntrevista.candidatura_id,
-                observacoes: dadosEntrevista.observacoes
+                observacoes: dadosEntrevista.observacoes,
+                empresa_id: empresa.id
             }, { transaction });
 
             await transaction.commit();
@@ -236,12 +238,16 @@ class EntrevistaService {
         }
     }
 
-    async vincularEntrevistadores(entrevistaId, entrevistadores, usuarioId) {
+    async vincularEntrevistadores(candidaturaId, entrevistadores, usuarioId) {
         const transaction = await sequelize.transaction();
+
+        const dadosEntrevista = { candidatura_id: candidaturaId }
+
+        const criarEntrevista = await this.criarEntrevista(dadosEntrevista, usuarioId)
 
         try {
             // busca entrevista com candidatura e vaga
-            const entrevista = await Entrevista.findByPk(entrevistaId, {
+            const entrevista = await Entrevista.findByPk(criarEntrevista.id, {
                 include: [{
                     model: Candidatura,
                     as: 'candidatura',
@@ -282,14 +288,15 @@ class EntrevistaService {
                     console.log('EntrevistaEntrevistadores:', EntrevistaEntrevistadores);
                     const [assoc, created] = await EntrevistaEntrevistadores.findOrCreate({
                         where: {
-                            entrevista_id: entrevistaId,
+                            entrevista_id: criarEntrevista.id,
                             entrevistador_id: data.entrevistador_id
                         },
                         defaults: {
                             data_entrevista: data.data_entrevista,
                             hora_entrevista: data.hora_entrevista,
                             local_link: data.local_link,
-                            observacoes: data.observacoes
+                            observacoes: data.observacoes,
+                            empresa_id: entrevista.empresa_id
                         },
                         transaction
                     });

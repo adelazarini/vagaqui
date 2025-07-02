@@ -25,6 +25,11 @@ router.get('/:id',
 );
 
 
+router.post('/:id/entrevistadores',
+    authorize(['Administrador', 'Empresa']),
+    candidaturaController.adicionarEntrevistadores.bind(candidaturaController)
+);
+
 router.post('/:id',
     authorize(permissions.create),
     candidaturaController.create.bind(candidaturaController)

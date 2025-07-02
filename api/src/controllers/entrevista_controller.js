@@ -93,28 +93,6 @@ class EntrevistaController extends BaseController {
         }
     }
 
-    async adicionarEntrevistadores(req, res) {
-        try {
-            const { id } = req.params;
-            const usuarioId = req.user.id;
-            const { entrevistadores } = req.body;
-
-            const novasAssociacoes = await EntrevistaService.vincularEntrevistadores(
-                id,
-                entrevistadores,
-                usuarioId
-            );
-
-            return res.status(201).json(novasAssociacoes);
-        } catch (error) {
-            console.error('Erro ao adicionar entrevistadores:', error);
-            return res.status(400).json({
-                message: 'Erro ao adicionar entrevistadores',
-                error: error.message
-            });
-        }
-    }
-
     async removerEntrevistador(req, res) {
         try {
             const { id, entrevistadorId } = req.params;

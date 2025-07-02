@@ -1,6 +1,7 @@
 const CandidaturaService = require('../services/candidatura_service');
 const BaseController = require('./base_controller');
 const Candidatura = require('../models/candidatura');
+const EntrevistaService = require('../services/entrevista_service');
 
 class CandidaturaController extends BaseController {
     constructor() {
@@ -65,6 +66,28 @@ class CandidaturaController extends BaseController {
         } catch (error) {
             return res.status(400).json({
                 message: 'Erro ao criar candidatura',
+                error: error.message
+            });
+        }
+    }
+
+    async adicionarEntrevistadores(req, res) {
+        try {
+            const { id } = req.params;
+            const usuarioId = req.user.id;
+            const { entrevistadores } = req.body;
+
+            const novasAssociacoes = await EntrevistaService.vincularEntrevistadores(
+                id,
+                entrevistadores,
+                usuarioId
+            );
+
+            return res.status(201).json(novasAssociacoes);
+        } catch (error) {
+            console.error('Erro ao adicionar entrevistadores:', error);
+            return res.status(400).json({
+                message: 'Erro ao adicionar entrevistadores',
                 error: error.message
             });
         }
