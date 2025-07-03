@@ -77,7 +77,8 @@ class EntrevistadorService {
                     local_link: entrevistaEntrevistador.local_link,
                     candidatura: entrevistaEntrevistador.entrevista.candidatura,
                     empresa: entrevistaEntrevistador.entrevista.empresa,
-                    status_entrevista: entrevistaEntrevistador.status_entrevista
+                    status_entrevista: entrevistaEntrevistador.status_entrevista,
+                    observacoes: entrevistaEntrevistador.observacoes
                 })),
                 estatisticas: {
                     totalEntrevistasAgendadas: estatisticasObj['Agendada'],

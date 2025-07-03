@@ -122,6 +122,9 @@ const DashboardEntrevistador: React.FC = () => {
                                         <strong>Empresa:</strong> {entrevista.candidatura.vaga.empresa.nome || 'Empresa não disponível'}
                                     </p>
                                     <p>
+                                        <strong>Observações:</strong> {entrevista.observacoes || ''}
+                                    </p>
+                                    <p>
                                         <strong>Status:</strong> {getStatusDescription(entrevista.status_entrevista)}
                                     </p>
                                 </div>
