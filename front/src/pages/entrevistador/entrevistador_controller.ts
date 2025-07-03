@@ -16,6 +16,10 @@ export const useDashboardController = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // Novo estado para modal
+    const [modalAberto, setModalAberto] = useState(false);
+    const [entrevistaSelecionada, setEntrevistaSelecionada] = useState<Entrevista | null>(null);
+
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
@@ -36,14 +40,24 @@ export const useDashboardController = () => {
     }, []);
 
     const handleEditarEntrevista = (entrevistaId: number) => {
-        console.log('Editar entrevista:', entrevistaId);
+        const entrevistaSelecionada = entrevistas.find(entrevista => entrevista.id === entrevistaId);
 
+        if (entrevistaSelecionada) {
+            setEntrevistaSelecionada(entrevistaSelecionada);
+            setModalAberto(true);
+        } else {
+            console.error('Entrevista não encontrada');
+        }
+    };
+
+    const handleFecharModal = () => {
+        setModalAberto(false);
+        setEntrevistaSelecionada(null);
     };
 
     const handleExcluirEntrevista = async (entrevistaId: number) => {
         if (window.confirm('Tem certeza que deseja excluir esta entrevista?')) {
             try {
-
                 const ret = await EntrevistadorService.deleteEntrevista(entrevistaId, entrevistador.id);
 
                 window.alert('Vaga excluida com sucesso!.');
@@ -68,6 +82,9 @@ export const useDashboardController = () => {
         loading,
         error,
         handleEditarEntrevista,
-        handleExcluirEntrevista
+        handleExcluirEntrevista,
+        modalAberto,
+        entrevistaSelecionada,
+        handleFecharModal
     };
 };

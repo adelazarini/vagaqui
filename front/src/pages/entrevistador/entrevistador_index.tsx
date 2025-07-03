@@ -1,5 +1,6 @@
 import React from 'react';
 import DashboardLayout from '../../components/layout/dashboard_layout';
+import AtualizarEntrevistaModal from './atualizar_entrevista/atualizar_entrevista_index';
 import { useDashboardController } from './entrevistador_controller';
 import { status_entrevista } from '../../models/entrevista';
 import {
@@ -25,7 +26,10 @@ const DashboardEntrevistador: React.FC = () => {
         loading,
         error,
         handleEditarEntrevista,
-        handleExcluirEntrevista
+        handleExcluirEntrevista,
+        modalAberto,
+        entrevistaSelecionada,
+        handleFecharModal
     } = useDashboardController();
 
     if (loading) return <div>Carregando...</div>;
@@ -137,6 +141,24 @@ const DashboardEntrevistador: React.FC = () => {
                         ))}
                     </VagasContainer>
                 </MainContent>
+
+                {/* Adicionar Modal de Atualização de Entrevista */}
+                {modalAberto && entrevistaSelecionada && (
+                    <AtualizarEntrevistaModal
+                        entrevistaId={entrevistaSelecionada.id}
+                        dadosAtuais={{
+                            data_entrevista: entrevistaSelecionada.data_entrevista instanceof Date
+                                ? entrevistaSelecionada.data_entrevista.toISOString().split('T')[0]
+                                : entrevistaSelecionada.data_entrevista,
+                            hora_entrevista: entrevistaSelecionada.hora_entrevista,
+                            local_link: entrevistaSelecionada.local_link,
+                            observacoes: entrevistaSelecionada.observacoes,
+                            status_entrevista: entrevistaSelecionada.status_entrevista
+                        }}
+                        isOpen={modalAberto}
+                        onClose={handleFecharModal}
+                    />
+                )}
             </DashboardContainer>
         </DashboardLayout>
     );
