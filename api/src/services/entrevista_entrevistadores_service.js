@@ -2,7 +2,8 @@ const {
     Entrevista_Entrevistadores,
     Entrevista,
     Entrevistador,
-    Candidatura
+    Candidatura,
+    Usuario
 } = require('../models');
 const { Op } = require('sequelize');
 
@@ -37,43 +38,69 @@ class EntrevistaEntrevistadoresService {
         }
     }
 
-    async buscarEntrevistasDoEntrevistador(entrevistadorId) {
-        try {
-            const entrevistas = await Entrevista_Entrevistadores.findAll({
-                where: { entrevistador_id: entrevistadorId },
-                include: [
-                    {
-                        model: Entrevista,
-                        include: [
-                            {
-                                model: Candidatura,
-                                include: ['Candidato', 'Vaga']
-                            }
-                        ]
-                    }
-                ],
-                order: [['data_entrevista', 'DESC']]
-            });
 
-            return entrevistas;
-        } catch (error) {
-            throw new Error(`Erro ao buscar entrevistas do entrevistador: ${error.message}`);
+    async atualizarEntrevista(id, dadosEntrevista, userId) {
+        // Buscar o entrevistador pelo userId
+        const entrevistador = await Entrevistador.findOne({
+            include: [{
+                model: Usuario,
+                where: { id: userId }
+            }]
+        });
+
+        if (!entrevistador) {
+            throw new Error('Entrevistador não encontrado');
         }
-    }
 
-    async atualizarEntrevistaEntrevistador(id, dadosAtualizacao) {
-        try {
-            const entrevistaEntrevistador = await Entrevista_Entrevistadores.findByPk(id);
+        // Encontrar o registro de entrevista_entrevistadores existente
+        const entrevistaEntrevistador = await EntrevistaEntrevistadores.findByPk(id, {
+            include: [
+                {
+                    model: Entrevista,
+                    as: 'entrevista'
+                }
+            ]
+        });
 
-            if (!entrevistaEntrevistador) {
-                throw new Error('Registro de entrevista-entrevistador não encontrado');
+        if (!entrevistaEntrevistador) {
+            throw new Error('Registro de entrevista_entrevistadores não encontrado');
+        }
+
+        // Verificar se o entrevistador pertence à entrevista
+        const entrevistadorVinculado = await EntrevistaEntrevistadores.findOne({
+            where: {
+                entrevista_id: entrevistaEntrevistador.entrevista_id,
+                entrevistador_id: entrevistador.id
             }
+        });
 
-            return await entrevistaEntrevistador.update(dadosAtualizacao);
-        } catch (error) {
-            throw new Error(`Erro ao atualizar entrevista-entrevistador: ${error.message}`);
+        if (!entrevistadorVinculado) {
+            throw new Error('Não vinculado a entrevista');
         }
+
+        // Campos que podem ser atualizados
+        const camposAtualizaveis = [
+            'data_entrevista',
+            'hora_entrevista',
+            'local_link',
+            'observacoes',
+            'status_entrevista'
+        ];
+
+        // Criar objeto com campos a serem atualizados
+        const dadosParaAtualizar = {};
+        camposAtualizaveis.forEach(campo => {
+            if (dadosEntrevista[campo] !== undefined) {
+                dadosParaAtualizar[campo] = dadosEntrevista[campo];
+            }
+        });
+
+        // Atualizar campos
+        const entrevistaAtualizada = await entrevistaEntrevistador.update(dadosParaAtualizar);
+
+        return entrevistaAtualizada;
     }
+
 }
 
 module.exports = new EntrevistaEntrevistadoresService();

@@ -1,6 +1,7 @@
 const EntrevistaService = require('../services/entrevista_service');
 const BaseController = require('./base_controller');
 const { Entrevista } = require('../models');
+const EntrevistaEntrevistadoresService = require('../services/entrevista_entrevistadores_service');
 
 class EntrevistaController extends BaseController {
     constructor() {
@@ -135,6 +136,28 @@ class EntrevistaController extends BaseController {
             console.error('Erro ao buscar entrevistas da candidatura:', error);
             return res.status(404).json({
                 message: 'Erro ao buscar entrevistas da candidatura',
+                error: error.message
+            });
+        }
+    }
+
+    async atualizarEntrevista(req, res) {
+        try {
+            const { id } = req.params; // ID da entrevista_entrevistadores
+            const dadosEntrevista = req.body;
+            const userId = req.user.id; // ID do usuario logado
+
+            const entrevistaAtualizada = await EntrevistaEntrevistadoresService.atualizarEntrevista(
+                Number(id),
+                dadosEntrevista,
+                userId
+            );
+
+            return res.status(200).json(entrevistaAtualizada);
+        } catch (error) {
+            console.error('Erro ao atualizar entrevista:', error);
+            return res.status(500).json({
+                message: 'Erro interno do servidor',
                 error: error.message
             });
         }

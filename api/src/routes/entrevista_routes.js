@@ -70,4 +70,9 @@ router.patch('/:id/status',
     entrevistaController.updateStatus.bind(entrevistaController)
 );
 
+router.put('/:id/entrevistador',
+    authorize(permissions.update),
+    entrevistaController.atualizarEntrevista
+);
+
 module.exports = router;

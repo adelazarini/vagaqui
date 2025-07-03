@@ -4,6 +4,7 @@ const BaseController = require('./base_controller');
 
 const EntrevistadorService = require('../services/entrevistador_service');
 
+
 class EntrevistadorController extends BaseController {
     constructor() {
         super(Entrevistador);
@@ -31,6 +32,8 @@ class EntrevistadorController extends BaseController {
             });
         }
     }
+
+
 }
 
 module.exports = new EntrevistadorController();

@@ -4,12 +4,12 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.addColumn('entrevista_entrevistadores', 'data_entrevista', {
       type: Sequelize.DATE,
-      allowNull: false
+      allowNull: true
     });
 
     await queryInterface.addColumn('entrevista_entrevistadores', 'hora_entrevista', {
       type: Sequelize.TIME,
-      allowNull: false
+      allowNull: true
     });
 
     await queryInterface.addColumn('entrevista_entrevistadores', 'local_link', {
