@@ -3,7 +3,8 @@ const {
     Entrevista,
     Entrevistador,
     Candidatura,
-    Usuario
+    Usuario,
+    EntrevistaEntrevistadores
 } = require('../models');
 const { Op } = require('sequelize');
 
@@ -41,19 +42,24 @@ class EntrevistaEntrevistadoresService {
 
     async atualizarEntrevista(id, dadosEntrevista, userId) {
         // Buscar o entrevistador pelo userId
-        const entrevistador = await Entrevistador.findOne({
+        const usuario = await Usuario.findByPk(userId, {
             include: [{
-                model: Usuario,
-                where: { id: userId }
+                model: Entrevistador,
+                as: 'entrevistador'
             }]
         });
 
-        if (!entrevistador) {
+        if (!usuario.entrevistador) {
             throw new Error('Entrevistador não encontrado');
         }
+        const entrevistador = usuario.entrevistador;
 
         // Encontrar o registro de entrevista_entrevistadores existente
-        const entrevistaEntrevistador = await EntrevistaEntrevistadores.findByPk(id, {
+        const entrevistaEntrevistador = await EntrevistaEntrevistadores.findOne({
+            where: {
+                entrevista_id: id,
+                entrevistador_id: entrevistador.id
+            },
             include: [
                 {
                     model: Entrevista,

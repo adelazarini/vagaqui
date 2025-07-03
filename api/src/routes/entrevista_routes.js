@@ -11,7 +11,7 @@ const permissions = {
     create: ['Administrador', 'Empresa'],
     findAll: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato'],
     findByPk: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato'],
-    update: ['Administrador', 'Empresa', 'Entrevistaor'],
+    update: ['Administrador', 'Empresa', 'Entrevistador'],
     delete: ['Administrador', 'Empresa'],
     filter: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato']
 };
@@ -25,6 +25,11 @@ router.post('/',
 router.get('/',
     authorize(permissions.findAll),
     entrevistaController.findAll.bind(entrevistaController)
+);
+
+router.put('/:id/entrevistador',
+    authorize(permissions.update),
+    entrevistaController.atualizarEntrevista
 );
 
 
@@ -70,9 +75,6 @@ router.patch('/:id/status',
     entrevistaController.updateStatus.bind(entrevistaController)
 );
 
-router.put('/:id/entrevistador',
-    authorize(permissions.update),
-    entrevistaController.atualizarEntrevista
-);
+
 
 module.exports = router;
