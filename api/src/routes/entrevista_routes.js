@@ -11,8 +11,8 @@ const permissions = {
     create: ['Administrador', 'Empresa'],
     findAll: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato'],
     findByPk: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato'],
-    update: ['Administrador', 'Empresa'],
-    delete: ['Administrador', 'Empresa', 'Entrevistador'],
+    update: ['Administrador', 'Empresa', 'Entrevistaor'],
+    delete: ['Administrador', 'Empresa'],
     filter: ['Administrador', 'Empresa', 'Entrevistador', 'Candidato']
 };
 
