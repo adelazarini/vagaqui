@@ -11,15 +11,17 @@ class EntrevistadorService {
         }
     }
 
-    async deleteEntrevista(idEntrevista: number, entrevistadorId: number) {
+
+    async deleteEntrevista(idEntrevista: number) {
         try {
-            const response = await api.delete(`/candidatura/${idEntrevista}/entrevistadores/${entrevistadorId}`);
+            const response = await api.delete(`/entrevista/${idEntrevista}/entrevistador`);
             return response.data;
         } catch (error) {
             console.error('Erro ao deletar entrevista:', error);
             throw error;
         }
     }
+
     async getlistaEntrevistadores() {
         try {
             const response = await api.get('/entrevistador');
