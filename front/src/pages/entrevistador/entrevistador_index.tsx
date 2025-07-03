@@ -145,7 +145,6 @@ const DashboardEntrevistador: React.FC = () => {
                     </VagasContainer>
                 </MainContent>
 
-                {/* Adicionar Modal de Atualização de Entrevista */}
                 {modalAberto && entrevistaSelecionada && (
                     <AtualizarEntrevistaModal
                         entrevistaId={entrevistaSelecionada.id}
