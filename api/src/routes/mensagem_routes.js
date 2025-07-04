@@ -22,7 +22,7 @@ router.get('/usuario',
     MensagemController.obterMensagensPorUsuario
 );
 
-router.get('/candidaturas/:usuarioId',
+router.get('/candidatura/:usuarioId',
     authorize(['Candidato', 'Empresa', 'Entrevistador']),
     MensagemController.obterCandidaturasComMensagens
 );

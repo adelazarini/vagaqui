@@ -6,7 +6,6 @@ class MensagemService {
     async criarMensagem(candidaturaId, usuarioId, usuarioNome, conteudo) {
         try {
 
-
             // Buscar conversa existente ou criar nova
             let conversa = await Mensagem.findOne({ candidaturaId });
 

@@ -1,11 +1,6 @@
 import api from './api_service';
 
-interface Mensagem {
-    usuarioId: number;
-    usuarioNome: string;
-    conteudo: string;
-    timestamp?: Date;
-}
+import { Mensagem, CandidaturaComMensagens } from '../models/mensagem';
 
 class MensagemService {
     async enviarMensagem(candidaturaId: number, mensagem: Mensagem) {
@@ -28,12 +23,49 @@ class MensagemService {
         }
     }
 
-    async obterCandidaturasComMensagens(usuarioId: number) {
+    async obterMensagensPorUsuario(): Promise<CandidaturaComMensagens[]> {
         try {
-            // Buscar candidaturas do usuário
-            const candidaturas = await api.get(`/candidaturas/mensagens`);
+            const response = await api.get(`/mensagens/usuario/`);
 
-            // Processar candidaturas com informações de mensagens
+            // Transformar as mensagens em CandidaturaComMensagens
+            const mensagens: Mensagem[] = response.data;
+
+            // Agrupar mensagens por candidatura
+            const candidaturasMap = new Map<number, CandidaturaComMensagens>();
+
+            mensagens.forEach(msg => {
+                if (!candidaturasMap.has(msg.candidaturaId)) {
+                    candidaturasMap.set(msg.candidaturaId, {
+                        candidaturaId: msg.candidaturaId,
+                        mensagens: [],
+                        ultimaMensagem: msg
+                    });
+                }
+
+                const candidatura = candidaturasMap.get(msg.candidaturaId);
+                candidatura.mensagens.push(msg);
+
+                // Atualizar última mensagem se for mais recente
+                if (new Date(msg.timestamp) > new Date(candidatura.ultimaMensagem.timestamp)) {
+                    candidatura.ultimaMensagem = msg;
+                }
+            });
+
+            // Converter Map para array e ordenar por timestamp da última mensagem
+            return Array.from(candidaturasMap.values()).sort((a, b) =>
+                new Date(b.ultimaMensagem.timestamp).getTime() -
+                new Date(a.ultimaMensagem.timestamp).getTime()
+            );
+        } catch (error) {
+            console.error('Erro ao buscar mensagens do usuário:', error);
+            throw error;
+        }
+    }
+
+    async obterCandidaturasComMensagens() {
+        try {
+            const candidaturas = await api.get(`/candidatura/`);
+
             const candidaturasComMensagens = await Promise.all(
                 candidaturas.data.map(async (candidatura) => {
                     const mensagens = await this.listarMensagens(candidatura.id);
