@@ -122,7 +122,7 @@ export const useDashboardEmpresaController = () => {
                         }
                     ]
                 };
-                const ret = await EntrevistaService.adicionarEntrevistadores(3, dadosEntrevista);
+                const ret = await EntrevistaService.adicionarEntrevistadores(modalAdicionarEntrevistador.candidaturaId, dadosEntrevista);
 
                 setModalAdicionarEntrevistador(null);
                 window.alert('Entrevistador adicionado com sucesso!.');
