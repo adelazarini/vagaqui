@@ -53,8 +53,9 @@ const NovaVagaModal: React.FC<NovaVagaModalProps> = ({ isOpen, onClose, onSave }
                     <input type="text" name="localizacao" placeholder="Localização" value={vaga.localizacao} onChange={handleChange} />
                 </ModalBody>
                 <ModalFooter>
-                    <button onClick={handleSave}>Salvar</button>
                     <button onClick={handleCancel}>Cancelar</button>
+                    <button onClick={handleSave}>Salvar</button>
+
                 </ModalFooter>
             </ModalContent>
         </ModalContainer>
