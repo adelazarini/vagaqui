@@ -110,7 +110,7 @@ const DashboardEmpresa: React.FC = () => {
                                     <strong>Local/Link:</strong> {entrevista.local_link}
                                 </p>
                                 <button
-                                    onClick={() => handleRemoverEntrevistador(entrevista.id, entrevista.entrevistador_id)}
+                                    onClick={() => handleRemoverEntrevistador(entrevista.id, entrevista.entrevistador.id)}
                                     className="remover-btn"
                                 >
                                     <FaTrash />

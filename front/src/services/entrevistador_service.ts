@@ -14,7 +14,7 @@ class EntrevistadorService {
 
     async deleteEntrevista(idEntrevista: number) {
         try {
-            const response = await api.delete(`/entrevista/${idEntrevista}/entrevistador`);
+            const response = await api.delete(`/entrevista/${idEntrevista}`);
             return response.data;
         } catch (error) {
             console.error('Erro ao deletar entrevista:', error);

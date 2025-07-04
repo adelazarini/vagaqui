@@ -25,7 +25,7 @@ router.get('/:id',
 );
 
 
-router.post('/:id/entrevistadores',
+router.post('/:id/entrevistador',
     authorize(['Administrador', 'Empresa']),
     candidaturaController.adicionarEntrevistadores.bind(candidaturaController)
 );
