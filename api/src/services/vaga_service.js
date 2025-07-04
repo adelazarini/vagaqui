@@ -98,6 +98,27 @@ class VagaService {
 
         return Vaga.findByPk(id);
     }
+
+    async deletarVaga(id, usuarioId) {
+
+        const empresa = await Empresa.findOne({
+            where: { usuario_id: usuarioId }
+        });
+
+        if (!empresa) {
+            throw new Error('Empresa não encontrada');
+        }
+
+        const vaga = await Vaga.findOne({ where: { id, empresa_id: empresa.id } });
+
+        if (!vaga) {
+            throw new Error('Vaga não encontrada ou não pertence à empresa');
+        }
+
+        await Vaga.destroy({ where: { id } });
+
+        return { message: 'Vaga excluída com sucesso' };
+    }
 }
 
 module.exports = new VagaService();

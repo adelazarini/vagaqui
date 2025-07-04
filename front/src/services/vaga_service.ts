@@ -52,6 +52,16 @@ class VagaService {
             throw error;
         }
     }
+
+    async deleteVaga(idVaga: number) {
+        try {
+            const response = await api.delete(`/vaga/${idVaga}`);
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao deletar vaga:', error);
+            throw error;
+        }
+    }
 }
 
 export default new VagaService();

@@ -24,29 +24,6 @@ class VagaController extends BaseController {
         }
     }
 
-    async update(req, res) {
-        try {
-            const id = req.params;
-            const dadosAtualizados = req.body;
-
-            const [updated] = await Vaga.update(dadosAtualizados, {
-                where: id
-            });
-
-            if (!updated) {
-                return res.status(404).json({ message: 'Vaga não encontrada' });
-            }
-
-            const vagaAtualizada = await Vaga.findByPk(id);
-            return res.status(200).json(vagaAtualizada);
-        } catch (error) {
-            return res.status(400).json({
-                message: 'Erro ao atualizar vaga',
-                error: error.message
-            });
-        }
-    }
-
     async listar(req, res) {
         try {
             const usuarioId = req.user.id;
@@ -75,6 +52,23 @@ class VagaController extends BaseController {
         } catch (error) {
             return res.status(400).json({
                 message: 'Erro ao atualizar vaga',
+                error: error.message
+            });
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            const id = req.params.id;
+
+            const usuarioId = req.user.id;
+
+            const vagaAtualizada = await VagaService.deletarVaga(id, usuarioId);
+
+            return res.status(200).json(vagaAtualizada);
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Erro ao deletar vaga',
                 error: error.message
             });
         }

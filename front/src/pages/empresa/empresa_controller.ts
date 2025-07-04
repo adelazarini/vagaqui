@@ -3,6 +3,7 @@ import { getCurrentUser } from '../../services/auth_service';
 import EmpresaService from '../../services/empresa_service';
 import EntrevistadorService from '../../services/entrevistador_service';
 import EntrevistaService from '../../services/entrevista_service';
+import VagaService from '../../services/vaga_service';
 
 
 import {
@@ -155,10 +156,22 @@ export const useDashboardEmpresaController = () => {
     };
 
     const handleExcluirVaga = async (vagaId: number) => {
-        try {
-            console.log(`Excluir vaga com ID: ${vagaId}`);
-        } catch (error) {
-            console.error('Erro ao excluir vaga:', error);
+        if (window.confirm('Tem certeza que deseja excluir esta vaga')) {
+            try {
+                const ret = await VagaService.deleteVaga(vagaId);
+
+                window.alert('Vaga excluida com sucesso!.');
+
+                setVagas(vagas.filter(e => e.id !== vagaId));
+            } catch (err: any) {
+                console.error('Erro ao obter dados do dashboard:', error);
+                if (err.response && err.response.status === 403) {
+                    window.alert('Acesso negado. Verifique suas credenciais.');
+                } else {
+                    window.alert('Ocorreu um erro ao carregar os dados.');
+                }
+                setError(err.message || 'Erro ao excluir entrevista');
+            }
         }
     };
 
