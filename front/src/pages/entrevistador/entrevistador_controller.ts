@@ -60,7 +60,7 @@ export const useDashboardController = () => {
             try {
                 const ret = await EntrevistadorService.deleteEntrevista(entrevistaId);
 
-                window.alert('Vaga excluida com sucesso!.');
+                window.alert('Entrevista excluida com sucesso!.');
 
                 setEntrevistas(entrevistas.filter(e => e.id !== entrevistaId));
             } catch (err: any) {

@@ -43,11 +43,13 @@ module.exports = (sequelize) => {
             // Relacionamentos
             this.belongsTo(models.Empresa, {
                 foreignKey: 'empresa_id',
-                as: 'empresa'
+                as: 'empresa',
+                onDelete: 'CASCADE'
             });
             this.hasMany(models.Candidatura, {
                 foreignKey: 'vaga_id',
-                as: 'candidaturas'
+                as: 'candidaturas',
+                onDelete: 'CASCADE'
             });
         }
     }
