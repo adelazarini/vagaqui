@@ -12,6 +12,10 @@ const {
 const { Op } = require('sequelize');
 const empresa = require('../models/empresa');
 
+const MensagenService = require('../services/mensagem_service');
+const entrevistador = require('../models/entrevistador');
+const candidatura = require('../models/candidatura');
+
 class EntrevistaService {
     async criarEntrevista(dadosEntrevista, usuarioId) {
 
@@ -324,12 +328,24 @@ class EntrevistaService {
             }, { transaction });
 
             await transaction.commit();
+
+            //8. VINCULAR USUARIOS PARA MENSAGENS
+            await MensagenService.criarMensagem(candidaturaId, usuarioId, usuario.nome, "Você foi selecionado para o processo seletivo");
+
+            const usuarioEntrevistador = await Usuario.findOne({
+                where: {
+                    id: entrevistadorExiste.usuario_id
+                }
+            })
+            await MensagenService.adicionarParticipante(candidaturaId, usuarioEntrevistador.id);
+
             return novaVinculacao;
 
         } catch (err) {
             await transaction.rollback();
             throw new Error(`Erro ao vincular entrevistador: ${err.message}`);
         }
+
     }
 
     async removerEntrevistadorDaEntrevista(entrevistaId, entrevistadorId, usuarioId) {

@@ -33,7 +33,6 @@ class EntrevistaEntrevistadoresService {
                 observacoes: dadosEntrevista.observacoes
             });
 
-            return novaEntrevistaEntrevistador;
         } catch (error) {
             throw new Error(`Erro ao criar entrevista-entrevistador: ${error.message}`);
         }

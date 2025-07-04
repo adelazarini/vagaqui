@@ -1,5 +1,5 @@
 const Mensagem = require('../models/mensagem');
-const { Candidatura, Vaga } = require('../models');
+const { Candidatura, Vaga, Usuario, Candidato } = require('../models');
 const { Op } = require('sequelize');
 
 class MensagemService {
@@ -10,14 +10,23 @@ class MensagemService {
             let conversa = await Mensagem.findOne({ candidaturaId });
 
             if (!conversa) {
-                // Buscar participantes da candidatura
-                const candidatura = await Candidatura.findByPk(candidaturaId, {
-                    include: [{ model: Vaga, as: 'vaga' }]
-                });
+
+                const candidatura = await Candidatura.findByPk(candidaturaId);
+
+                const candidato = await Candidato.findOne({
+                    where: {
+                        id: candidatura.candidato_id
+                    }
+                })
+
+                const usuarioCandidato = await Usuario.findOne({
+                    where: {
+                        id: candidato.usuario_id
+                    }
+                })
 
                 const participantes = [
-                    candidatura.candidato_id,
-                    candidatura.vaga.empresa_id
+                    usuarioCandidato.id
                 ];
 
                 conversa = new Mensagem({
@@ -150,6 +159,26 @@ class MensagemService {
             return candidaturasComMensagens;
         } catch (error) {
             console.error('Erro ao buscar candidaturas com mensagens:', error);
+            throw error;
+        }
+    }
+
+    async adicionarParticipante(candidaturaId, usuarioId) {
+        try {
+            const conversa = await Mensagem.findOne({ candidaturaId });
+
+            if (!conversa) {
+                throw new Error('Conversa não encontrada');
+            }
+
+            if (!conversa.participantes.includes(usuarioId)) {
+                conversa.participantes.push(usuarioId);
+                await conversa.save();
+            }
+
+            return conversa;
+        } catch (error) {
+            console.error('Erro ao adicionar participante:', error);
             throw error;
         }
     }
