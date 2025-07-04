@@ -1,11 +1,24 @@
 const express = require('express');
-const router = express.Router();
+
 const MensagemController = require('../controllers/mensagem_controller');
+
+const authorize = require('../middlewares/authorize_middleware');
+
 const authMiddleware = require('../middlewares/auth_middleware');
 
-router.post('/', authMiddleware, MensagemController.create);
-router.get('/', authMiddleware, MensagemController.findAll);
-router.get('/:id', authMiddleware, MensagemController.findById);
-router.delete('/', authMiddleware, MensagemController.delete);
+const router = express.Router();
+
+router.use(authMiddleware);
+
+
+router.post('/candidatura/:candidaturaId',
+    authorize(['Candidato', 'Empresa', 'Entrevistador']),
+    MensagemController.enviarMensagem
+);
+
+router.get('/candidatura/:candidaturaId',
+    authorize(['Candidato', 'Empresa', 'Entrevistador']),
+    MensagemController.listarMensagens
+);
 
 module.exports = router;

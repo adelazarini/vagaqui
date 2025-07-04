@@ -1,69 +1,43 @@
-const Mensagem = require('../models/mensagem');
-const { Usuario } = require('../models');
+const MensagemService = require('../services/mensagem_service');
 
-// Criar
-exports.create = async (req, res) => {
-    try {
-        const { candidaturaId, usuarioId, conteudo } = req.body;
+class MensagemController {
+    async enviarMensagem(req, res) {
+        try {
+            const { candidaturaId } = req.params;
+            const { usuarioId, usuarioNome, conteudo } = req.body;
 
-        const usuario = await Usuario.findByPk(usuarioId);
-        if (!usuario) {
-            return res.status(404).json({ message: 'Usuário não encontrado' });
+            const mensagem = await MensagemService.criarMensagem(
+                Number(candidaturaId),
+                usuarioId,
+                usuarioNome,
+                conteudo
+            );
+
+            res.status(201).json(mensagem);
+        } catch (error) {
+            res.status(500).json({
+                message: 'Erro ao enviar mensagem',
+                error: error.message
+            });
         }
-
-        const mensagem = await Mensagem.findOneAndUpdate(
-            { candidaturaId: candidaturaId },
-            {
-                $push: {
-                    mensagens: {
-                        usuarioId: usuarioId,
-                        usuarioNome: usuario.nome,
-                        conteudo: conteudo
-                    }
-                },
-                $addToSet: { participantes: usuarioId }
-            },
-            { upsert: true, new: true }
-        );
-
-        res.status(201).json(mensagem);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
     }
-};
 
-// Ler todos
-exports.findAll = async (req, res) => {
-    try {
-        const mensagens = await Mensagem.find();
-        res.json(mensagens);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
+    async listarMensagens(req, res) {
+        try {
+            const { candidaturaId } = req.params;
 
-// Ler por ID
-exports.findById = async (req, res) => {
-    try {
-        const mensagem = await Mensagem.findById(req.params.id);
-        if (!mensagem) {
-            return res.status(404).json({ message: 'Mensagem não encontrada' });
+            const mensagens = await MensagemService.obterMensagensPorCandidatura(
+                Number(candidaturaId)
+            );
+
+            res.status(200).json(mensagens);
+        } catch (error) {
+            res.status(500).json({
+                message: 'Erro ao listar mensagens',
+                error: error.message
+            });
         }
-        res.json(mensagem);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
     }
-};
+}
 
-// Deletar
-exports.delete = async (req, res) => {
-    try {
-        const mensagem = await Mensagem.findByIdAndDelete(req.params.id);
-        if (!mensagem) {
-            return res.status(404).json({ message: 'Mensagem não encontrada' });
-        }
-        res.json({ message: 'Mensagem deletada' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
+module.exports = new MensagemController();

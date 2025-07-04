@@ -64,6 +64,7 @@ app.use('/api/curriculo', authMiddleware);
 app.use('/api/candidatura', authMiddleware);
 app.use('/api/entrevistador', authMiddleware);
 app.use('/api/entrevista', authMiddleware);
+app.use('/api/mensagem', authMiddleware);
 
 // Rotas
 app.use('/api/candidato', candidatoRoutes);
@@ -73,7 +74,7 @@ app.use('/api/curriculo', curriculoRoutes);
 app.use('/api/candidatura', candidaturaRoutes);
 app.use('/api/entrevistador', entrevistadorRoutes);
 app.use('/api/entrevista', entrevistaRoutes);
-app.use('/api/mensagens', mensagemRoutes); // Usar rotas de mensagens
+app.use('/api/mensagem', mensagemRoutes);
 
 // Middleware para rotas não encontradas
 app.use((req, res, next) => {
