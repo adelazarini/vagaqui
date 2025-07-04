@@ -115,14 +115,8 @@ export const useDashboardEmpresaController = () => {
         if (selectedEntrevistador !== null) {
             console.log('Adicionar entrevistador com ID:', selectedEntrevistador);
             try {
-                const dadosEntrevista = {
-                    entrevistadores: [
-                        {
-                            entrevistador_id: selectedEntrevistador,
-                        }
-                    ]
-                };
-                const ret = await EntrevistaService.adicionarEntrevistadores(modalAdicionarEntrevistador.candidaturaId, dadosEntrevista);
+
+                const ret = await EntrevistaService.adicionarEntrevistadores(modalAdicionarEntrevistador.candidaturaId, selectedEntrevistador);
 
                 setModalAdicionarEntrevistador(null);
                 window.alert('Entrevistador adicionado com sucesso!.');

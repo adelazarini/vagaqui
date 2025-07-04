@@ -3,7 +3,7 @@ import api from './api_service';
 class EntrevistaService {
     async adicionarEntrevistadores(candidaturaId: number, entrevistador: any) {
         try {
-            const response = await api.post(`/candidatura/${candidaturaId}/entrevistador`, entrevistador);
+            const response = await api.post(`/candidatura/${candidaturaId}/entrevistador/${entrevistador}`);
             return response.data;
         } catch (error) {
             console.error('Erro ao adicionar entrevistador:', error);

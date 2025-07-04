@@ -238,16 +238,13 @@ class EntrevistaService {
         }
     }
 
-    async vincularEntrevistadores(candidaturaId, entrevistadores, usuarioId) {
+    async vincularEntrevistadores(candidaturaId, entrevistadorId, usuarioId) {
         const transaction = await sequelize.transaction();
 
-        const dadosEntrevista = { candidatura_id: candidaturaId }
-
-        const criarEntrevista = await this.criarEntrevista(dadosEntrevista, usuarioId)
-
         try {
-            // busca entrevista com candidatura e vaga
-            const entrevista = await Entrevista.findByPk(criarEntrevista.id, {
+            // 1. VERIFICAR SE JÁ EXISTE ENTREVISTA PARA A CANDIDATURA
+            let entrevista = await Entrevista.findOne({
+                where: { candidatura_id: candidaturaId },
                 include: [{
                     model: Candidatura,
                     as: 'candidatura',
@@ -258,11 +255,29 @@ class EntrevistaService {
                 }]
             });
 
+            // 2. SE NÃO EXISTE ENTREVISTA, CRIAR UMA NOVA
+            if (!entrevista) {
+                const dadosEntrevista = { candidatura_id: candidaturaId };
+                const novaEntrevista = await this.criarEntrevista(dadosEntrevista, usuarioId);
+
+                // Buscar a entrevista criada com os relacionamentos
+                entrevista = await Entrevista.findByPk(novaEntrevista.id, {
+                    include: [{
+                        model: Candidatura,
+                        as: 'candidatura',
+                        include: [{
+                            model: Vaga,
+                            as: 'vaga'
+                        }]
+                    }]
+                });
+            }
+
             if (!entrevista) {
                 throw new Error('Entrevista não encontrada');
             }
 
-            // validar permissao do usuario
+            // 3. VALIDAR PERMISSÃO DO USUÁRIO
             const usuario = await Usuario.findByPk(usuarioId, {
                 include: [{
                     model: Empresa,
@@ -274,55 +289,48 @@ class EntrevistaService {
                 throw new Error('Usuário não autorizado - não é uma empresa');
             }
 
-            // verificar se a vaga pertence empresa
+            // 4. VERIFICAR SE A VAGA PERTENCE À EMPRESA
             if (entrevista.candidatura.vaga.empresa_id !== usuario.empresa.id) {
                 throw new Error('Não autorizado - a entrevista não pertence a uma vaga da sua empresa');
             }
 
-            // processar vinculação de entrevistadores
-            const novas = await Promise.all(
-                entrevistadores.map(async data => {
-                    // validar entrevistador
-                    const ent = await Entrevistador.findByPk(data.entrevistador_id);
-                    if (!ent) throw new Error(`Entrevistador ${data.entrevistador_id} não encontrado`);
-                    console.log('EntrevistaEntrevistadores:', EntrevistaEntrevistadores);
-                    const [assoc, created] = await EntrevistaEntrevistadores.findOrCreate({
-                        where: {
-                            entrevista_id: criarEntrevista.id,
-                            entrevistador_id: data.entrevistador_id
-                        },
-                        defaults: {
-                            data_entrevista: data.data_entrevista,
-                            hora_entrevista: data.hora_entrevista,
-                            local_link: data.local_link,
-                            observacoes: data.observacoes,
-                            empresa_id: entrevista.empresa_id
-                        },
-                        transaction
-                    });
+            // 5. VALIDAR SE O ENTREVISTADOR EXISTE
+            const entrevistadorExiste = await Entrevistador.findByPk(entrevistadorId);
+            if (!entrevistadorExiste) {
+                throw new Error(`Entrevistador ${entrevistadorId} não encontrado`);
+            }
 
-                    if (!created) {
-                        await assoc.update({
-                            data_entrevista: data.data_entrevista,
-                            hora_entrevista: data.hora_entrevista,
-                            local_link: data.local_link,
-                            observacoes: data.observacoes
-                        }, { transaction });
-                    }
+            // 6. VERIFICAR SE O ENTREVISTADOR JÁ ESTÁ VINCULADO A ESTA ENTREVISTA
+            const entrevistadorJaVinculado = await EntrevistaEntrevistadores.findOne({
+                where: {
+                    entrevista_id: entrevista.id,
+                    entrevistador_id: entrevistadorId
+                }
+            });
 
-                    return assoc;
-                })
-            );
+            if (entrevistadorJaVinculado) {
+                throw new Error(`Entrevistador ${entrevistadorId} já está vinculado a esta entrevista`);
+            }
+
+            // 7. CRIAR VINCULAÇÃO DO ENTREVISTADOR
+            const novaVinculacao = await EntrevistaEntrevistadores.create({
+                entrevista_id: entrevista.id,
+                entrevistador_id: entrevistadorId,
+                data_entrevista: null,
+                hora_entrevista: null,
+                local_link: null,
+                observacoes: null,
+                empresa_id: usuario.empresa.id
+            }, { transaction });
 
             await transaction.commit();
-            return novas;
-        }
-        catch (err) {
+            return novaVinculacao;
+
+        } catch (err) {
             await transaction.rollback();
-            throw new Error(`Erro ao vincular entrevistadores: ${err.message}`);
+            throw new Error(`Erro ao vincular entrevistador: ${err.message}`);
         }
     }
-
 
     async removerEntrevistadorDaEntrevista(entrevistaId, entrevistadorId, usuarioId) {
         const transaction = await sequelize.transaction();

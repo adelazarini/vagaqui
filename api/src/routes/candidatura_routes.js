@@ -24,10 +24,10 @@ router.get('/:id',
     candidaturaController.findByPk.bind(candidaturaController)
 );
 
-
-router.post('/:id/entrevistador',
+//suepr usado
+router.post('/:id/entrevistador/:id_entrevistador',
     authorize(['Administrador', 'Empresa']),
-    candidaturaController.adicionarEntrevistadores.bind(candidaturaController)
+    candidaturaController.adicionarEntrevistador
 );
 
 router.post('/:id',

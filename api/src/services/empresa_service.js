@@ -47,6 +47,19 @@ class EmpresaService {
             let entrevistas = [];
             let processosSeletivos = [];
             let entrevistasTotais = 0;
+
+            let entrevistaTotaisMelhorado = await EntrevistaEntrevistadores.findAll({
+                where: {
+                    empresa_id: empresa.id
+                },
+                attributes: [
+                    'entrevista_id',
+                    [sequelize.fn('COUNT', sequelize.col('id')), 'total_entrevistadores']
+                ],
+                group: ['entrevista_id'],
+                raw: true
+            });
+
             if (candidaturasIds.length > 0) {
                 // Buscar entrevistas com os detalhes dos entrevistadores agendados
                 processosSeletivos = await Entrevista.findAll({
@@ -168,7 +181,7 @@ class EmpresaService {
                     totalVagasPublicadas,
                     totalCandidaturasRecebidas,
                     totalEntrevistasAgendadas,
-                    totalProcessoSeletivo: processosSeletivos.length,
+                    totalProcessoSeletivo: entrevistaTotaisMelhorado.length,
                 }
             };
         } catch (error) {
