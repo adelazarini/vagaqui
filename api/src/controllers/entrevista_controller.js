@@ -49,8 +49,24 @@ class EntrevistaController extends BaseController {
         return super.update(req, res);
     }
 
-    async delete(req, res) {
-        return super.delete(req, res);
+    async deleteEntrevista(req, res) {
+        try {
+            const { id } = req.params; //id entrevista
+            const userId = req.user.id; // ID do usuario logado
+
+            const entrevistaAtualizada = await EntrevistaEntrevistadoresService.ExcluiEntrevistaEntrevistador(
+                Number(id),
+                userId
+            );
+
+            return res.status(200).json(entrevistaAtualizada);
+        } catch (error) {
+            console.error('Erro ao atualizar entrevista:', error);
+            return res.status(500).json({
+                message: 'Erro interno do servidor',
+                error: error.message
+            });
+        }
     }
 
     async updateStatus(req, res) {
@@ -143,7 +159,7 @@ class EntrevistaController extends BaseController {
 
     async atualizarEntrevista(req, res) {
         try {
-            const { id } = req.params; // ID da entrevista_entrevistadores
+            const { id } = req.params; // ID da entrevista 
             const dadosEntrevista = req.body;
             const userId = req.user.id; // ID do usuario logado
 

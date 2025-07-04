@@ -58,7 +58,7 @@ export const useDashboardController = () => {
     const handleExcluirEntrevista = async (entrevistaId: number) => {
         if (window.confirm('Tem certeza que deseja excluir esta entrevista?')) {
             try {
-                const ret = await EntrevistadorService.deleteEntrevista(entrevistaId, entrevistador.id);
+                const ret = await EntrevistadorService.deleteEntrevista(entrevistaId);
 
                 window.alert('Vaga excluida com sucesso!.');
 

@@ -107,6 +107,44 @@ class EntrevistaEntrevistadoresService {
         return entrevistaAtualizada;
     }
 
+    async ExcluiEntrevistaEntrevistador(id, userId) {
+        try {
+            const usuario = await Usuario.findByPk(userId, {
+                include: [{
+                    model: Entrevistador,
+                    as: 'entrevistador'
+                }]
+            });
+
+            if (!usuario.entrevistador) {
+                throw new Error('Entrevistador não encontrado');
+            }
+            const entrevistador = usuario.entrevistador;
+
+            const entrevista = await Entrevista.findOne({
+                where: { id: id }
+            });
+
+            if (!entrevista) {
+                throw new Error('Entrevista não encontrada');
+            }
+
+            const entrevistadorEntrevistador = await EntrevistaEntrevistadores.destroy({
+                where: {
+                    entrevista_id: id,
+                    entrevistador_id: entrevistador.id
+                }
+            });
+
+            if (entrevistadorEntrevistador === 0) {
+                throw new Error('Nenhum registro de entrevista encontrado para exclusão');
+            }
+
+            return { message: 'Entrevista excluída com sucesso' };
+        } catch (error) {
+            throw new Error(`Erro ao excluir entrevista: ${error.message}`);
+        }
+    }
 }
 
 module.exports = new EntrevistaEntrevistadoresService();

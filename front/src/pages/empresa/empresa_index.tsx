@@ -11,11 +11,9 @@ import {
     UpdateProfileButton,
     ProximasEntrevistasContainer,
     MainContent,
-
 } from '../candidato/candidato_styles';
 
 import { EditButton, DeleteButton, ButtonContainer } from '../../components/layout/dashboard_style';
-
 import { FloatingButton, InlineActionButton, EntrevistadorModal } from './empresa_styles';
 
 import { FaPlus, FaUserPlus, FaTrash } from 'react-icons/fa';
@@ -24,6 +22,7 @@ import { useDashboardEmpresaController } from './empresa_controller';
 
 import NovaVagaModal from './vaga/vaga_index';
 import { useNovaVagaController } from './vaga/vaga_controller';
+import AtualizarVagaModal from './vaga_editar/vaga_editar_index';
 
 const DashboardEmpresa: React.FC = () => {
     const {
@@ -40,9 +39,12 @@ const DashboardEmpresa: React.FC = () => {
         handleFecharModal,
         handleAdicionarEntrevistador,
         handleRemoverEntrevistador,
-        handleEditarVaga,
         handleExcluirVaga,
-        setSelectedEntrevistador
+        setSelectedEntrevistador,
+        modalEditarVagaAberto,
+        vagaSelecionada,
+        handleFecharModalEditarVaga,
+        handleEditarVaga
     } = useDashboardEmpresaController();
 
     const { isModalOpen, handleOpenModal, handleCloseModal, handleSaveVaga } = useNovaVagaController();
@@ -53,7 +55,6 @@ const DashboardEmpresa: React.FC = () => {
 
     return (
         <DashboardLayout tipoUsuario="Empresa">
-
             <DashboardContainer>
                 <SidebarProfile>
                     <ProfileSection>
@@ -95,11 +96,9 @@ const DashboardEmpresa: React.FC = () => {
                         {entrevistas.map(entrevista => (
                             <div key={entrevista.id} className="entrevista-item">
                                 <div className="entrevista-header">
-
                                     <p>
                                         <strong>Entrevistador:</strong> {entrevista.entrevistador.nome}
                                     </p>
-
                                 </div>
                                 <p>
                                     <strong>Data:</strong> {new Date(entrevista.data_entrevista).toLocaleDateString('pt-BR')}
@@ -110,7 +109,6 @@ const DashboardEmpresa: React.FC = () => {
                                 <p>
                                     <strong>Local/Link:</strong> {entrevista.local_link}
                                 </p>
-                                <p></p>
                                 <button
                                     onClick={() => handleRemoverEntrevistador(entrevista.id, entrevista.entrevistador_id)}
                                     className="remover-btn"
@@ -134,7 +132,7 @@ const DashboardEmpresa: React.FC = () => {
                                     <p>Candidaturas: {vaga.total_candidaturas}</p>
                                 </div>
                                 <ButtonContainer>
-                                    <EditButton onClick={() => handleEditarVaga(vaga.id)}>
+                                    <EditButton onClick={() => handleEditarVaga(vaga)}>
                                         Editar
                                     </EditButton>
                                     <DeleteButton onClick={() => handleExcluirVaga(vaga.id)}>
@@ -172,8 +170,6 @@ const DashboardEmpresa: React.FC = () => {
                     </VagasContainer>
                 </MainContent>
 
-
-
                 <FloatingButton onClick={handleOpenModal}>
                     <FaPlus size={24} />
                 </FloatingButton>
@@ -183,6 +179,14 @@ const DashboardEmpresa: React.FC = () => {
                     onClose={handleCloseModal}
                     onSave={(vaga) => handleSaveVaga(vaga)}
                 />
+
+                {modalEditarVagaAberto && vagaSelecionada && (
+                    <AtualizarVagaModal
+                        vaga={vagaSelecionada}
+                        isOpen={modalEditarVagaAberto}
+                        onClose={handleFecharModalEditarVaga}
+                    />
+                )}
 
                 {modalAdicionarEntrevistador && (
                     <EntrevistadorModal>
@@ -203,7 +207,6 @@ const DashboardEmpresa: React.FC = () => {
                         </div>
                     </EntrevistadorModal>
                 )}
-
             </DashboardContainer>
         </DashboardLayout>
     );

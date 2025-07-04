@@ -1,11 +1,7 @@
 const CandidatoService = require('../services/candidato_service');
-const BaseController = require('./base_controller');
 const Candidato = require('../models/candidato');
 
-class CandidatoController extends BaseController {
-    constructor() {
-        super(Candidato);
-    }
+class CandidatoController {
 
     async buscarPorEmail(req, res) {
         try {
@@ -19,6 +15,30 @@ class CandidatoController extends BaseController {
             });
         }
     }
+
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const dadosAtualizados = req.body;
+
+            const [updated] = await Candidato.update(dadosAtualizados, {
+                where: { id }
+            });
+
+            if (!updated) {
+                return res.status(404).json({ message: 'Candiadato não encontrada' });
+            }
+
+            const candidatoAtualizada = await Candidato.findByPk(id);
+            return res.status(200).json(candidatoAtualizada);
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Erro ao atualizar vaga',
+                error: error.message
+            });
+        }
+    }
+
 
     async getDashboard(req, res) {
         try {

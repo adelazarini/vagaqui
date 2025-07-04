@@ -4,21 +4,11 @@ import { Candidatura } from '../models/candidatura';
 import VagaInput from '../models/vaga_input';
 
 class VagaService {
-    // Buscar todas as vagas disponíveis
-    async getVagasDisponiveis(): Promise<Vaga[]> {
-        try {
-            const response = await api.get<Vaga[]>('/vagas/disponiveis');
-            return response.data;
-        } catch (error) {
-            console.error('Erro ao buscar vagas:', error);
-            throw error;
-        }
-    }
 
     // Buscar vagas por empresa
     async getVagasPorEmpresa(empresaId: number): Promise<Vaga[]> {
         try {
-            const response = await api.get<Vaga[]>(`/vagas/empresa/${empresaId}`);
+            const response = await api.get<Vaga[]>(`/vaga/empresa/${empresaId}`);
             return response.data;
         } catch (error) {
             console.error('Erro ao buscar vagas da empresa:', error);
@@ -34,7 +24,7 @@ class VagaService {
     // Detalhes de uma vaga específica
     async getVagaDetalhes(vagaId: number): Promise<Vaga> {
         try {
-            const response = await api.get<Vaga>(`/vagas/${vagaId}`);
+            const response = await api.get<Vaga>(`/vaga/${vagaId}`);
             return response.data;
         } catch (error) {
             console.error('Erro ao buscar detalhes da vaga:', error);
@@ -53,10 +43,9 @@ class VagaService {
         }
     }
 
-    // Atualizar vaga (para empresas)
     async atualizarVaga(vagaId: number, dadosVaga: Partial<Vaga>): Promise<Vaga> {
         try {
-            const response = await api.put<Vaga>(`/vagas/${vagaId}`, dadosVaga);
+            const response = await api.put<Vaga>(`/vaga/${vagaId}`, dadosVaga);
             return response.data;
         } catch (error) {
             console.error('Erro ao atualizar vaga:', error);

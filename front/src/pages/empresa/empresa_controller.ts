@@ -35,6 +35,9 @@ export const useDashboardEmpresaController = () => {
 
     const [selectedEntrevistador, setSelectedEntrevistador] = useState<number | null>(null);
 
+    const [modalEditarVagaAberto, setModalEditarVagaAberto] = useState(false);
+    const [vagaSelecionada, setVagaSelecionada] = useState<Vaga | null>(null);
+
     useEffect(() => {
         fetchDados();
     }, []);
@@ -119,7 +122,6 @@ export const useDashboardEmpresaController = () => {
                     ]
                 };
                 const ret = await EntrevistaService.adicionarEntrevistadores(3, dadosEntrevista);
-                //pegar o selecionado, verificar no serviço se o selecionado já não existe pra vaga
 
                 setModalAdicionarEntrevistador(null);
                 window.alert('Entrevistador adicionado com sucesso!.');
@@ -129,34 +131,31 @@ export const useDashboardEmpresaController = () => {
             } catch (error) {
                 console.error('Erro ao adicionar entrevistador:', error);
             }
-
-        }
-        else {
+        } else {
             window.alert('Por favor, selecione um entrevistador.');
         }
     };
 
     const handleRemoverEntrevistador = async (entrevistaId: number, entrevistadorId: number) => {
         try {
-            // Chamar serviço para remover entrevistador
-            // await EntrevistadorService.removerEntrevistadorEntrevista(entrevistaId, entrevistadorId);
-
-            // Recarregar dados após remoção
             await fetchDados();
         } catch (error) {
             console.error('Erro ao remover entrevistador:', error);
-            // Tratar erro (mostrar mensagem ao usuário, etc.)
         }
     };
 
-    const handleEditarVaga = (vagaId: number) => {
-        // Lógica para editar a vaga
-        console.log(`Editar vaga com ID: ${vagaId}`);
+    const handleEditarVaga = (vaga: Vaga) => {
+        setVagaSelecionada(vaga);
+        setModalEditarVagaAberto(true);
+    };
+
+    const handleFecharModalEditarVaga = () => {
+        setModalEditarVagaAberto(false);
+        setVagaSelecionada(null);
     };
 
     const handleExcluirVaga = async (vagaId: number) => {
         try {
-            // Lógica para excluir a vaga
             console.log(`Excluir vaga com ID: ${vagaId}`);
         } catch (error) {
             console.error('Erro ao excluir vaga:', error);
@@ -170,7 +169,8 @@ export const useDashboardEmpresaController = () => {
         entrevistas,
         estatisticas,
         loading,
-        error, entrevistadores,
+        error,
+        entrevistadores,
         modalAdicionarEntrevistador,
         handleAbrirModalEntrevistador,
         handleFecharModal,
@@ -178,6 +178,9 @@ export const useDashboardEmpresaController = () => {
         handleRemoverEntrevistador,
         handleEditarVaga,
         handleExcluirVaga,
-        setSelectedEntrevistador
+        setSelectedEntrevistador,
+        modalEditarVagaAberto,
+        vagaSelecionada,
+        handleFecharModalEditarVaga
     };
 };

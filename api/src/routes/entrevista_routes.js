@@ -43,19 +43,18 @@ router.put('/:id',
     entrevistaController.update.bind(entrevistaController)
 );
 
-router.delete('/:id',
-    authorize(permissions.delete),
-    entrevistaController.delete.bind(entrevistaController)
-);
-
 router.get('/:id/entrevistadores',
     authorize(['Administrador', 'Empresa', 'Entrevistador']),
     entrevistaController.listarEntrevistadores.bind(entrevistaController)
 );
 
+router.delete('/:id/entrevistador',
+    authorize(['Entrevistador']),
+    entrevistaController.deleteEntrevista
+);
 
 router.delete('/:id/entrevistadores/:entrevistadorId',
-    authorize(['Administrador', 'Empresa', 'Entrevistador']),
+    authorize(['Administrador', 'Empresa']),
     entrevistaController.removerEntrevistador.bind(entrevistaController)
 );
 
