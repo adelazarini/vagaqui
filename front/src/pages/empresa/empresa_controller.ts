@@ -115,16 +115,29 @@ export const useDashboardEmpresaController = () => {
         if (selectedEntrevistador !== null) {
             console.log('Adicionar entrevistador com ID:', selectedEntrevistador);
             try {
-
-                const ret = await EntrevistaService.adicionarEntrevistadores(modalAdicionarEntrevistador.candidaturaId, selectedEntrevistador);
+                const ret = await EntrevistaService.adicionarEntrevistadores(
+                    modalAdicionarEntrevistador.candidaturaId,
+                    selectedEntrevistador
+                );
 
                 setModalAdicionarEntrevistador(null);
-                window.alert('Entrevistador adicionado com sucesso!.');
+                setSelectedEntrevistador(null); // Limpar seleção
+                window.alert('Entrevistador adicionado com sucesso!');
                 await fetchDados();
 
                 console.log('Entrevistador adicionado com sucesso:', ret);
             } catch (error) {
                 console.error('Erro ao adicionar entrevistador:', error);
+
+                // Extrair mensagem do erro
+                let errorMessage = 'Erro desconhecido';
+                if (error.response && error.response.data && error.response.data.error) {
+                    errorMessage = error.response.data.error;
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+
+                window.alert(`${errorMessage}`);
             }
         } else {
             window.alert('Por favor, selecione um entrevistador.');
