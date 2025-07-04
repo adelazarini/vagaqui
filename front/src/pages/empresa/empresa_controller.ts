@@ -192,10 +192,12 @@ export const useDashboardEmpresaController = () => {
                 console.error('Erro ao obter dados do dashboard:', error);
                 if (err.response && err.response.status === 403) {
                     window.alert('Acesso negado. Verifique suas credenciais.');
-                } else {
+                } else if (err.response && err.response.status === 400) {
+                    window.alert('Vaga com entrevista agenda, cancelar entrevista.');
+                }
+                else {
                     window.alert('Ocorreu um erro ao carregar os dados.');
                 }
-                setError(err.message || 'Erro ao excluir vaga');
             }
         }
     };
