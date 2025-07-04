@@ -77,6 +77,27 @@ class VagaService {
             throw new Error(`Erro ao listar vagas: ${error.message}`);
         }
     }
+
+    async atualizarVaga(id, dadosAtualizados, usuarioId) {
+
+        const empresa = await Empresa.findOne({
+            where: { usuario_id: usuarioId }
+        });
+
+        if (!empresa) {
+            throw new Error('Empresa não encontrada');
+        }
+
+        const vaga = await Vaga.findOne({ where: { id, empresa_id: empresa.id } });
+
+        if (!vaga) {
+            throw new Error('Vaga não encontrada ou não pertence à empresa');
+        }
+
+        await Vaga.update(dadosAtualizados, { where: { id } });
+
+        return Vaga.findByPk(id);
+    }
 }
 
 module.exports = new VagaService();
