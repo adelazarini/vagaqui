@@ -10,7 +10,7 @@ const options = {
             description: 'Documentação da API Vagaqui'
         },
     },
-    apis: ['./src/routes/*.js', './src/models/*.js'],
+    apis: ['./src/routes/*.js', './src/controllers/*.js', './src/models/*.js']
 };
 
 const specs = swaggerJsdoc(options);
