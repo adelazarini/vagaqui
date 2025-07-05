@@ -19,7 +19,6 @@ const ListarMensagensController = () => {
                     console.error('Erro ao carregar mensagens:', error);
                 }
             } else {
-                // Redirecionar para login se não houver usuário
                 navigate('/login');
             }
         };

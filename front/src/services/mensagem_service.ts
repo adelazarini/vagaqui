@@ -25,7 +25,7 @@ class MensagemService {
 
     async obterMensagensPorUsuario(): Promise<CandidaturaComMensagens[]> {
         try {
-            const response = await api.get(`/mensagens/usuario/`);
+            const response = await api.get(`/mensagem/usuario/`);
 
             // Transformar as mensagens em CandidaturaComMensagens
             const mensagens: Mensagem[] = response.data;
